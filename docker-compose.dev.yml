@@ -1,0 +1,87 @@
+version: "3"
+services:
+  database:
+    image: postgis/postgis:13-master
+    # Required when running on platform other than amd64, like Apple M1/M2:
+    # platform: linux/amd64
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB: "directus"
+    secrets:
+      - db_user
+      - db_password
+
+  cache:
+    image: redis:6
+
+  directus:
+    image: directus/directus:10.8.3
+    ports:
+      - 8055:8055
+    restart: always
+    volumes:
+      # Reuired only when using sqlite3
+      # - ./data/database:/directus/database
+      - ./data/uploads:/directus/uploads
+      - ./data/directus-snapshots:/directus/snapshots
+      - ./data/directus-extensions:/directus/extensions
+    depends_on:
+      - cache
+      - database
+    environment:
+      DB_CLIENT: "sqlite3"
+      # Reuired only when using sqlite3
+      # DB_FILENAME: "/directus/database/data.db"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER_FILE: /run/secrets/db_user
+      DB_PASSWORD_FILE: /run/secrets/db_password
+
+      KEY: "sdfgasdkgfsdglfgdsakfgkjdsgfjlksdkj"
+      SECRET: "efkhkwehfkjhwekjhfkjwehfkjhewkfwek"
+      ADMIN_EMAIL_FILE: /run/secrets/directus_email
+      ADMIN_PASSWORD_FILE: /run/secrets/directus_password
+
+      WEBSOCKETS_ENABLED: true
+      CACHE_ENABLED: "true"
+      CACHE_STORE: "redis"
+      REDIS: "redis://cache:6379"
+    secrets:
+      - db_user
+      - db_password
+      - directus_email
+      - directus_password
+
+  nextjs:
+    container_name: nextjs
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    # Set environment variables directly in the docker-compose file
+    # environment:
+    # ENV_VARIABLE: ${ENV_VARIABLE}
+    # NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    # Set envrionment variables based on the .env file
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    restart: always
+    ports:
+      - 3000:3000
+      - 6006:6006
+
+secrets:
+  db_user:
+    file: db_user
+  db_password:
+    file: db_password
+  directus_email:
+    file: directus_email
+  directus_password:
+    file: directus_password
