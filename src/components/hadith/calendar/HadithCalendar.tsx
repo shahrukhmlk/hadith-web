@@ -1,6 +1,7 @@
 "use client"
 
 import { Calendar } from "@/components/ui/calendar"
+import { Route } from "next"
 import Link from "next/link"
 import { useRef } from "react"
 import { Button, DayProps, useDayRender } from "react-day-picker"
@@ -8,21 +9,20 @@ import { Button, DayProps, useDayRender } from "react-day-picker"
 export interface IHadithCalendar {
   className?: string
   selectedDate: Date
-  startDate: Date
   lastDate: Date
 }
 
 const HadithCalendar = ({
   className,
   selectedDate,
-  startDate,
   lastDate,
 }: IHadithCalendar) => {
   return (
     <Calendar
       mode="single"
+      defaultMonth={selectedDate}
       selected={selectedDate}
-      fromDate={startDate}
+      fromDate={new Date(2022, 0, 1)}
       toDate={lastDate}
       components={{ Day: DayLink }}
     />
@@ -45,12 +45,12 @@ function DayLink(props: DayProps): JSX.Element {
   return (
     <Link
       href={
-        "/" +
-        props.date.getFullYear() +
-        "/" +
-        (props.date.getMonth() + 1) +
-        "/" +
-        props.date.getDate()
+        ("/date/" +
+          props.date.getFullYear() +
+          "/" +
+          (props.date.getMonth() + 1) +
+          "/" +
+          props.date.getDate()) as Route
       }
     >
       <Button name="day" ref={buttonRef} {...dayRender.buttonProps} />

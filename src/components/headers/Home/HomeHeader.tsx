@@ -11,22 +11,22 @@ const HomeHeader: React.FC<IHomeHeader> = () => {
   return (
     <header className="w-full bg-background backdrop-blur">
       <div className="flex flex-col justify-center gap-4 p-4 lg:flex-row">
-        <Link href={"./"} className="flex items-center justify-center gap-2">
+        <Link href={"/"} className="flex items-center justify-center gap-2">
           <Avatar>
-            <AvatarImage src="../Shahrukh-Malik-icon.png" />
-            <AvatarFallback>SM</AvatarFallback>
+            <AvatarImage src="/Shahrukh-Malik-icon.png" />
+            <AvatarFallback>DMF</AvatarFallback>
           </Avatar>
-          <p className="text-xl font-semibold">Shahrukh Malik</p>
+          <p className="text-xl font-semibold">Dar al-Malik Foundation</p>
         </Link>
         <div className="flex justify-center lg:ms-4 lg:flex-1 lg:justify-normal">
           <MainMenu />
         </div>
         <div className="flex justify-center ">
           <Button asChild>
-            <Link href={"../Shahrukh-Malik.pdf"}>
+            <a href={"/Shahrukh-Malik.pdf"}>
               <Download className="mr-2" />
               Download Resume
-            </Link>
+            </a>
           </Button>
         </div>
       </div>

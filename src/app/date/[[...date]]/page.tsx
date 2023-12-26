@@ -1,28 +1,31 @@
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
+import { Separator } from "@/components/ui/separator"
+import { isAfter } from "date-fns"
 
 export default function Home({ params }: { params: { date: number[] } }) {
-  const startDate = new Date(2023, 10, 5)
+  // TODO: Fetch last hadith date from db
   const lastDate = new Date()
-  const date =
-    params.date && params.date.length == 3
-      ? {
-          year: params.date[0],
-          month: params.date[1],
-          date: params.date[2],
-        }
-      : null
+  const dateArray = params.date
+  var selectedDate =
+    dateArray && dateArray.length > 2
+      ? new Date(dateArray[0], dateArray[1] - 1, dateArray[2])
+      : lastDate
+  if (isAfter(selectedDate, lastDate)) {
+    selectedDate = lastDate
+  }
 
   return (
-    <main className="container mx-auto flex h-full w-full flex-col lg:flex-row">
-      <div className="flex flex-col">{date?.date}</div>
-      <div className="flex flex-col">
-        <HadithCalendar
-          selectedDate={new Date()}
-          startDate={startDate}
-          lastDate={lastDate}
-        />
+    <main className="flex w-full flex-1 flex-col justify-center lg:flex-row">
+      <div className="flex flex-col p-4 lg:order-3 lg:flex-1">
+        {selectedDate.toDateString()}
       </div>
-      <section id="calendar"></section>
+      <div className="flex flex-col p-4 lg:order-1">
+        <HadithCalendar selectedDate={selectedDate} lastDate={lastDate} />
+      </div>
+      <Separator
+        orientation={"vertical"}
+        className="hidden lg:order-2 lg:block"
+      />
     </main>
   )
 }
