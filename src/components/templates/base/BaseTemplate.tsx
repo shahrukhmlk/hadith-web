@@ -2,7 +2,7 @@ export interface IBaseTemplate {
   className?: string
 }
 
-const BaseTemplate: React.FC<IBaseTemplate> = ({ className }) => {
+const BaseTemplate = ({ className }: IBaseTemplate) => {
   return <div className={className}></div>
 }
 
