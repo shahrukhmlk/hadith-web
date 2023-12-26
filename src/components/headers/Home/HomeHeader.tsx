@@ -21,14 +21,14 @@ const HomeHeader: React.FC<IHomeHeader> = () => {
         <div className="flex justify-center lg:ms-4 lg:flex-1 lg:justify-normal">
           <MainMenu />
         </div>
-        <div className="flex justify-center ">
+        {/* <div className="flex justify-center ">
           <Button asChild>
             <a href={"/Shahrukh-Malik.pdf"}>
               <Download className="mr-2" />
               Download Resume
             </a>
           </Button>
-        </div>
+        </div> */}
       </div>
       <Separator asChild>
         <hr />
