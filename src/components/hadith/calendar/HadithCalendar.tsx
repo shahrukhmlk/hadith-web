@@ -5,7 +5,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { START_DATE } from "@/data/HADITH_CONSTANTS"
 import { Route } from "next"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { useRef } from "react"
 import { Button, DayProps, useDayRender } from "react-day-picker"
 
