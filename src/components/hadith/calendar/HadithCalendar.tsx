@@ -1,8 +1,8 @@
 "use client"
 
-import { getDateFromPath } from "@/app/[...date]/page"
 import { Calendar } from "@/components/ui/calendar"
 import { START_DATE } from "@/data/HADITH_CONSTANTS"
+import { getDateFromPath } from "@/lib/utils"
 import { Route } from "next"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
