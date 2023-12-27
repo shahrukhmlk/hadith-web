@@ -1,0 +1,481 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../data/database/data.db"
+}
+
+model directus_activity {
+  id                 Int                  @id @default(autoincrement())
+  action             String
+  user               String?
+  timestamp          DateTime             @default(now())
+  ip                 String?
+  user_agent         String?
+  collection         String
+  item               String
+  comment            String?
+  origin             String?
+  directus_revisions directus_revisions[]
+  @@ignore
+}
+
+model directus_collections {
+  collection                 String                 @id
+  icon                       String?
+  note                       String?
+  display_template           String?
+  hidden                     Boolean                @default(false)
+  singleton                  Boolean                @default(false)
+  translations               Unsupported("json")?
+  archive_field              String?
+  archive_app_filter         Boolean                @default(true)
+  archive_value              String?
+  unarchive_value            String?
+  sort_field                 String?
+  accountability             String?                @default("all")
+  color                      String?
+  item_duplication_fields    Unsupported("json")?
+  sort                       Int?
+  group                      String?
+  collapse                   String                 @default("open")
+  preview_url                String?
+  versioning                 Boolean                @default(false)
+  directus_collections       directus_collections?  @relation("directus_collectionsTodirectus_collections", fields: [group], references: [collection], onDelete: NoAction, onUpdate: NoAction)
+  other_directus_collections directus_collections[] @relation("directus_collectionsTodirectus_collections")
+  directus_shares            directus_shares[]
+  directus_versions          directus_versions[]
+  @@ignore
+}
+
+model directus_dashboards {
+  id              String            @id
+  name            String
+  icon            String            @default("dashboard")
+  note            String?
+  date_created    DateTime?         @default(now())
+  user_created    String?
+  color           String?
+  directus_users  directus_users?   @relation(fields: [user_created], references: [id], onUpdate: NoAction)
+  directus_panels directus_panels[]
+  @@ignore
+}
+
+model directus_extensions {
+  name    String  @id
+  enabled Boolean @default(true)
+  @@ignore
+}
+
+model directus_fields {
+  id                 Int                  @id @default(autoincrement())
+  collection         String
+  field              String
+  special            String?
+  interface          String?
+  options            Unsupported("json")?
+  display            String?
+  display_options    Unsupported("json")?
+  readonly           Boolean              @default(false)
+  hidden             Boolean              @default(false)
+  sort               Int?
+  width              String?              @default("full")
+  translations       Unsupported("json")?
+  note               String?
+  conditions         Unsupported("json")?
+  required           Boolean?             @default(false)
+  group              String?
+  validation         Unsupported("json")?
+  validation_message String?
+  @@ignore
+}
+
+model directus_files {
+  id                                                                    String               @id
+  storage                                                               String
+  filename_disk                                                         String?
+  filename_download                                                     String
+  title                                                                 String?
+  type                                                                  String?
+  folder                                                                String?
+  uploaded_by                                                           String?
+  uploaded_on                                                           DateTime             @default(now())
+  modified_by                                                           String?
+  modified_on                                                           DateTime             @default(now())
+  charset                                                               String?
+  filesize                                                              BigInt?
+  width                                                                 Int?
+  height                                                                Int?
+  duration                                                              Int?
+  embed                                                                 String?
+  description                                                           String?
+  location                                                              String?
+  tags                                                                  String?
+  metadata                                                              Unsupported("json")?
+  directus_folders                                                      directus_folders?    @relation(fields: [folder], references: [id], onUpdate: NoAction)
+  directus_users_directus_files_modified_byTodirectus_users             directus_users?      @relation("directus_files_modified_byTodirectus_users", fields: [modified_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_users_directus_files_uploaded_byTodirectus_users             directus_users?      @relation("directus_files_uploaded_byTodirectus_users", fields: [uploaded_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_settings_directus_settings_public_faviconTodirectus_files    directus_settings[]  @relation("directus_settings_public_faviconTodirectus_files")
+  directus_settings_directus_settings_public_backgroundTodirectus_files directus_settings[]  @relation("directus_settings_public_backgroundTodirectus_files")
+  directus_settings_directus_settings_public_foregroundTodirectus_files directus_settings[]  @relation("directus_settings_public_foregroundTodirectus_files")
+  directus_settings_directus_settings_project_logoTodirectus_files      directus_settings[]  @relation("directus_settings_project_logoTodirectus_files")
+  @@ignore
+}
+
+model directus_flows {
+  id                  String                @id
+  name                String
+  icon                String?
+  color               String?
+  description         String?
+  status              String                @default("active")
+  trigger             String?
+  accountability      String?               @default("all")
+  options             Unsupported("json")?
+  operation           String?               @unique(map: "directus_flows_operation_unique")
+  date_created        DateTime?             @default(now())
+  user_created        String?
+  directus_users      directus_users?       @relation(fields: [user_created], references: [id], onUpdate: NoAction)
+  directus_operations directus_operations[]
+  @@ignore
+}
+
+model directus_folders {
+  id                     String              @id
+  name                   String
+  parent                 String?
+  directus_files         directus_files[]
+  directus_folders       directus_folders?   @relation("directus_foldersTodirectus_folders", fields: [parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_directus_folders directus_folders[]  @relation("directus_foldersTodirectus_folders")
+  directus_settings      directus_settings[]
+  @@ignore
+}
+
+model directus_migrations {
+  version   String    @id
+  name      String
+  timestamp DateTime? @default(now())
+  @@ignore
+}
+
+model directus_notifications {
+  id                                                              Int             @id @default(autoincrement())
+  timestamp                                                       DateTime?       @default(now())
+  status                                                          String?         @default("inbox")
+  recipient                                                       String
+  sender                                                          String?
+  subject                                                         String
+  message                                                         String?
+  collection                                                      String?
+  item                                                            String?
+  directus_users_directus_notifications_senderTodirectus_users    directus_users? @relation("directus_notifications_senderTodirectus_users", fields: [sender], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_users_directus_notifications_recipientTodirectus_users directus_users  @relation("directus_notifications_recipientTodirectus_users", fields: [recipient], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_operations {
+  id                                                                         String               @id
+  name                                                                       String?
+  key                                                                        String
+  type                                                                       String
+  position_x                                                                 Int
+  position_y                                                                 Int
+  options                                                                    Unsupported("json")?
+  resolve                                                                    String?              @unique(map: "directus_operations_resolve_unique")
+  reject                                                                     String?              @unique(map: "directus_operations_reject_unique")
+  flow                                                                       String
+  date_created                                                               DateTime?            @default(now())
+  user_created                                                               String?
+  directus_users                                                             directus_users?      @relation(fields: [user_created], references: [id], onUpdate: NoAction)
+  directus_flows                                                             directus_flows       @relation(fields: [flow], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  directus_operations_directus_operations_rejectTodirectus_operations        directus_operations? @relation("directus_operations_rejectTodirectus_operations", fields: [reject], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_directus_operations_directus_operations_rejectTodirectus_operations  directus_operations? @relation("directus_operations_rejectTodirectus_operations")
+  directus_operations_directus_operations_resolveTodirectus_operations       directus_operations? @relation("directus_operations_resolveTodirectus_operations", fields: [resolve], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_directus_operations_directus_operations_resolveTodirectus_operations directus_operations? @relation("directus_operations_resolveTodirectus_operations")
+  @@ignore
+}
+
+model directus_panels {
+  id                  String               @id
+  dashboard           String
+  name                String?
+  icon                String?
+  color               String?
+  show_header         Boolean              @default(false)
+  note                String?
+  type                String
+  position_x          Int
+  position_y          Int
+  width               Int
+  height              Int
+  options             Unsupported("json")?
+  date_created        DateTime?            @default(now())
+  user_created        String?
+  directus_users      directus_users?      @relation(fields: [user_created], references: [id], onUpdate: NoAction)
+  directus_dashboards directus_dashboards  @relation(fields: [dashboard], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_permissions {
+  id             Int                  @id @default(autoincrement())
+  role           String?
+  collection     String
+  action         String
+  permissions    Unsupported("json")?
+  validation     Unsupported("json")?
+  presets        Unsupported("json")?
+  fields         String?
+  directus_roles directus_roles?      @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_presets {
+  id               Int                  @id @default(autoincrement())
+  bookmark         String?
+  user             String?
+  role             String?
+  collection       String?
+  search           String?
+  layout           String?              @default("tabular")
+  layout_query     Unsupported("json")?
+  layout_options   Unsupported("json")?
+  refresh_interval Int?
+  filter           Unsupported("json")?
+  icon             String?              @default("bookmark")
+  color            String?
+  directus_roles   directus_roles?      @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  directus_users   directus_users?      @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_relations {
+  id                      Int     @id @default(autoincrement())
+  many_collection         String
+  many_field              String
+  one_collection          String?
+  one_field               String?
+  one_collection_field    String?
+  one_allowed_collections String?
+  junction_field          String?
+  sort_field              String?
+  one_deselect_action     String  @default("nullify")
+  @@ignore
+}
+
+model directus_revisions {
+  id                       Int                  @id @default(autoincrement())
+  activity                 Int
+  collection               String
+  item                     String
+  data                     Unsupported("json")?
+  delta                    Unsupported("json")?
+  parent                   Int?
+  version                  String?
+  directus_versions        directus_versions?   @relation(fields: [version], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  directus_activity        directus_activity    @relation(fields: [activity], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  directus_revisions       directus_revisions?  @relation("directus_revisionsTodirectus_revisions", fields: [parent], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_directus_revisions directus_revisions[] @relation("directus_revisionsTodirectus_revisions")
+  @@ignore
+}
+
+model directus_roles {
+  id                   String                 @id
+  name                 String
+  icon                 String                 @default("supervised_user_circle")
+  description          String?
+  ip_access            String?
+  enforce_tfa          Boolean                @default(false)
+  admin_access         Boolean                @default(false)
+  app_access           Boolean                @default(true)
+  directus_permissions directus_permissions[]
+  directus_presets     directus_presets[]
+  directus_shares      directus_shares[]
+  directus_users       directus_users[]
+  @@ignore
+}
+
+model directus_sessions {
+  token           String           @id
+  user            String?
+  expires         DateTime
+  ip              String?
+  user_agent      String?
+  share           String?
+  origin          String?
+  directus_shares directus_shares? @relation(fields: [share], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  directus_users  directus_users?  @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_settings {
+  id                                                                 Int                  @id @default(autoincrement())
+  project_name                                                       String               @default("Directus")
+  project_url                                                        String?
+  project_color                                                      String               @default("#6644FF")
+  project_logo                                                       String?
+  public_foreground                                                  String?
+  public_background                                                  String?
+  public_note                                                        String?
+  auth_login_attempts                                                Int?                 @default(25)
+  auth_password_policy                                               String?
+  storage_asset_transform                                            String?              @default("all")
+  storage_asset_presets                                              Unsupported("json")?
+  custom_css                                                         String?
+  storage_default_folder                                             String?
+  basemaps                                                           Unsupported("json")?
+  mapbox_key                                                         String?
+  module_bar                                                         Unsupported("json")?
+  project_descriptor                                                 String?
+  default_language                                                   String               @default("en-US")
+  custom_aspect_ratios                                               Unsupported("json")?
+  public_favicon                                                     String?
+  default_appearance                                                 String               @default("auto")
+  default_theme_light                                                String?
+  theme_light_overrides                                              Unsupported("json")?
+  default_theme_dark                                                 String?
+  theme_dark_overrides                                               Unsupported("json")?
+  directus_files_directus_settings_public_faviconTodirectus_files    directus_files?      @relation("directus_settings_public_faviconTodirectus_files", fields: [public_favicon], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_folders                                                   directus_folders?    @relation(fields: [storage_default_folder], references: [id], onUpdate: NoAction)
+  directus_files_directus_settings_public_backgroundTodirectus_files directus_files?      @relation("directus_settings_public_backgroundTodirectus_files", fields: [public_background], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_files_directus_settings_public_foregroundTodirectus_files directus_files?      @relation("directus_settings_public_foregroundTodirectus_files", fields: [public_foreground], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_files_directus_settings_project_logoTodirectus_files      directus_files?      @relation("directus_settings_project_logoTodirectus_files", fields: [project_logo], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_shares {
+  id                   String               @id
+  name                 String?
+  collection           String
+  item                 String
+  role                 String?
+  password             String?
+  user_created         String?
+  date_created         DateTime?            @default(now())
+  date_start           DateTime?
+  date_end             DateTime?
+  times_used           Int?                 @default(0)
+  max_uses             Int?
+  directus_sessions    directus_sessions[]
+  directus_users       directus_users?      @relation(fields: [user_created], references: [id], onUpdate: NoAction)
+  directus_roles       directus_roles?      @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  directus_collections directus_collections @relation(fields: [collection], references: [collection], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_translations {
+  id       String @id
+  language String
+  key      String
+  value    String
+  @@ignore
+}
+
+model directus_users {
+  id                                                                      String                   @id
+  first_name                                                              String?
+  last_name                                                               String?
+  email                                                                   String?                  @unique(map: "directus_users_email_unique")
+  password                                                                String?
+  location                                                                String?
+  title                                                                   String?
+  description                                                             String?
+  tags                                                                    Unsupported("json")?
+  avatar                                                                  String?
+  language                                                                String?
+  tfa_secret                                                              String?
+  status                                                                  String                   @default("active")
+  role                                                                    String?
+  token                                                                   String?                  @unique(map: "directus_users_token_unique")
+  last_access                                                             DateTime?
+  last_page                                                               String?
+  provider                                                                String                   @default("default")
+  external_identifier                                                     String?                  @unique(map: "directus_users_external_identifier_unique")
+  auth_data                                                               Unsupported("json")?
+  email_notifications                                                     Boolean?                 @default(true)
+  appearance                                                              String?
+  theme_dark                                                              String?
+  theme_light                                                             String?
+  theme_light_overrides                                                   Unsupported("json")?
+  theme_dark_overrides                                                    Unsupported("json")?
+  directus_dashboards                                                     directus_dashboards[]
+  directus_files_directus_files_modified_byTodirectus_users               directus_files[]         @relation("directus_files_modified_byTodirectus_users")
+  directus_files_directus_files_uploaded_byTodirectus_users               directus_files[]         @relation("directus_files_uploaded_byTodirectus_users")
+  directus_flows                                                          directus_flows[]
+  directus_notifications_directus_notifications_senderTodirectus_users    directus_notifications[] @relation("directus_notifications_senderTodirectus_users")
+  directus_notifications_directus_notifications_recipientTodirectus_users directus_notifications[] @relation("directus_notifications_recipientTodirectus_users")
+  directus_operations                                                     directus_operations[]
+  directus_panels                                                         directus_panels[]
+  directus_presets                                                        directus_presets[]
+  directus_sessions                                                       directus_sessions[]
+  directus_shares                                                         directus_shares[]
+  directus_roles                                                          directus_roles?          @relation(fields: [role], references: [id], onUpdate: NoAction)
+  directus_versions_directus_versions_user_updatedTodirectus_users        directus_versions[]      @relation("directus_versions_user_updatedTodirectus_users")
+  directus_versions_directus_versions_user_createdTodirectus_users        directus_versions[]      @relation("directus_versions_user_createdTodirectus_users")
+  hadiths_hadiths_user_updatedTodirectus_users                            hadiths[]                @relation("hadiths_user_updatedTodirectus_users")
+  hadiths_hadiths_user_createdTodirectus_users                            hadiths[]                @relation("hadiths_user_createdTodirectus_users")
+  @@ignore
+}
+
+model directus_versions {
+  id                                                            String               @id
+  key                                                           String
+  name                                                          String?
+  collection                                                    String
+  item                                                          String
+  hash                                                          String?
+  date_created                                                  DateTime?            @default(now())
+  date_updated                                                  DateTime?            @default(now())
+  user_created                                                  String?
+  user_updated                                                  String?
+  directus_revisions                                            directus_revisions[]
+  directus_users_directus_versions_user_updatedTodirectus_users directus_users?      @relation("directus_versions_user_updatedTodirectus_users", fields: [user_updated], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  directus_users_directus_versions_user_createdTodirectus_users directus_users?      @relation("directus_versions_user_createdTodirectus_users", fields: [user_created], references: [id], onUpdate: NoAction)
+  directus_collections                                          directus_collections @relation(fields: [collection], references: [collection], onDelete: Cascade, onUpdate: NoAction)
+  @@ignore
+}
+
+model directus_webhooks {
+  id          Int                  @id @default(autoincrement())
+  name        String
+  method      String               @default("POST")
+  url         String
+  status      String               @default("active")
+  data        Boolean              @default(true)
+  actions     String
+  collections String
+  headers     Unsupported("json")?
+  @@ignore
+}
+
+model hadiths {
+  id                                                  Int                    @id @default(autoincrement())
+  status                                              String                 @default("draft")
+  sort                                                Int?
+  user_created                                        String?
+  date_created                                        DateTime?
+  user_updated                                        String?
+  date_updated                                        DateTime?
+  date                                                DateTime               @unique(map: "hadiths_date_unique")
+  directus_users_hadiths_user_updatedTodirectus_users directus_users?        @relation("hadiths_user_updatedTodirectus_users", fields: [user_updated], references: [id], onDelete: NoAction, onUpdate: NoAction)@ignore
+  directus_users_hadiths_user_createdTodirectus_users directus_users?        @relation("hadiths_user_createdTodirectus_users", fields: [user_created], references: [id], onDelete: NoAction, onUpdate: NoAction)@ignore
+  hadiths_translations                                hadiths_translations[]
+}
+
+model hadiths_translations {
+  id             Int        @id @default(autoincrement())
+  hadiths_id     Int?
+  languages_code String?
+  topic          String?
+  text           String?
+  hadiths        hadiths?   @relation(fields: [hadiths_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  languages      languages? @relation(fields: [languages_code], references: [code], onUpdate: NoAction)
+}
+
+model languages {
+  code                 String                 @id
+  name                 String?
+  direction            String?                @default("ltr")
+  hadiths_translations hadiths_translations[]
+}
