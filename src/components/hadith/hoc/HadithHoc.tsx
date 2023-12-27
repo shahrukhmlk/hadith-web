@@ -1,4 +1,5 @@
 import { LAST_DATE } from "@/data/HADITH_CONSTANTS"
+import clsx from "clsx"
 import HadithUI, { Hadith, Reference } from "../ui/HadithUI"
 import { sampleHadithData } from "../ui/HadithUI.mocks"
 
@@ -17,10 +18,18 @@ const HadithHoc = ({ className, date, langs }: IHadithHoc) => {
    */
   const selectedDate = date ? date : LAST_DATE
   return (
-    <div className={className}>
-      {sampleHadithData.map((hadith, index) => (
-        <HadithUI key={index} hadith={hadith} />
-      ))}
+    <div className={clsx("flex flex-col gap-4", className)}>
+      <div className="flex items-baseline gap-4">
+        <p className="w-40 text-left">111</p>
+        <h1 className="flex flex-1 justify-center">Topic</h1>
+        <p className="w-40 text-right">{selectedDate.toDateString()}</p>
+      </div>
+      <div className="flex flex-col justify-center gap-2 text-center">
+        {sampleHadithData.map((hadith, index) => (
+          <HadithUI key={index} hadith={hadith} />
+        ))}
+      </div>
+      <div></div>
     </div>
   )
 }

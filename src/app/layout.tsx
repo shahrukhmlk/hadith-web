@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" suppressHydrationWarning className={inter.variable}>
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className={"flex h-screen w-screen flex-col overflow-x-hidden"}>
         <RootProvider>
           <HomeHeader />
