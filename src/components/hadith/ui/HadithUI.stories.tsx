@@ -1,9 +1,9 @@
 import { Meta, StoryFn } from "@storybook/react"
-import { mockHadithProps } from "./Hadith.mocks"
-import HadithUI, { Hadith, IHadith } from "./HadithUI"
+import HadithUI, { IHadith } from "./HadithUI"
+import { mockHadithProps } from "./HadithUI.mocks"
 
 export default {
-  title: "Hadith/Hadith",
+  title: "Hadith/HadithUI",
   component: HadithUI,
   argTypes: {},
 } as Meta<typeof HadithUI>
