@@ -1,7 +1,7 @@
 import "../src/app/globals.css"
 import "./preview.css"
-import type { Preview } from "@storybook/react"
 import { withThemeByClassName } from "@storybook/addon-themes"
+import type { Preview } from "@storybook/react"
 import React from "react"
 
 const preview: Preview = {
@@ -16,6 +16,9 @@ const preview: Preview = {
     docs: {
       toc: true,
     },
+    nextjs: {
+      appDirectory: true,
+    },
   },
 }
 
@@ -28,7 +31,7 @@ export const decorators = [
     defaultTheme: "light",
   }),
   (Story) => (
-    <div className={"font-sans h-full w-full"}>
+    <div className={"h-full w-full font-sans"}>
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter"
