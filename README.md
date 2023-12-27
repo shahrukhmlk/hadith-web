@@ -1,3 +1,5 @@
+https://hadith.shahrukh.io
+
 # NextJS Web App Template with docker support
 
 This example contains everything needed to get NextJS and Directus development, staging and production environment up and running with Docker Compose or only Docker or without any of them.

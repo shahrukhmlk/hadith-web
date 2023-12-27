@@ -13,7 +13,7 @@ const HomeHeader: React.FC<IHomeHeader> = () => {
       <div className="flex flex-col justify-center gap-4 p-4 lg:flex-row">
         <Link href={"/"} className="flex items-center justify-center gap-2">
           <Avatar>
-            <AvatarImage src="/Shahrukh-Malik-icon.png" />
+            <AvatarImage src="/" />
             <AvatarFallback>DMF</AvatarFallback>
           </Avatar>
           <p className="text-xl font-semibold">Dar al-Malik Foundation</p>
