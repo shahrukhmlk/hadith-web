@@ -1,4 +1,6 @@
 import { LAST_DATE } from "@/data/HADITH_CONSTANTS"
+import HadithUI, { Hadith, Reference } from "../ui/HadithUI"
+import { sampleHadithData } from "../ui/HadithUI.mocks"
 
 export interface IHadithHoc {
   className?: string
@@ -14,15 +16,13 @@ const HadithHoc = ({ className, date, langs }: IHadithHoc) => {
    * > Display all hadiths using hadith component.
    */
   const selectedDate = date ? date : LAST_DATE
-  const languages = langs ? langs : ["AR", "UR", "EN"]
-  const hadiths = languages.map((lang) => {
-    return {
-      topic: `Hadith Topic in ${lang}`,
-      text: `Hadith text in ${lang}`,
-      ref: [{ book: "", hadithNum: 2123 }],
-    }
-  })
-  return <div className={className}>{JSON.stringify(hadiths)}</div>
+  return (
+    <div className={className}>
+      {sampleHadithData.map((hadith, index) => (
+        <HadithUI key={index} hadith={hadith} />
+      ))}
+    </div>
+  )
 }
 
 export default HadithHoc
