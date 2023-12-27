@@ -26,7 +26,7 @@ export class Reference {
 const HadithUI = ({ className, hadith }: IHadith) => {
   const parsedHTML = parse(
     sanitizeHtml(hadith.text, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat(["nas", "symbol"]),
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(["nas", "ramz"]),
     }),
   )
   return (
