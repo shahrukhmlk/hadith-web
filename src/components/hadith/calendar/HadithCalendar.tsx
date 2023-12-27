@@ -1,31 +1,34 @@
 "use client"
 
+import { getDateFromPath } from "@/app/[...date]/page"
 import { Calendar } from "@/components/ui/calendar"
+import { START_DATE } from "@/data/HADITH_CONSTANTS"
 import { Route } from "next"
 import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { useRef } from "react"
 import { Button, DayProps, useDayRender } from "react-day-picker"
 
 export interface IHadithCalendar {
   className?: string
-  selectedDate: Date
   lastDate: Date
 }
 
-const HadithCalendar = ({
-  className,
-  selectedDate,
-  lastDate,
-}: IHadithCalendar) => {
+const HadithCalendar = ({ className, lastDate }: IHadithCalendar) => {
+  const pathName = usePathname()
+  const patNameStripped = pathName.slice(1)
   return (
-    <Calendar
-      mode="single"
-      defaultMonth={selectedDate}
-      selected={selectedDate}
-      fromDate={new Date(2022, 0, 1)}
-      toDate={lastDate}
-      components={{ Day: DayLink }}
-    />
+    <>
+      <Calendar
+        mode="single"
+        defaultMonth={new Date()}
+        selected={getDateFromPath(patNameStripped.split("/").map(Number))}
+        fromDate={START_DATE}
+        toDate={lastDate}
+        components={{ Day: DayLink }}
+      />
+      {JSON.stringify(pathName)}
+    </>
   )
 }
 
@@ -45,7 +48,7 @@ function DayLink(props: DayProps): JSX.Element {
   return (
     <Link
       href={
-        ("/date/" +
+        ("/" +
           props.date.getFullYear() +
           "/" +
           (props.date.getMonth() + 1) +
