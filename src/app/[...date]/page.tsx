@@ -1,10 +1,10 @@
+import HadithHoc from "@/components/hadith/hoc/HadithHoc"
 import { LAST_DATE } from "@/data/HADITH_CONSTANTS"
 import { isAfter, isDate } from "date-fns"
 
 export default function Home({ params }: { params: { date: number[] } }) {
   const dateArray = params.date
-  return (
-    <div>
+  /* {<div>
       {dateArray
         ? dateArray.length === 1
           ? "Year view"
@@ -14,8 +14,8 @@ export default function Home({ params }: { params: { date: number[] } }) {
               ? getDateFromPath(dateArray).toDateString()
               : "none"
         : "none"}
-    </div>
-  )
+    </div>} */
+  return <HadithHoc date={getDateFromPath(params.date)} />
 }
 
 export function getDateFromPath(pathArray: number[]) {

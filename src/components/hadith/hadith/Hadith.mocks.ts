@@ -1,9 +1,10 @@
-import { IHadith } from "./Hadith"
+import { Hadith, IHadith, Reference } from "./HadithUI"
 
 const base: IHadith = {
   className: undefined,
-  language: "en",
-  text: "Messenger of Allah (peace be upon him said): <nas>Islam is based on (the following) five (principles)</nas>",
+  hadith: new Hadith("Topic", "AR", "Hadith text <p>in p</p>", [
+    new Reference("Sample Book Name", 46546),
+  ]),
 }
 
 export const mockHadithProps = {
