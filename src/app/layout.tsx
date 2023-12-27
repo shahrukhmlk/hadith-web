@@ -11,8 +11,8 @@ import { LAST_DATE } from "@/data/HADITH_CONSTANTS"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
-  title: "Shahrukh Malik",
-  description: "Software Developer",
+  title: "سلسة الأحاديث النبوية",
+  description: `تحت إشراف "مؤسسة دار المَلِكْ" (بريلي-الهند)`,
 }
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang="ar" suppressHydrationWarning className={inter.variable}>
       <body className={"flex h-screen w-screen flex-col overflow-x-hidden"}>
         <RootProvider>
           <HomeHeader />
