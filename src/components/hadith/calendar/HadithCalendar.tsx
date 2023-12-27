@@ -18,17 +18,14 @@ const HadithCalendar = ({ className, lastDate }: IHadithCalendar) => {
   const pathName = usePathname()
   const patNameStripped = pathName.slice(1)
   return (
-    <>
-      <Calendar
-        mode="single"
-        defaultMonth={new Date()}
-        selected={getDateFromPath(patNameStripped.split("/").map(Number))}
-        fromDate={START_DATE}
-        toDate={lastDate}
-        components={{ Day: DayLink }}
-      />
-      {JSON.stringify(pathName)}
-    </>
+    <Calendar
+      mode="single"
+      defaultMonth={new Date()}
+      selected={getDateFromPath(patNameStripped.split("/").map(Number))}
+      fromDate={START_DATE}
+      toDate={lastDate}
+      components={{ Day: DayLink }}
+    />
   )
 }
 

@@ -3,7 +3,7 @@ import BaseTemplate, { IBaseTemplate } from "./BaseTemplate"
 import { mockBaseTemplateProps } from "./BaseTemplate.mocks"
 
 export default {
-  title: "Templates/BaseTemplate",
+  title: "__parent__/BaseTemplate",
   component: BaseTemplate,
   argTypes: {},
 } as Meta<typeof BaseTemplate>
