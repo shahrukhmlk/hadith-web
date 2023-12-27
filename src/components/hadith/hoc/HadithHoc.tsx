@@ -9,7 +9,7 @@ export interface IHadithHoc {
   langs?: string[]
 }
 
-const HadithHoc = ({ className, date, langs }: IHadithHoc) => {
+const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
   /**
    * > Check if date is supplied else use latest date
    * > Check for languages else load locale default if available else default site language
@@ -17,6 +17,7 @@ const HadithHoc = ({ className, date, langs }: IHadithHoc) => {
    * > Display all hadiths using hadith component.
    */
   const selectedDate = date ? date : LAST_DATE
+  const data = await getHadith(selectedDate)
   return (
     <div className={clsx("flex flex-col gap-4", className)}>
       <div className="flex items-baseline gap-4">
@@ -33,5 +34,7 @@ const HadithHoc = ({ className, date, langs }: IHadithHoc) => {
     </div>
   )
 }
+
+async function getHadith(date: Date) {}
 
 export default HadithHoc
