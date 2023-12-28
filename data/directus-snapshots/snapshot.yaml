@@ -404,6 +404,7 @@ fields:
       interface: translations
       note: null
       options:
+        defaultLanguage: en-EN
         languageField: code
         userLanguage: true
       readonly: false
@@ -977,8 +978,9 @@ fields:
       interface: translations
       note: null
       options:
-        defaultLanguage: en
+        defaultLanguage: en-EN
         languageField: code
+        userLanguage: true
       readonly: false
       required: false
       sort: 10

@@ -14,6 +14,7 @@ COPY components.json .
 COPY tsconfig.json .
 COPY postcss.config.js .
 COPY tailwind.config.js .
+COPY prisma ./prisma
 # Copy story book
 COPY .storybook ./.storybook
 
