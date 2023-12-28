@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "sqlite"
   url      = "file:../data/database/data.db"
@@ -17,6 +18,7 @@ model books {
   directus_users_books_user_updatedTodirectus_users directus_users?      @relation("books_user_updatedTodirectus_users", fields: [user_updated], references: [id], onDelete: NoAction, onUpdate: NoAction)
   directus_users_books_user_createdTodirectus_users directus_users?      @relation("books_user_createdTodirectus_users", fields: [user_created], references: [id], onDelete: NoAction, onUpdate: NoAction)
   books_translations                                books_translations[]
+  hadiths_books                                     hadiths_books[]
 }
 
 model books_translations {
@@ -457,9 +459,20 @@ model hadiths {
   user_updated                                        String?
   date_updated                                        DateTime?
   date                                                DateTime               @unique(map: "hadiths_date_unique")
+  number                                              Int?
   directus_users_hadiths_user_updatedTodirectus_users directus_users?        @relation("hadiths_user_updatedTodirectus_users", fields: [user_updated], references: [id], onDelete: NoAction, onUpdate: NoAction)
   directus_users_hadiths_user_createdTodirectus_users directus_users?        @relation("hadiths_user_createdTodirectus_users", fields: [user_created], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  hadiths_books                                       hadiths_books[]
   hadiths_translations                                hadiths_translations[]
+}
+
+model hadiths_books {
+  id         Int      @id @default(autoincrement())
+  hadiths_id Int?
+  books_id   Int?
+  hadith_num Int?
+  hadiths    hadiths? @relation(fields: [hadiths_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  books      books?   @relation(fields: [books_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model hadiths_translations {

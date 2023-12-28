@@ -10,9 +10,11 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate": "node src/components/templates/generate.js"
+    "generate": "node src/components/templates/generate.js",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
+    "@directus/sdk": "^14.0.0",
     "@prisma/client": "^5.7.1",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-navigation-menu": "^1.1.4",
