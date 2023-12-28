@@ -4,6 +4,7 @@ services:
     image: postgis/postgis:13-master
     # Required when running on platform other than amd64, like Apple M1/M2:
     # platform: linux/amd64
+    restart: always
     ports:
       - 5432:5432
     volumes:
@@ -12,11 +13,13 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+
   cache:
     image: redis:6
 
