@@ -1,4 +1,27 @@
 -- CreateTable
+CREATE TABLE "books" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "status" TEXT NOT NULL DEFAULT 'draft',
+    "sort" INTEGER,
+    "user_created" TEXT,
+    "date_created" DATETIME,
+    "user_updated" TEXT,
+    "date_updated" DATETIME,
+    CONSTRAINT "books_user_updated_fkey" FOREIGN KEY ("user_updated") REFERENCES "directus_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT "books_user_created_fkey" FOREIGN KEY ("user_created") REFERENCES "directus_users" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+-- CreateTable
+CREATE TABLE "books_translations" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "books_id" INTEGER,
+    "languages_code" TEXT,
+    "name" TEXT,
+    CONSTRAINT "books_translations_books_id_fkey" FOREIGN KEY ("books_id") REFERENCES "books" ("id") ON DELETE SET NULL ON UPDATE NO ACTION,
+    CONSTRAINT "books_translations_languages_code_fkey" FOREIGN KEY ("languages_code") REFERENCES "languages" ("code") ON DELETE SET NULL ON UPDATE NO ACTION
+);
+
+-- CreateTable
 CREATE TABLE "directus_activity" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "action" TEXT NOT NULL,
