@@ -58,9 +58,15 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
+    env_file:
+      - .env
     depends_on:
       - directus
     restart: always
     ports:
+      # Next dev server
       - 3000:3000
+      # Storybook
       - 6006:6006
+      # Prisma data studio
+      - 8080:8080

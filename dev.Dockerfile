@@ -27,3 +27,4 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # Start Next.js in development mode and generate prisma client from schema
 CMD npm run prisma:generate && npm run dev
+# CMD npm run dev
