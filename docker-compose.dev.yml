@@ -70,4 +70,4 @@ services:
       # Storybook
       - 6006:6006
       # Prisma data studio
-      - 8080:8080
+      - 5555:5555
