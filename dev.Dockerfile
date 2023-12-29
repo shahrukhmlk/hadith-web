@@ -10,7 +10,6 @@ COPY src ./src
 COPY public ./public
 COPY next.config.js .
 COPY .eslintrc.json .
-COPY components.json .
 COPY tsconfig.json .
 COPY postcss.config.js .
 COPY tailwind.config.js .
@@ -26,5 +25,5 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # Note: Don't expose ports here, Compose will handle that for us
 
 # Start Next.js in development mode and generate prisma client from schema
-CMD npm run prisma:generate && npm run dev
+CMD npm run prisma:pull && npm run prisma:generate && npm run dev
 # CMD npm run dev

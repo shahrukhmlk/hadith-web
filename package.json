@@ -11,7 +11,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "generate": "node src/components/templates/generate.js",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:pull": "prisma db pull"
   },
   "dependencies": {
     "@directus/sdk": "^14.0.0",
