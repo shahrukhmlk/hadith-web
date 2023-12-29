@@ -511,7 +511,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations: null
@@ -526,7 +526,7 @@ fields:
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -859,7 +859,7 @@ fields:
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1085,7 +1085,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 3
       special: null
       translations: null
@@ -1100,7 +1100,7 @@ fields:
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1138,7 +1138,7 @@ fields:
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1161,7 +1161,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations: null
@@ -1176,7 +1176,7 @@ fields:
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1237,7 +1237,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations: null
@@ -1252,7 +1252,7 @@ fields:
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1366,7 +1366,7 @@ fields:
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1476,7 +1476,7 @@ fields:
           - text: $t:right_to_left
             value: rtl
       readonly: false
-      required: false
+      required: true
       sort: 3
       special: null
       translations: null
@@ -1491,7 +1491,7 @@ fields:
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1514,7 +1514,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations: null
@@ -1529,7 +1529,7 @@ fields:
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1590,7 +1590,7 @@ relations:
       one_allowed_collections: null
       one_collection: books
       one_collection_field: null
-      one_deselect_action: nullify
+      one_deselect_action: delete
       one_field: translations
       sort_field: null
     schema:
@@ -1600,7 +1600,7 @@ relations:
       foreign_key_column: id
       constraint_name: books_translations_books_id_foreign
       on_update: NO ACTION
-      on_delete: SET NULL
+      on_delete: CASCADE
   - collection: books_translations
     field: languages_code
     related_collection: languages
@@ -1726,7 +1726,7 @@ relations:
       foreign_key_column: id
       constraint_name: hadiths_translations_hadiths_id_foreign
       on_update: NO ACTION
-      on_delete: SET NULL
+      on_delete: CASCADE
   - collection: hadiths_translations
     field: languages_code
     related_collection: languages
