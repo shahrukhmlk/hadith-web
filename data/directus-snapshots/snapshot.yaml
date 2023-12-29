@@ -1,6 +1,6 @@
 version: 1
 directus: 10.8.3
-vendor: sqlite
+vendor: postgres
 collections:
   - collection: books
     meta:
@@ -175,7 +175,7 @@ fields:
     schema:
       name: date_created
       table: books
-      data_type: datetime
+      data_type: timestamp with time zone
       default_value: null
       max_length: null
       numeric_precision: null
@@ -216,7 +216,7 @@ fields:
     schema:
       name: date_updated
       table: books
-      data_type: datetime
+      data_type: timestamp with time zone
       default_value: null
       max_length: null
       numeric_precision: null
@@ -278,12 +278,12 @@ fields:
       name: id
       table: books
       data_type: integer
-      default_value: null
+      default_value: nextval('books_id_seq'::regclass)
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: false
-      is_unique: false
+      is_unique: true
       is_primary_key: true
       is_generated: false
       generation_expression: null
@@ -318,8 +318,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -364,7 +364,7 @@ fields:
           - text: $t:archived
             value: archived
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations: null
@@ -374,7 +374,7 @@ fields:
     schema:
       name: status
       table: books
-      data_type: varchar
+      data_type: character varying
       default_value: draft
       max_length: 255
       numeric_precision: null
@@ -408,7 +408,7 @@ fields:
         languageField: code
         userLanguage: true
       readonly: false
-      required: false
+      required: true
       sort: 8
       special:
         - translations
@@ -418,7 +418,7 @@ fields:
       width: full
   - collection: books
     field: user_created
-    type: string
+    type: uuid
     meta:
       collection: books
       conditions: null
@@ -443,9 +443,9 @@ fields:
     schema:
       name: user_created
       table: books
-      data_type: char
+      data_type: uuid
       default_value: null
-      max_length: 36
+      max_length: null
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -458,7 +458,7 @@ fields:
       foreign_key_column: id
   - collection: books
     field: user_updated
-    type: string
+    type: uuid
     meta:
       collection: books
       conditions: null
@@ -483,9 +483,9 @@ fields:
     schema:
       name: user_updated
       table: books
-      data_type: char
+      data_type: uuid
       default_value: null
-      max_length: 36
+      max_length: null
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -524,8 +524,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -560,12 +560,12 @@ fields:
       name: id
       table: books_translations
       data_type: integer
-      default_value: null
+      default_value: nextval('books_translations_id_seq'::regclass)
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: false
-      is_unique: false
+      is_unique: true
       is_primary_key: true
       is_generated: false
       generation_expression: null
@@ -587,7 +587,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 3
       special: null
       translations: null
@@ -597,12 +597,12 @@ fields:
     schema:
       name: languages_code
       table: books_translations
-      data_type: varchar
+      data_type: character varying
       default_value: null
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -625,7 +625,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 4
       special: null
       translations: null
@@ -640,7 +640,7 @@ fields:
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -737,7 +737,7 @@ fields:
     schema:
       name: date_created
       table: hadiths
-      data_type: datetime
+      data_type: timestamp with time zone
       default_value: null
       max_length: null
       numeric_precision: null
@@ -778,7 +778,7 @@ fields:
     schema:
       name: date_updated
       table: hadiths
-      data_type: datetime
+      data_type: timestamp with time zone
       default_value: null
       max_length: null
       numeric_precision: null
@@ -817,12 +817,12 @@ fields:
       name: id
       table: hadiths
       data_type: integer
-      default_value: null
+      default_value: nextval('hadiths_id_seq'::regclass)
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: false
-      is_unique: false
+      is_unique: true
       is_primary_key: true
       is_generated: false
       generation_expression: null
@@ -857,8 +857,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -895,8 +895,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -941,7 +941,7 @@ fields:
           - text: $t:archived
             value: archived
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations: null
@@ -951,7 +951,7 @@ fields:
     schema:
       name: status
       table: hadiths
-      data_type: varchar
+      data_type: character varying
       default_value: draft
       max_length: 255
       numeric_precision: null
@@ -982,7 +982,7 @@ fields:
         languageField: code
         userLanguage: true
       readonly: false
-      required: false
+      required: true
       sort: 10
       special:
         - translations
@@ -992,7 +992,7 @@ fields:
       width: full
   - collection: hadiths
     field: user_created
-    type: string
+    type: uuid
     meta:
       collection: hadiths
       conditions: null
@@ -1017,9 +1017,9 @@ fields:
     schema:
       name: user_created
       table: hadiths
-      data_type: char
+      data_type: uuid
       default_value: null
-      max_length: 36
+      max_length: null
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -1032,7 +1032,7 @@ fields:
       foreign_key_column: id
   - collection: hadiths
     field: user_updated
-    type: string
+    type: uuid
     meta:
       collection: hadiths
       conditions: null
@@ -1057,9 +1057,9 @@ fields:
     schema:
       name: user_updated
       table: hadiths
-      data_type: char
+      data_type: uuid
       default_value: null
-      max_length: 36
+      max_length: null
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -1098,8 +1098,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -1136,8 +1136,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -1174,8 +1174,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -1210,12 +1210,12 @@ fields:
       name: id
       table: hadiths_books
       data_type: integer
-      default_value: null
+      default_value: nextval('hadiths_books_id_seq'::regclass)
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: false
-      is_unique: false
+      is_unique: true
       is_primary_key: true
       is_generated: false
       generation_expression: null
@@ -1250,8 +1250,8 @@ fields:
       data_type: integer
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -1286,12 +1286,12 @@ fields:
       name: id
       table: hadiths_translations
       data_type: integer
-      default_value: null
+      default_value: nextval('hadiths_translations_id_seq'::regclass)
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: false
-      is_unique: false
+      is_unique: true
       is_primary_key: true
       is_generated: false
       generation_expression: null
@@ -1313,7 +1313,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 3
       special: null
       translations: null
@@ -1323,12 +1323,12 @@ fields:
     schema:
       name: languages_code
       table: hadiths_translations
-      data_type: varchar
+      data_type: character varying
       default_value: null
       max_length: 255
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1389,7 +1389,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 4
       special: null
       translations: null
@@ -1404,7 +1404,7 @@ fields:
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -1437,7 +1437,7 @@ fields:
     schema:
       name: code
       table: languages
-      data_type: varchar
+      data_type: character varying
       default_value: null
       max_length: 255
       numeric_precision: null
@@ -1486,7 +1486,7 @@ fields:
     schema:
       name: direction
       table: languages
-      data_type: varchar
+      data_type: character varying
       default_value: ltr
       max_length: 255
       numeric_precision: null
@@ -1524,7 +1524,7 @@ fields:
     schema:
       name: name
       table: languages
-      data_type: varchar
+      data_type: character varying
       default_value: null
       max_length: 255
       numeric_precision: null
@@ -1556,7 +1556,7 @@ relations:
       column: user_created
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: books_user_created_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: books
@@ -1577,7 +1577,7 @@ relations:
       column: user_updated
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: books_user_updated_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: books_translations
@@ -1598,7 +1598,7 @@ relations:
       column: books_id
       foreign_key_table: books
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: books_translations_books_id_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: books_translations
@@ -1619,9 +1619,9 @@ relations:
       column: languages_code
       foreign_key_table: languages
       foreign_key_column: code
-      constraint_name: null
+      constraint_name: books_translations_languages_code_foreign
       on_update: NO ACTION
-      on_delete: SET NULL
+      on_delete: NO ACTION
   - collection: hadiths
     field: user_created
     related_collection: directus_users
@@ -1640,7 +1640,7 @@ relations:
       column: user_created
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: hadiths_user_created_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: hadiths
@@ -1661,7 +1661,7 @@ relations:
       column: user_updated
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: hadiths_user_updated_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: hadiths_books
@@ -1682,7 +1682,7 @@ relations:
       column: books_id
       foreign_key_table: books
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: hadiths_books_books_id_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: hadiths_books
@@ -1703,7 +1703,7 @@ relations:
       column: hadiths_id
       foreign_key_table: hadiths
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: hadiths_books_hadiths_id_foreign
       on_update: NO ACTION
       on_delete: CASCADE
   - collection: hadiths_translations
@@ -1724,9 +1724,9 @@ relations:
       column: hadiths_id
       foreign_key_table: hadiths
       foreign_key_column: id
-      constraint_name: null
+      constraint_name: hadiths_translations_hadiths_id_foreign
       on_update: NO ACTION
-      on_delete: CASCADE
+      on_delete: SET NULL
   - collection: hadiths_translations
     field: languages_code
     related_collection: languages
@@ -1745,6 +1745,6 @@ relations:
       column: languages_code
       foreign_key_table: languages
       foreign_key_column: code
-      constraint_name: null
+      constraint_name: hadiths_translations_languages_code_foreign
       on_update: NO ACTION
-      on_delete: SET NULL
+      on_delete: NO ACTION
