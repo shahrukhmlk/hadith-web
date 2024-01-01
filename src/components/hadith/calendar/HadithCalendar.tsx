@@ -58,7 +58,7 @@ function DayLink(props: DayProps): JSX.Element {
           "/" +
           props.date.getDate() +
           "?" +
-          useSearchParams()) as Route
+          useSearchParams().toString()) as Route
       }
     >
       <Button name="day" ref={buttonRef} {...dayRender.buttonProps} />

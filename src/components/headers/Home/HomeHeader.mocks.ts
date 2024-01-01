@@ -1,7 +1,7 @@
 import { IHomeHeader } from "./HomeHeader"
 
 const base: IHomeHeader = {
-  sampleTextProp: "Hello world!",
+  languages: [{ code: "ar", name: "Arabic", rtl: true }],
 }
 
 export const mockHomeHeaderProps = {

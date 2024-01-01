@@ -7,6 +7,7 @@ import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
+import { getLanguages } from "@/data/hadith/languages"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -22,11 +23,12 @@ export default async function RootLayout({
 }) {
   const startDate = await getStartDate()
   const lastDate = await getLastDate()
+  const languages = await getLanguages()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className={"flex h-screen w-screen flex-col overflow-x-hidden"}>
         <RootProvider>
-          <HomeHeader />
+          <HomeHeader languages={languages} />
           <div className="flex w-full flex-1 flex-col justify-center lg:flex-row">
             <div className="lg:order-3 lg:flex-1">{children}</div>
             <div className="flex flex-col p-4 lg:order-1">
