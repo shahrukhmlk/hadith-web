@@ -6,7 +6,7 @@ import "./globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
-import { LAST_DATE } from "@/data/HADITH_CONSTANTS"
+import { getLastDate, getStartDate } from "@/data/hadith/dates"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -15,11 +15,13 @@ export const metadata: Metadata = {
   description: `تحت إشراف "مؤسسة دار المَلِكْ" (بريلي-الهند)`,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const startDate = await getStartDate()
+  const lastDate = await getLastDate()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className={"flex h-screen w-screen flex-col overflow-x-hidden"}>
@@ -30,7 +32,7 @@ export default function RootLayout({
               {children}
             </div>
             <div className="flex flex-col p-4 lg:order-1">
-              <HadithCalendar lastDate={LAST_DATE} />
+              <HadithCalendar startDate={startDate} lastDate={lastDate} />
             </div>
             <Separator
               orientation={"vertical"}

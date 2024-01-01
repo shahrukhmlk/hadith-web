@@ -1,7 +1,6 @@
 "use client"
 
 import { Calendar } from "@/components/ui/calendar"
-import { START_DATE } from "@/data/HADITH_CONSTANTS"
 import { getDateFromPath } from "@/lib/utils"
 import { Route } from "next"
 import Link from "next/link"
@@ -11,18 +10,25 @@ import { Button, DayProps, useDayRender } from "react-day-picker"
 
 export interface IHadithCalendar {
   className?: string
-  lastDate: Date
+  startDate?: Date
+  lastDate?: Date
 }
 
-const HadithCalendar = ({ className, lastDate }: IHadithCalendar) => {
+const HadithCalendar = ({
+  className,
+  startDate,
+  lastDate,
+}: IHadithCalendar) => {
   const pathName = usePathname()
   const patNameStripped = pathName.slice(1)
+  const selectedDate =
+    getDateFromPath(patNameStripped.split("/").map(Number)) || lastDate
   return (
     <Calendar
       mode="single"
-      defaultMonth={new Date()}
-      selected={getDateFromPath(patNameStripped.split("/").map(Number))}
-      fromDate={START_DATE}
+      defaultMonth={selectedDate}
+      selected={selectedDate}
+      fromDate={startDate}
       toDate={lastDate}
       components={{ Day: DayLink }}
     />

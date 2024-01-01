@@ -25,5 +25,5 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # Note: Don't expose ports here, Compose will handle that for us
 
 # Start Next.js in development mode and generate prisma client from schema
-CMD npm run prisma:pull && npm run prisma:generate && npm run dev
+CMD npm run prisma:pull && npm run prisma:generate && npm run dev-sb
 # CMD npm run dev
