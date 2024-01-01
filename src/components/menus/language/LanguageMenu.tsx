@@ -55,9 +55,8 @@ const LanguageMenu = ({ className, languages }: ILanguageMenu) => {
               {languages.map((language, index) => {
                 const enabled = langCodes?.includes(language.code)
                 return (
-                  <li>
+                  <li key={index}>
                     <Link
-                      key={index}
                       href={pathname + "?" + addLanguage(language.code)}
                       legacyBehavior
                       passHref
