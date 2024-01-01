@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Route } from "next"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
 export interface IMainMenu {
   className?: string
@@ -16,7 +16,9 @@ export interface IMainMenu {
 
 const MainMenu = ({ className }: IMainMenu) => {
   const pathName = usePathname()
-  const menuItems = [{ path: "/", text: "Home" }]
+  const menuItems = [
+    { path: "/?" + useSearchParams().toString(), text: "Home" },
+  ]
   const menuItemsUI = menuItems.map((item, index) => (
     <NavigationMenuItem key={index}>
       <Link href={item.path as Route} legacyBehavior passHref>

@@ -1,1 +1,1 @@
-export const DEFAULT_LANGUAGE = "ar-AR"
+export const DEFAULT_LANGUAGE = "ar"

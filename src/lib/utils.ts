@@ -12,3 +12,7 @@ export function getDateFromPath(pathArray: number[]) {
       : undefined
   return selectedDate
 }
+
+export const getLangArrayFromURL = (param: string | string[] | undefined) => {
+  return param ? (Array.isArray(param) ? param : param.split(",")) : undefined
+}
