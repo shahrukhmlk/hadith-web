@@ -14,16 +14,18 @@ export interface IHomeHeader {
 
 const HomeHeader = ({ languages }: IHomeHeader) => {
   return (
-    <header className="w-full bg-background backdrop-blur">
-      <div className="flex flex-col justify-center gap-4 p-4 lg:flex-row">
+    <header className="fixed z-10 h-16 w-full backdrop-blur">
+      <div className="flex h-full flex-row flex-wrap justify-center gap-y-1 p-2">
         <Link href={"/"} className="flex items-center justify-center gap-2">
           <Avatar>
             <AvatarImage src="/" />
             <AvatarFallback>DMF</AvatarFallback>
           </Avatar>
-          <p className="text-xl font-semibold">Dar al-Malik Foundation</p>
+          <p className="hidden text-xl font-semibold md:block">
+            Dar al-Malik Foundation
+          </p>
         </Link>
-        <div className="flex justify-center lg:ms-4 lg:flex-1 lg:justify-normal">
+        <div className="flex flex-1 md:ms-4">
           <MainMenu />
         </div>
         <div className="flex justify-center ">
