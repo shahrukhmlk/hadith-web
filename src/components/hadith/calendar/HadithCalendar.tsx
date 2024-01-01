@@ -4,7 +4,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { getDateFromPath } from "@/lib/utils"
 import { Route } from "next"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { useRef } from "react"
 import { Button, DayProps, useDayRender } from "react-day-picker"
 
@@ -56,7 +56,9 @@ function DayLink(props: DayProps): JSX.Element {
           "/" +
           (props.date.getMonth() + 1) +
           "/" +
-          props.date.getDate()) as Route
+          props.date.getDate() +
+          "?" +
+          useSearchParams()) as Route
       }
     >
       <Button name="day" ref={buttonRef} {...dayRender.buttonProps} />

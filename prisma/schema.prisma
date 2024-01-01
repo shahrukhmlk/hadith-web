@@ -489,6 +489,7 @@ model languages {
   code                 String                 @id @db.VarChar(255)
   direction            String                 @default("ltr") @db.VarChar(255)
   name                 String                 @db.VarChar(255)
+  sort                 Int?
   books_translations   books_translations[]
   hadiths_translations hadiths_translations[]
 }

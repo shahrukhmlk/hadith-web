@@ -1,3 +1,4 @@
+import { getFont } from "@/lib/fonts"
 import clsx from "clsx"
 import parse from "html-react-parser"
 import sanitizeHtml from "sanitize-html"
@@ -7,6 +8,7 @@ export interface IHadith {
   className?: string
   num: number
   topic: string
+  date: Date
   lang: string
   text: string
   books: IBook[]
@@ -24,12 +26,28 @@ const HadithUI = (props: IHadith) => {
     }),
   )
   return (
-    <div className={clsx(props.className, styles.hadith)} lang={props.lang}>
+    <div
+      className={clsx(
+        styles.hadith,
+        getFont(props.lang)?.variable,
+        props.className,
+      )}
+      lang={props.lang}
+    >
+      <div className="flex items-baseline gap-4">
+        <p className="w-40 text-start">
+          {props.num.toLocaleString(props.lang)}
+        </p>
+        <h1 className="flex flex-1 justify-center">{props.topic}</h1>
+        <p className="w-40 text-end">
+          {new Intl.DateTimeFormat(props.lang).format(props.date)}
+        </p>
+      </div>
       <div>{parsedHTML}</div>
       {props.books.map((book, index) => {
         return (
           <span key={index}>
-            {book.name}: {book.hadithNum}
+            {book.name}: {book.hadithNum.toLocaleString(props.lang)}
           </span>
         )
       })}
