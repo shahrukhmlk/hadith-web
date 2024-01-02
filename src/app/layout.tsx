@@ -26,10 +26,10 @@ export default async function RootLayout({
   const languages = await getLanguages()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className={"flex h-screen w-screen flex-col"}>
+      <body className={"flex h-screen w-full flex-col"}>
         <RootProvider>
           <HomeHeader languages={languages} />
-          <div className="flex w-full flex-1 flex-col justify-center pt-16 md:flex-row">
+          <div className="flex w-full flex-1 flex-col justify-center pb-11 pt-16 md:flex-row">
             <div className="md:order-3 md:flex-1">{children}</div>
             <div className="flex flex-col p-4 md:order-1">
               <HadithCalendar startDate={startDate} lastDate={lastDate} />
@@ -39,7 +39,7 @@ export default async function RootLayout({
               className="hidden md:order-2 md:block"
             />
           </div>
-          <ThemeSwitchUtility className="absolute bottom-4 right-4" />
+          <ThemeSwitchUtility className="fixed bottom-4 right-4" />
         </RootProvider>
       </body>
     </html>
