@@ -5,11 +5,20 @@
   &:lang(ar),
   &:lang(ur) {
     direction: rtl;
+    p {
+      @apply text-xl;
+    }
+    strong {
+      @apply font-normal leading-loose;
+    }
   }
   &:lang(ar) {
     @apply font-arabic;
   }
   &:lang(ur) {
-    @apply font-urdu;
+    @apply font-urdu leading-loose;
+  }
+  strong {
+    @apply text-4xl;
   }
 }

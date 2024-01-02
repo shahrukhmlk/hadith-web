@@ -1,16 +1,17 @@
 "use client"
-import { useState, useEffect } from "react"
-import { useTheme } from "next-themes"
-import { Moon, Sun, SunMoon } from "lucide-react"
+
+import { Card } from "@/components/ui/card"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import clsx from "clsx"
+import { Moon, Sun, SunMoon } from "lucide-react"
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
 
 export interface IThemeSwitchUtility {
   className?: string
 }
 
-const ThemeSwitchUtility: React.FC<IThemeSwitchUtility> = ({
-  className: className,
-}) => {
+const ThemeSwitchUtility = ({ className: className }: IThemeSwitchUtility) => {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
@@ -24,22 +25,19 @@ const ThemeSwitchUtility: React.FC<IThemeSwitchUtility> = ({
   }
 
   return (
-    <ToggleGroup
-      type="single"
-      value={theme}
-      onValueChange={setTheme}
-      className={className}
-    >
-      <ToggleGroupItem value="light">
-        <Sun />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="dark">
-        <Moon />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="system">
-        <SunMoon />
-      </ToggleGroupItem>
-    </ToggleGroup>
+    <Card className={clsx(className, "bg-transparent backdrop-blur")}>
+      <ToggleGroup type="single" value={theme} onValueChange={setTheme}>
+        <ToggleGroupItem value="light">
+          <Sun />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="dark">
+          <Moon />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="system">
+          <SunMoon />
+        </ToggleGroupItem>
+      </ToggleGroup>
+    </Card>
   )
 }
 

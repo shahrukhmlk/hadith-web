@@ -1,16 +1,17 @@
-import { Noto_Nastaliq_Urdu } from "next/font/google"
+import { Gulzar } from "next/font/google"
 
 export const getFont = (language: string) => {
   switch (language) {
     case "ur":
-      return nastaliq
+      return urdu_nastaliq
 
     default:
       break
   }
 }
 
-const nastaliq = Noto_Nastaliq_Urdu({
+const urdu_nastaliq = Gulzar({
+  weight: "400",
   subsets: ["arabic"],
   variable: "--font-urdu",
 })
