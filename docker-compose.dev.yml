@@ -9,11 +9,9 @@ services:
       - 5432:5432
     volumes:
       - ./data/database:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-
+    env_file:
+      - .env
+      - .env.local
   cache:
     image: redis:6
 
@@ -31,20 +29,10 @@ services:
     depends_on:
       - cache
       - database
+    env_file:
+      - .env
+      - .env.local
     environment:
-      DB_CLIENT: "pg"
-      # DB_FILENAME: "/directus/database/data.db"
-      DB_HOST: "database"
-      DB_PORT: "5432"
-      DB_DATABASE: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-
-      KEY: "sdfgasdkgfsdglfgdsakfgkjdsgfjlksdkj"
-      SECRET: "efkhkwehfkjhwekjhfkjwehfkjhewkfwek"
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
-
       # WEBSOCKETS_ENABLED: true
       CACHE_ENABLED: "true"
       CACHE_STORE: "redis"
@@ -61,6 +49,7 @@ services:
       - ./prisma:/app/prisma
     env_file:
       - .env
+      - .env.local
     depends_on:
       - directus
     restart: always

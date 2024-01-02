@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL")
 }
 
 model books {
@@ -488,8 +488,8 @@ model hadiths_translations {
 model languages {
   code                 String                 @id @db.VarChar(255)
   name                 String                 @db.VarChar(255)
-  sort                 Int?
   rtl                  Boolean                @default(false)
+  sort                 Int?
   books_translations   books_translations[]
   hadiths_translations hadiths_translations[]
 }
