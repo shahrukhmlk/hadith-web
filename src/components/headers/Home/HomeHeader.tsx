@@ -2,6 +2,7 @@ import LanguageMenu, {
   ILanguage,
 } from "@/components/menus/language/LanguageMenu"
 import MainMenu from "@/components/menus/main/MainMenu"
+import ProfileMenu from "@/components/menus/profile/ProfileMenu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -28,8 +29,9 @@ const HomeHeader = ({ languages }: IHomeHeader) => {
         <div className="flex flex-1 md:ms-4">
           <MainMenu />
         </div>
-        <div className="flex justify-center ">
+        <div className="flex items-center justify-center gap-1 ">
           <LanguageMenu languages={languages} />
+          <ProfileMenu />
         </div>
       </div>
       <Separator asChild>

@@ -62,7 +62,6 @@ const HadithUI = (props: IHadith) => {
         </CardDescription>
       </CardHeader>
       <CardContent
-        contentEditable="plaintext-only"
         className={clsx("flex flex-1 flex-col justify-center text-center")}
       >
         {parsedHTML}

@@ -401,6 +401,7 @@ model directus_users {
   theme_light                                                             String?                  @db.VarChar(255)
   theme_light_overrides                                                   Json?                    @db.Json
   theme_dark_overrides                                                    Json?                    @db.Json
+  username                                                                String                   @unique(map: "directus_users_username_unique") @db.VarChar(255)
   books_books_user_createdTodirectus_users                                books[]                  @relation("books_user_createdTodirectus_users")
   books_books_user_updatedTodirectus_users                                books[]                  @relation("books_user_updatedTodirectus_users")
   directus_dashboards                                                     directus_dashboards[]
