@@ -1,4 +1,10 @@
 .hadith {
+  p {
+    @apply text-xl;
+  }
+  nas {
+    @apply text-3xl font-semibold;
+  }
   &:lang(en) {
     direction: ltr;
   }
@@ -6,19 +12,13 @@
   &:lang(ur) {
     direction: rtl;
     p {
-      @apply text-xl;
-    }
-    strong {
-      @apply font-normal leading-loose;
+      @apply leading-[3.5rem];
     }
   }
   &:lang(ar) {
     @apply font-arabic;
   }
   &:lang(ur) {
-    @apply font-urdu leading-loose;
-  }
-  strong {
-    @apply text-4xl;
+    @apply font-urdu;
   }
 }
