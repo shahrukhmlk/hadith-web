@@ -51,7 +51,7 @@ function DayLink(props: DayProps): JSX.Element {
   return (
     <Link
       href={
-        ("/" +
+        ("/date/" +
           props.date.getFullYear() +
           "/" +
           (props.date.getMonth() + 1) +
