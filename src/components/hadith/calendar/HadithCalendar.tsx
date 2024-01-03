@@ -2,9 +2,10 @@
 
 import { Calendar } from "@/components/ui/calendar"
 import { getDateFromPath } from "@/lib/utils"
+import { format } from "date-fns"
 import { Route } from "next"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useRef } from "react"
 import { Button, DayProps, useDayRender } from "react-day-picker"
 
@@ -19,10 +20,8 @@ const HadithCalendar = ({
   startDate,
   lastDate,
 }: IHadithCalendar) => {
-  const pathName = usePathname()
-  const patNameStripped = pathName.slice(1)
-  const selectedDate =
-    getDateFromPath(patNameStripped.split("/").map(Number)) || lastDate
+  const pathname = usePathname()
+  const selectedDate = getDateFromPath(pathname) || lastDate
   return (
     <Calendar
       mode="single"
@@ -38,6 +37,7 @@ const HadithCalendar = ({
 function DayLink(props: DayProps): JSX.Element {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const dayRender = useDayRender(props.date, props.displayMonth, buttonRef)
+  const searchParams = useSearchParams()
 
   if (dayRender.isHidden) {
     return <div role="gridcell"></div>
@@ -52,13 +52,8 @@ function DayLink(props: DayProps): JSX.Element {
     <Link
       href={
         ("/date/" +
-          props.date.getFullYear() +
-          "/" +
-          (props.date.getMonth() + 1) +
-          "/" +
-          props.date.getDate() +
-          "?" +
-          useSearchParams().toString()) as Route
+          format(props.date, "dd-MM-yyy") +
+          (searchParams.size ? "?" + searchParams.toString() : "")) as Route
       }
     >
       <Button name="day" ref={buttonRef} {...dayRender.buttonProps} />
