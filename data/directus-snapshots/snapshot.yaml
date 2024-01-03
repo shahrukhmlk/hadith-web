@@ -20,7 +20,7 @@ collections:
       preview_url: null
       singleton: false
       sort: null
-      sort_field: null
+      sort_field: sort
       translations: null
       unarchive_value: draft
       versioning: false
@@ -140,7 +140,7 @@ collections:
       preview_url: null
       singleton: false
       sort: null
-      sort_field: sort
+      sort_field: null
       translations: null
       unarchive_value: null
       versioning: false
@@ -642,6 +642,46 @@ fields:
       numeric_scale: null
       is_nullable: false
       is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: directus_users
+    field: username
+    type: string
+    meta:
+      collection: directus_users
+      conditions: null
+      display: formatted-value
+      display_options: null
+      field: username
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        slug: true
+        trim: true
+      readonly: true
+      required: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: username
+      table: directus_users
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
       is_primary_key: false
       is_generated: false
       generation_expression: null
@@ -1349,7 +1389,18 @@ fields:
       hidden: false
       interface: input-rich-text-html
       note: null
-      options: null
+      options:
+        customFormats: null
+        toolbar:
+          - code
+          - copy
+          - cut
+          - fullscreen
+          - paste
+          - redo
+          - removeformat
+          - selectall
+          - undo
       readonly: false
       required: true
       sort: 5
@@ -1501,7 +1552,8 @@ fields:
       hidden: false
       interface: boolean
       note: null
-      options: null
+      options:
+        label: 'True'
       readonly: false
       required: true
       sort: 3

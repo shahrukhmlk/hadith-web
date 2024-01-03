@@ -1,0 +1,47 @@
+version: "3"
+services:
+  cache:
+    image: redis:6
+
+  directus:
+    image: directus/directus:10.8.3
+    ports:
+      - 8055:8055
+    restart: always
+    volumes:
+      - ./data/uploads:/directus/uploads
+      - ./data/directus-snapshots:/directus/snapshots
+      - ./data/directus-extensions:/directus/extensions
+    depends_on:
+      - cache
+    env_file:
+      - .env
+      - .env.vercel
+    environment:
+      # WEBSOCKETS_ENABLED: true
+      CACHE_ENABLED: "true"
+      CACHE_STORE: "redis"
+      REDIS: "redis://cache:6379"
+
+  nextjs:
+    container_name: nextjs
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./prisma:/app/prisma
+    env_file:
+      - .env
+      - .env.vercel
+    depends_on:
+      - directus
+    restart: always
+    ports:
+      # Next dev server
+      - 3000:3000
+      # Storybook
+      - 6006:6006
+      # Prisma data studio
+      - 5555:5555
