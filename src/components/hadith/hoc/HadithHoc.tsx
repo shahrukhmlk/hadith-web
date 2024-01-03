@@ -1,6 +1,8 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { getLastDate } from "@/data/hadith/dates"
 import { getHadiths } from "@/data/hadith/hadith"
 import clsx from "clsx"
+import { getServerSession } from "next-auth"
 import HadithUI, { IHadith } from "../ui/HadithUI"
 
 export interface IHadithHoc {
@@ -16,7 +18,8 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
    * > Load hadith for that day and languages from database
    * > Display all hadiths using hadith component.
    */
-  const lastDate = await getLastDate()
+  const session = await getServerSession(authOptions)
+  const lastDate = !session ? await getLastDate() : undefined
   const selectedDate = date || lastDate
   let hadiths = new Array<IHadith>()
   if (selectedDate) {

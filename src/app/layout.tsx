@@ -1,6 +1,8 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import HomeHeader from "@/components/headers/Home/HomeHeader"
 import RootProvider from "@/providers/RootProvider"
 import type { Metadata } from "next"
+import { getServerSession } from "next-auth"
 import { Inter, Noto_Nastaliq_Urdu } from "next/font/google"
 import "./globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
@@ -21,8 +23,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const startDate = await getStartDate()
-  const lastDate = await getLastDate()
+  const session = await getServerSession(authOptions)
+  const startDate = !session ? await getStartDate() : undefined
+  const lastDate = !session ? await getLastDate() : undefined
   const languages = await getLanguages()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
