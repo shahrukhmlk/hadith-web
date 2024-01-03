@@ -28,8 +28,12 @@ export interface IBook {
 }
 
 const HadithUI = (props: IHadith) => {
+  const html = props.text.replaceAll(
+    /("|«|&laquo;).+?("|»|&raquo;)/g,
+    "<nas>$&</nas>",
+  )
   const parsedHTML = parse(
-    sanitizeHtml(props.text, {
+    sanitizeHtml(html, {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat(["nas", "ramz"]),
     }),
   )
@@ -39,6 +43,7 @@ const HadithUI = (props: IHadith) => {
         styles.hadith,
         getFont(props.lang)?.variable,
         props.className,
+        "flex flex-col",
       )}
       lang={props.lang}
     >
@@ -50,13 +55,18 @@ const HadithUI = (props: IHadith) => {
           </span>
           <span className="flex-1"></span>
           <span>
-            {new Intl.DateTimeFormat(props.lang, { dateStyle: "full" }).format(
-              props.date,
-            )}
+            {new Intl.DateTimeFormat(props.lang, {
+              dateStyle: "full",
+            }).format(props.date)}
           </span>
         </CardDescription>
       </CardHeader>
-      <CardContent className={clsx("text-center")}>{parsedHTML}</CardContent>
+      <CardContent
+        contentEditable="plaintext-only"
+        className={clsx("flex flex-1 flex-col justify-center text-center")}
+      >
+        {parsedHTML}
+      </CardContent>
       <CardFooter className="justify-end">
         <p>
           {" "}
