@@ -1,5 +1,16 @@
-import { ICredentials, IUser } from "@/app/api/auth/[...nextauth]/route"
 import prisma from "@/data/prisma"
+
+export interface ICredentials {
+  username: string
+  password: string
+}
+
+export interface IUser {
+  username: string
+  email: string
+  firstName: string
+  lastName: string
+}
 
 export const authenticateUser = async (credentials: ICredentials) => {
   const where =

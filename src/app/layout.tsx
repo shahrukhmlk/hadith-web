@@ -1,8 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import HomeHeader from "@/components/headers/Home/HomeHeader"
 import RootProvider from "@/providers/RootProvider"
 import type { Metadata } from "next"
-import { getServerSession } from "next-auth"
 import { Inter, Noto_Nastaliq_Urdu } from "next/font/google"
 import "./globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
@@ -10,6 +8,7 @@ import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
 import { getLanguages } from "@/data/hadith/languages"
+import { auth } from "@/lib/auth"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -23,7 +22,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   const startDate = !session ? await getStartDate() : undefined
   const lastDate = !session ? await getLastDate() : undefined
   const languages = await getLanguages()

@@ -1,6 +1,5 @@
 "use client"
 
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,6 +11,7 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { CheckSquare2, Square } from "lucide-react"
+import { Route } from "next"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 
@@ -57,7 +57,11 @@ const LanguageMenu = ({ className, languages }: ILanguageMenu) => {
                 return (
                   <li key={index}>
                     <Link
-                      href={pathname + "?" + addLanguage(language.code)}
+                      href={
+                        (pathname +
+                          "?" +
+                          addLanguage(language.code).toString()) as Route
+                      }
                       legacyBehavior
                       passHref
                     >

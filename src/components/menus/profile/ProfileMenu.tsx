@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -9,8 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { auth } from "@/lib/auth"
 import { CircleUserRound } from "lucide-react"
-import { getServerSession } from "next-auth/next"
 import Link from "next/link"
 
 export interface IProfileMenu {
@@ -18,7 +17,7 @@ export interface IProfileMenu {
 }
 
 const ProfileMenu = async ({ className }: IProfileMenu) => {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
