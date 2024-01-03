@@ -5,7 +5,7 @@ export default function Home({
   params,
   searchParams,
 }: {
-  params: { date: number[] }
+  params: { date: string }
   searchParams: { [languages: string]: string | undefined }
 }) {
   const langs = getLangArrayFromURL(searchParams.languages)
