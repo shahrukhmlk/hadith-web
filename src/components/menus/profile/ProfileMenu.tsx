@@ -20,7 +20,7 @@ export interface IProfileMenu {
 const ProfileMenu = async ({ className }: IProfileMenu) => {
   const session = await getServerSession(authOptions)
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant={"outline"} size={"icon"}>
           <CircleUserRound />
@@ -31,11 +31,15 @@ const ProfileMenu = async ({ className }: IProfileMenu) => {
         <DropdownMenuSeparator />
         {session?.user ? (
           <DropdownMenuItem>
-            <Link href={"/api/auth/signout"}>Logout</Link>
+            <Link href={"/api/auth/signout"} className="w-full">
+              Logout
+            </Link>
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem>
-            <Link href={"/api/auth/signin"}>Login</Link>
+            <Link href={"/api/auth/signin"} className="w-full">
+              Login
+            </Link>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
