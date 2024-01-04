@@ -6,15 +6,15 @@ collections:
     meta:
       accountability: all
       archive_app_filter: true
-      archive_field: null
+      archive_field: status
       archive_value: archived
       collapse: open
       collection: books
       color: null
-      display_template: "{{translations}}"
+      display_template: '{{translations.name}}'
       group: null
       hidden: false
-      icon: null
+      icon: library_books
       item_duplication_fields: null
       note: null
       preview_url: null
@@ -54,21 +54,21 @@ collections:
     meta:
       accountability: all
       archive_app_filter: true
-      archive_field: null
+      archive_field: status
       archive_value: archived
       collapse: open
       collection: hadiths
       color: null
-      display_template: null
+      display_template: '{{date}}{{number}}{{translations.topic}}'
       group: null
       hidden: false
-      icon: null
+      icon: quick_phrases
       item_duplication_fields: null
       note: null
       preview_url: null
       singleton: false
       sort: null
-      sort_field: null
+      sort_field: sort
       translations: null
       unarchive_value: draft
       versioning: true
@@ -134,13 +134,13 @@ collections:
       display_template: null
       group: null
       hidden: false
-      icon: null
+      icon: language
       item_duplication_fields: null
       note: null
       preview_url: null
       singleton: false
       sort: null
-      sort_field: null
+      sort_field: sort
       translations: null
       unarchive_value: null
       versioning: false
@@ -339,15 +339,15 @@ fields:
         choices:
           - text: $t:published
             value: published
-            foreground: "#FFFFFF"
+            foreground: '#FFFFFF'
             background: var(--theme--primary)
           - text: $t:draft
             value: draft
-            foreground: "#18222F"
-            background: "#D3DAE4"
+            foreground: '#18222F'
+            background: '#D3DAE4'
           - text: $t:archived
             value: archived
-            foreground: "#FFFFFF"
+            foreground: '#FFFFFF'
             background: var(--theme--warning)
         showAsDot: true
       field: status
@@ -397,7 +397,7 @@ fields:
       display_options:
         defaultLanguage: en
         languageField: name
-        template: "{{name}}"
+        template: '{{name}}'
       field: translations
       group: null
       hidden: false
@@ -405,6 +405,7 @@ fields:
       note: null
       options:
         defaultLanguage: en-EN
+        languageDirectionField: rtl
         languageField: code
         userLanguage: true
       readonly: false
@@ -430,7 +431,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
       sort: 4
@@ -470,7 +471,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
       sort: 6
@@ -664,7 +665,7 @@ fields:
       options:
         slug: true
         trim: true
-      readonly: true
+      readonly: false
       required: true
       sort: 1
       special: null
@@ -956,15 +957,15 @@ fields:
         choices:
           - text: $t:published
             value: published
-            foreground: "#FFFFFF"
+            foreground: '#FFFFFF'
             background: var(--theme--primary)
           - text: $t:draft
             value: draft
-            foreground: "#18222F"
-            background: "#D3DAE4"
+            foreground: '#18222F'
+            background: '#D3DAE4'
           - text: $t:archived
             value: archived
-            foreground: "#FFFFFF"
+            foreground: '#FFFFFF'
             background: var(--theme--warning)
         showAsDot: true
       field: status
@@ -1044,7 +1045,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
       sort: 4
@@ -1084,7 +1085,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
       sort: 6
@@ -1553,7 +1554,7 @@ fields:
       interface: boolean
       note: null
       options:
-        label: "True"
+        label: 'True'
       readonly: false
       required: true
       sort: 3
