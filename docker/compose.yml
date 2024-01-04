@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   database:
     image: postgis/postgis:13-master
@@ -8,49 +9,42 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./data/database:/var/lib/postgresql/data
+      - ../data/database:/var/lib/postgresql/data
     env_file:
-      - .env
-      - .env.local
+      - ../.env.local
   cache:
     image: redis:6
 
   directus:
-    image: directus/directus:10.8.3
+    image: directus
+    build:
+      context: ../
+      dockerfile: docker/directus.Dockerfile
     ports:
       - 8055:8055
     restart: always
     volumes:
-      # Reuired only when using sqlite3
-      # - ./data/database:/directus/database
-      - ./data/uploads:/directus/uploads
-      - ./data/directus-snapshots:/directus/snapshots
-      - ./data/directus-extensions:/directus/extensions
-    depends_on:
-      - cache
-      - database
+      - ../data/uploads:/directus/uploads
+      - ../data/directus-snapshots:/directus/snapshots
     env_file:
-      - .env
-      - .env.local
+      - ../.env.local
     environment:
       # WEBSOCKETS_ENABLED: true
       CACHE_ENABLED: "true"
       CACHE_STORE: "redis"
       REDIS: "redis://cache:6379"
 
-  nextjs:
-    container_name: nextjs
+  hadith-nextjs:
     build:
-      context: ../../
+      context: ../
       dockerfile: docker/development/Dockerfile
     image: nextjs
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
-      - ./prisma:/app/prisma
+      - ../src:/app/src
+      - ../public:/app/public
+      - ../prisma:/app/prisma
     env_file:
-      - .env
-      - .env.local
+      - ../.env.local
     depends_on:
       - directus
     restart: always

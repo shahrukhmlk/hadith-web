@@ -1,64 +1,26 @@
-version: '3'
-
+version: "3"
+name: hadith-web-dev
 services:
   database:
-    image: postgis/postgis:13-master
-    # Required when running on platform other than amd64, like Apple M1/M2:
-    # platform: linux/amd64
-    restart: always
-    ports:
-      - 5432:5432
-    volumes:
-      - ../../data/database:/var/lib/postgresql/data
-    env_file:
-      - ../../.env
-      - .env.local
+    extends:
+      file: ../compose.yml
+      service: database
   cache:
-    image: redis:6
+    extends:
+      file: ../compose.yml
+      service: cache
 
   directus:
-    image: directus/directus:10.8.3
-    ports:
-      - 8055:8055
-    restart: always
-    volumes:
-      # Reuired only when using sqlite3
-      # - ./data/database:/directus/database
-      - ./data/uploads:/directus/uploads
-      - ./data/directus-snapshots:/directus/snapshots
-      - ./data/directus-extensions:/directus/extensions
+    extends:
+      file: ../compose.yml
+      service: directus
     depends_on:
       - cache
       - database
-    env_file:
-      - .env
-      - .env.local
-    environment:
-      # WEBSOCKETS_ENABLED: true
-      CACHE_ENABLED: "true"
-      CACHE_STORE: "redis"
-      REDIS: "redis://cache:6379"
 
   nextjs:
-    container_name: nextjs
-    build:
-      context: ../../
-      dockerfile: docker/development/Dockerfile
-    image: nextjs
-    volumes:
-      - ./src:/app/src
-      - ./public:/app/public
-      - ./prisma:/app/prisma
-    env_file:
-      - .env
-      - .env.local
+    extends:
+      file: ../compose.yml
+      service: nextjs
     depends_on:
       - directus
-    restart: always
-    ports:
-      # Next dev server
-      - 3000:3000
-      # Storybook
-      - 6006:6006
-      # Prisma data studio
-      - 5555:5555
