@@ -21,6 +21,10 @@ services:
   nextjs:
     extends:
       file: ../compose.yml
-      service: nextjs
+      service: hadith-nextjs
+    volumes:
+      - ../src:/app/src
+      - ../public:/app/public
+      - ../prisma:/app/prisma
     depends_on:
       - directus

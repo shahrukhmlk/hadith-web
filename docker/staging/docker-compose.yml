@@ -1,10 +1,35 @@
-version: '3'
-
+version: "3"
+name: hadith-web-stage
 services:
-  with-docker-multi-env-staging:
+  database:
+    extends:
+      file: ../compose.yml
+      service: database
+    env_file:
+      - .env.local
+  cache:
+    extends:
+      file: ../compose.yml
+      service: cache
+
+  directus:
+    extends:
+      file: ../compose.yml
+      service: directus
+    env_file:
+      - .env.local
+    depends_on:
+      - cache
+      - database
+
+  nextjs:
+    extends:
+      file: ../compose.yml
+      service: hadith-nextjs
     build:
       context: ../../
       dockerfile: docker/staging/Dockerfile
-    image: with-docker-multi-env-staging
-    ports:
-      - '3002:3000'
+    env_file:
+      - .env.local
+    depends_on:
+      - directus
