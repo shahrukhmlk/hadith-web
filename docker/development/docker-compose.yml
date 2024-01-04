@@ -23,8 +23,8 @@ services:
       file: ../compose.yml
       service: hadith-nextjs
     volumes:
-      - ../src:/app/src
-      - ../public:/app/public
-      - ../prisma:/app/prisma
+      - ../../src:/app/src
+      - ../../public:/app/public
+      - ../../prisma:/app/prisma
     depends_on:
       - directus
