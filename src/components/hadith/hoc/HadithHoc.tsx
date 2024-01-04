@@ -22,7 +22,11 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
   const selectedDate = date || lastDate
   let hadiths = new Array<IHadith>()
   if (selectedDate) {
-    hadiths = await getHadiths(selectedDate, langs)
+    hadiths = await getHadiths(
+      selectedDate,
+      langs,
+      !session ? "published" : undefined,
+    )
   }
   return (
     <div
