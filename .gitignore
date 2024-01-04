@@ -47,7 +47,6 @@ certificates
 /data/uploads/*
 !/data/uploads/.gitkeep
 !/data/directus-snapshots
-!/data/directus-extensions
 
 # Secrets
 /directus_password

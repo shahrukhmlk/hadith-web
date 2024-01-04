@@ -7,30 +7,30 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
+# Install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci;
 
 # 2. Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-# This will do the trick, use the corresponding env file for each environment.
-COPY .env.staging.sample .env.production
+
+COPY prisma ./prisma
+COPY public ./public
+COPY src ./src
+COPY package.json package-lock.json ./
+COPY next.config.js .
+COPY postcss.config.js .
+COPY tailwind.config.js .
+COPY tsconfig.json .
 RUN yarn build
 
 # 3. Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=staging
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -42,10 +42,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-
 USER nextjs
-
-EXPOSE 3000
 
 ENV PORT 3000
 ENV HOSTNAME localhost

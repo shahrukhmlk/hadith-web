@@ -3,9 +3,18 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DB_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("DB_PRISMA_URL")
   directUrl = env("DB_URL_NON_POOLING")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
 }
 
 model books {
@@ -402,7 +411,7 @@ model directus_users {
   theme_light                                                             String?                  @db.VarChar(255)
   theme_light_overrides                                                   Json?                    @db.Json
   theme_dark_overrides                                                    Json?                    @db.Json
-  username                                                                String                   @unique(map: "directus_users_username_unique") @db.VarChar(255)
+  username                                                                String                   @unique(map: "directus_users_username_unique") @default("legacy") @db.VarChar(255)
   books_books_user_createdTodirectus_users                                books[]                  @relation("books_user_createdTodirectus_users")
   books_books_user_updatedTodirectus_users                                books[]                  @relation("books_user_updatedTodirectus_users")
   directus_dashboards                                                     directus_dashboards[]
@@ -494,13 +503,4 @@ model languages {
   sort                 Int?
   books_translations   books_translations[]
   hadiths_translations hadiths_translations[]
-}
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model spatial_ref_sys {
-  srid      Int     @id
-  auth_name String? @db.VarChar(256)
-  auth_srid Int?
-  srtext    String? @db.VarChar(2048)
-  proj4text String? @db.VarChar(2048)
 }
