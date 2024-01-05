@@ -1,3 +1,4 @@
+import "server-only"
 import { IBook, IHadith } from "@/components/hadith/ui/HadithUI"
 import prisma from "@/data/prisma"
 import { cache } from "react"

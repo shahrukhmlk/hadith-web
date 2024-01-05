@@ -1,3 +1,4 @@
+import "server-only"
 import { authenticateUser } from "@/data/auth/auth"
 import { getServerSession, type NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"

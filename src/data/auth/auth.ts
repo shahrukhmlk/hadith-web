@@ -1,3 +1,4 @@
+"use server"
 import prisma from "@/data/prisma"
 
 export interface ICredentials {
