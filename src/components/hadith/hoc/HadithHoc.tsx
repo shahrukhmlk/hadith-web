@@ -2,6 +2,7 @@ import { getLastDate } from "@/data/hadith/dates"
 import { getHadith } from "@/data/hadith/hadith"
 import { auth } from "@/lib/auth"
 import clsx from "clsx"
+import HadithEditor from "../editor/HadithEditor"
 import HadithUI, { IHadith } from "../ui/HadithUI"
 
 export interface IHadithHoc {
@@ -18,8 +19,11 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
    * > Display all hadiths using hadith component.
    */
   const session = await auth()
-  const lastDate = !session ? await getLastDate() : undefined
+  const lastDate = !session ? await getLastDate() : new Date()
   const selectedDate = date || lastDate
+  if (session) {
+    return <HadithEditor date={selectedDate as Date} />
+  }
   let hadiths = new Array<IHadith>()
   if (selectedDate) {
     hadiths = await getHadith(

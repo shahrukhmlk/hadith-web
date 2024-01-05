@@ -67,3 +67,31 @@ export const getHadith = cache(
     return hadithArray
   },
 )
+
+export const getHadithEditable = cache(async (date: Date) => {
+  const res = await prisma.hadiths.findUnique({
+    where: {
+      date: date,
+    },
+    include: {
+      hadiths_translations: {
+        orderBy: { languages: { sort: "asc" } },
+      },
+      hadiths_books: {
+        include: {
+          books: true,
+        },
+      },
+    },
+  })
+  if (res) {
+    return {
+      id: res.id,
+      number: res.number,
+      books: res.hadiths_books.map((book) => {
+        return { ...book.books, hadithNum: book.hadith_num }
+      }),
+      translations: res.hadiths_translations,
+    }
+  }
+})
