@@ -1,5 +1,5 @@
 import { getLastDate } from "@/data/hadith/dates"
-import { getHadiths } from "@/data/hadith/hadith"
+import { getHadith } from "@/data/hadith/hadith"
 import { auth } from "@/lib/auth"
 import clsx from "clsx"
 import HadithUI, { IHadith } from "../ui/HadithUI"
@@ -22,7 +22,7 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
   const selectedDate = date || lastDate
   let hadiths = new Array<IHadith>()
   if (selectedDate) {
-    hadiths = await getHadiths(
+    hadiths = await getHadith(
       selectedDate,
       langs,
       !session ? "published" : undefined,

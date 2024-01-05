@@ -3,7 +3,7 @@ import { IBook, IHadith } from "@/components/hadith/ui/HadithUI"
 import prisma from "@/data/prisma"
 import { cache } from "react"
 
-export const getHadiths = cache(
+export const getHadith = cache(
   async (date: Date, langs?: string[], status?: string) => {
     const res = await prisma.hadiths.findUnique({
       where: {
@@ -11,20 +11,33 @@ export const getHadiths = cache(
         status: status,
       },
       select: {
+        id: true,
         number: true,
         date: true,
         hadiths_translations: {
           where: {
             languages_code: { in: langs },
           },
+          select: {
+            topic: true,
+            text: true,
+            languages_code: true,
+          },
           orderBy: { languages: { sort: "asc" } },
         },
         hadiths_books: {
-          include: {
+          select: {
+            books_id: true,
+            hadith_num: true,
             books: {
               select: {
+                id: true,
                 books_translations: {
                   where: { languages_code: { in: langs } },
+                  select: {
+                    languages_code: true,
+                    name: true,
+                  },
                 },
               },
             },
