@@ -30,11 +30,14 @@ export interface IBook {
 const HadithUI = (props: IHadith) => {
   const html = props.text.replaceAll(
     /("|«|&laquo;).+?("|»|&raquo;)/g,
-    "<nas>$&</nas>",
+    "<hadith-nas>$&</hadith-nas>",
   )
   const parsedHTML = parse(
     sanitizeHtml(html, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat(["nas", "ramz"]),
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+        "hadith-nas",
+        "ramz",
+      ]),
     }),
   )
   return (
