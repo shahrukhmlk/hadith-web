@@ -11,7 +11,7 @@ export default function Home({
   const langs = getLangArrayFromURL(searchParams.languages)
   const dateArray = params.date
   return (
-    <main className="flex h-full w-full flex-col items-center">
+    <main className="h-full w-full">
       <HadithHoc date={getDateFromPath(params.date)} langs={langs} />
     </main>
   )

@@ -3,6 +3,7 @@ import { getBooks } from "@/data/hadith/books"
 import { getHadith, getHadithEditable } from "@/data/hadith/hadith"
 import { getLanguages } from "@/data/hadith/languages"
 import { clsx } from "clsx"
+import HadithEditForm from "../edit-form/HadithEditForm"
 
 export interface IHadithEditor {
   className?: string
@@ -16,13 +17,9 @@ const HadithEditor = async ({ className, date }: IHadithEditor) => {
   if (languages && books) {
   }
   return (
-    <div
-      className={clsx(
-        "flex max-w-xl flex-col items-center gap-4 p-4",
-        className,
-      )}
-    >
-      <div>Hadith Serial Number: {hadith?.number}</div>
+    <div className={clsx("", className)}>
+      <HadithEditForm langs={languages.map((lang) => lang.code)} />
+      {/*       <div>Hadith Serial Number: {hadith?.number}</div>
       {languages.map((lang, i) => {
         const translation = hadith?.translations.find(
           (el) => el.languages_code === lang.code,
@@ -36,7 +33,7 @@ const HadithEditor = async ({ className, date }: IHadithEditor) => {
           />
         )
       })}
-      <div>Books: {hadith?.books.map((book) => book.hadithNum)}</div>
+      <div>Books: {hadith?.books.map((book) => book.hadithNum)}</div> */}
     </div>
   )
 }

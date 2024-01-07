@@ -8,7 +8,7 @@ export default function Home({
 }) {
   const langs = getLangArrayFromURL(searchParams.languages)
   return (
-    <main className="flex h-full w-full flex-col items-center">
+    <main className="h-full w-full">
       <HadithHoc langs={langs} />
     </main>
   )

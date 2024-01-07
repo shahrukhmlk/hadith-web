@@ -1,35 +1,35 @@
 .PHONY: build-development
-build-dev: ## Build the development docker image.
+dev-build: ## Build the development docker image.
 	docker compose -f docker/development/docker-compose.yml build
 
 .PHONY: start-development
-start-dev: ## Start the development docker container.
+dev-start: ## Start the development docker container.
 	docker compose -f docker/development/docker-compose.yml up -d
 
 .PHONY: stop-development
-stop-dev: ## Stop the development docker container.
+dev-stop: ## Stop the development docker container.
 	docker compose -f docker/development/docker-compose.yml down
 
 .PHONY: build-staging
-build-staging: ## Build the staging docker image.
+stage-build: ## Build the staging docker image.
 	docker compose -f docker/staging/docker-compose.yml build
 
 .PHONY: start-staging
-start-staging: ## Start the staging docker container.
+stage-start: ## Start the staging docker container.
 	docker compose -f docker/staging/docker-compose.yml up -d
 
 .PHONY: stop-staging
-stop-staging: ## Stop the staging docker container.
+stage-stop: ## Stop the staging docker container.
 	docker compose -f docker/staging/docker-compose.yml down
   
 .PHONY: build-production
-build-production: ## Build the production docker image.
+prod-build: ## Build the production docker image.
 	docker compose -f docker/production/docker-compose.yml build
 
 .PHONY: start-production
-start-production: ## Start the production docker container.
+prod-start: ## Start the production docker container.
 	docker compose -f docker/production/docker-compose.yml up -d
 
 .PHONY: stop-production
-stop-production: ## Stop the production docker container.
+prod-stop: ## Stop the production docker container.
 	docker compose -f docker/production/docker-compose.yml down

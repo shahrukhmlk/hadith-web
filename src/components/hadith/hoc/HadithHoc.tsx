@@ -34,10 +34,7 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
   }
   return (
     <div
-      className={clsx(
-        "flex max-w-xl flex-col items-center gap-4 p-4",
-        className,
-      )}
+      className={clsx("flex w-full flex-col items-center gap-4 p-4", className)}
     >
       {hadiths.map((hadith, index) => (
         <HadithUI
