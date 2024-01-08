@@ -2,7 +2,7 @@ import { IHadithEditForm } from "./HadithEditForm"
 
 const base: IHadithEditForm = {
   className: undefined,
-  langs: ["ar"],
+  languages: [{ code: "ar", name: "Arabic", rtl: true }],
 }
 
 export const mockHadithEditFormProps = {

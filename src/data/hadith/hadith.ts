@@ -1,7 +1,7 @@
 import "server-only"
 import prisma from "@/data/prisma"
 import { cache } from "react"
-import { IHadith } from "../models/hadith"
+import { IHadith, IHadithEditable } from "../models/hadith"
 
 export const getHadith = cache(
   async (date: Date, langs?: string[], status?: string): Promise<IHadith[]> => {
@@ -71,30 +71,38 @@ export const getHadith = cache(
   },
 )
 
-export const getHadithEditable = cache(async (date: Date) => {
-  const res = await prisma.hadiths.findUnique({
-    where: {
-      date: date,
-    },
-    include: {
-      hadiths_translations: {
-        orderBy: { languages: { sort: "asc" } },
+export const getHadithEditable = cache(
+  async (date: Date): Promise<IHadithEditable | null> => {
+    const res = await prisma.hadiths.findUnique({
+      where: {
+        date: date,
       },
-      hadiths_books: {
-        include: {
-          books: true,
+      select: {
+        id: true,
+        number: true,
+        date: true,
+        hadiths_translations: {
+          orderBy: { languages: { sort: "asc" } },
+        },
+        hadiths_books: {
+          select: {
+            books_id: true,
+            hadith_num: true,
+            books: {
+              select: {
+                id: true,
+                books_translations: {
+                  select: {
+                    languages_code: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
         },
       },
-    },
-  })
-  if (res) {
-    return {
-      id: res.id,
-      number: res.number,
-      books: res.hadiths_books.map((book) => {
-        return { ...book.books, hadithNum: book.hadith_num }
-      }),
-      translations: res.hadiths_translations,
-    }
-  }
-})
+    })
+    return res
+  },
+)

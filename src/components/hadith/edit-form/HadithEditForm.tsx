@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { IHadithEditable } from "@/data/models/hadith"
+import { ILanguage } from "@/data/models/language"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -21,17 +23,16 @@ import { hadithEditFormSchema } from "./schema"
 
 export interface IHadithEditForm {
   className?: string
-  langs: string[]
+  languages: ILanguage[]
+  hadith: IHadithEditable | null
 }
 
-const HadithEditForm = ({ className, langs }: IHadithEditForm) => {
+const HadithEditForm = ({ className, languages, hadith }: IHadithEditForm) => {
   const form = useForm<z.infer<typeof hadithEditFormSchema>>({
     resolver: zodResolver(hadithEditFormSchema),
     defaultValues: {
       num: 0,
-      translations: langs.map((code) => {
-        return { langCode: code, topic: "", text: "" }
-      }),
+      translations: [{ langCode: "ar", topic: "", text: "" }],
       books: [],
     },
   })
@@ -47,7 +48,7 @@ const HadithEditForm = ({ className, langs }: IHadithEditForm) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={clsx(className, "space-y-2")}
+        className={clsx(className, "space-y-4")}
       >
         <FormField
           control={form.control}
@@ -70,7 +71,12 @@ const HadithEditForm = ({ className, langs }: IHadithEditForm) => {
               name={`translations.${index}.text`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{item.langCode}</FormLabel>
+                  <FormLabel>
+                    {
+                      languages.find((lang) => lang.code === item.langCode)
+                        ?.name
+                    }
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="555"
