@@ -1,12 +1,9 @@
-import LanguageMenu, {
-  ILanguage,
-} from "@/components/menus/language/LanguageMenu"
+import LanguageMenu from "@/components/menus/language/LanguageMenu"
 import MainMenu from "@/components/menus/main/MainMenu"
 import ProfileMenu from "@/components/menus/profile/ProfileMenu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Download } from "lucide-react"
+import { ILanguage } from "@/data/models/language"
 import Link from "next/link"
 
 export interface IHomeHeader {

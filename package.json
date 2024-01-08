@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev": "prisma db pull && prisma generate && next dev",
+    "dev": "prisma db pull && prisma generate && concurrently 'next dev' 'storybook dev -p 6006'",
     "dev-sb": "concurrently npm:dev npm:storybook",
     "build": "prisma generate && next build",
     "start": "next start",
