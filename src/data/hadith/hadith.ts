@@ -1,10 +1,10 @@
 import "server-only"
-import { IBook, IHadith } from "@/components/hadith/ui/HadithUI"
 import prisma from "@/data/prisma"
 import { cache } from "react"
+import { IHadith } from "../models/hadith"
 
 export const getHadith = cache(
-  async (date: Date, langs?: string[], status?: string) => {
+  async (date: Date, langs?: string[], status?: string): Promise<IHadith[]> => {
     const res = await prisma.hadiths.findUnique({
       where: {
         date: date,
@@ -55,11 +55,14 @@ export const getHadith = cache(
           lang: hadith.languages_code,
           text: hadith.text,
           books: res.hadiths_books.map((book) => {
-            const hadithNum = book.hadith_num
-            const bookName = book.books.books_translations.find(
+            const book2 = book.books.books_translations.find(
               (book) => book.languages_code === hadith.languages_code,
-            )?.name
-            return { name: bookName || "", hadithNum: hadithNum }
+            )
+            return {
+              id: book.books.id,
+              name: book2?.name || "",
+              hadithNum: book.hadith_num,
+            }
           }),
         })
       })

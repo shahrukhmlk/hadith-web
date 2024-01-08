@@ -3,7 +3,7 @@ import { getHadith } from "@/data/hadith/hadith"
 import { auth } from "@/lib/auth"
 import clsx from "clsx"
 import HadithEditor from "../editor/HadithEditor"
-import HadithUI, { IHadith } from "../ui/HadithUI"
+import HadithUI, { HadithUIProps } from "../ui/HadithUI"
 
 export interface IHadithHoc {
   className?: string
@@ -24,7 +24,7 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
   if (session) {
     return <HadithEditor date={selectedDate as Date} />
   }
-  let hadiths = new Array<IHadith>()
+  let hadiths = new Array<HadithUIProps>()
   if (selectedDate) {
     hadiths = await getHadith(
       selectedDate,

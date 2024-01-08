@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react"
-import HadithUI, { IHadith } from "./HadithUI"
+import HadithUI, { HadithUIProps } from "./HadithUI"
 import { mockHadithProps } from "./HadithUI.mocks"
 
 export default {
@@ -14,4 +14,4 @@ export const Base = Template.bind({})
 
 Base.args = {
   ...mockHadithProps.base,
-} as IHadith
+} as HadithUIProps
