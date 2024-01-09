@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,7 +10,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { ILanguage } from "@/data/models/language"
-import { CheckSquare2, Square } from "lucide-react"
+import { CheckSquare2, Globe, Square } from "lucide-react"
 import { Route } from "next"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
@@ -42,7 +43,9 @@ const LanguageMenu = ({ className, languages }: LanguageMenuProps) => {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Show/Hide Languages</NavigationMenuTrigger>
+          <NavigationMenuTrigger>
+            <Globe />
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="flex w-48 flex-col gap-1 p-2">
               {languages.map((language, index) => {

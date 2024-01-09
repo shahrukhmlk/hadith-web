@@ -16,8 +16,13 @@ const HadithEditor = async ({ className, date }: IHadithEditor) => {
   if (languages && books) {
   }
   return (
-    <div className={clsx("", className)}>
-      <HadithEditForm languages={languages} hadith={hadith} />
+    <div className={clsx("p-4", className)}>
+      <HadithEditForm
+        languages={languages}
+        books={books}
+        hadith={hadith}
+        date={date}
+      />
     </div>
   )
 }
