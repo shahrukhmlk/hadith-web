@@ -17,7 +17,7 @@
   "dependencies": {
     "@directus/sdk": "^14.0.0",
     "@hookform/resolvers": "^3.3.4",
-    "@prisma/client": "^5.7.1",
+    "@prisma/client": "^5.8.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -82,7 +82,7 @@
     "postcss": "^8.4.32",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.9",
-    "prisma": "^5.7.1",
+    "prisma": "^5.8.0",
     "sass": "^1.69.5",
     "storybook": "^7.6.6",
     "tailwindcss": "^3.4.0",
