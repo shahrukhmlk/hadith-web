@@ -7,6 +7,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command"
 import {
   Popover,
@@ -50,31 +51,46 @@ const HadithBookSelector = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
-          <Command>
+          <Command
+            filter={(value, search) => {
+              const book = books.find((book) => book.id === parseInt(value))
+              if (
+                book?.books_translations.find((bookT) =>
+                  bookT.name.includes(search),
+                )
+              ) {
+                return 1
+              } else {
+                return 0
+              }
+            }}
+          >
             <CommandInput
               name="book-name"
               placeholder="Search book..."
               className="h-9"
             />
-            <CommandEmpty>No book found.</CommandEmpty>
-            <CommandGroup>
-              {books.map((book) => (
-                <CommandItem
-                  key={book.id}
-                  value={book.id.toString()}
-                  onSelect={(currentValue) => {
-                    onBookSelect(parseInt(currentValue))
-                    setOpen(false)
-                  }}
-                >
-                  {
-                    book.books_translations.find(
-                      (book) => book.languages_code === "en",
-                    )?.name
-                  }
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            <CommandList>
+              <CommandEmpty>No book found.</CommandEmpty>
+              <CommandGroup heading="Available books">
+                {books.map((book) => (
+                  <CommandItem
+                    key={book.id}
+                    value={book.id.toString()}
+                    onSelect={(currentValue) => {
+                      onBookSelect(parseInt(currentValue))
+                      setOpen(false)
+                    }}
+                  >
+                    {
+                      book.books_translations.find(
+                        (book) => book.languages_code === "en",
+                      )?.name
+                    }
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
           </Command>
         </PopoverContent>
       </Popover>
