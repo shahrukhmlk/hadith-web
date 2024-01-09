@@ -1,7 +1,4 @@
 .hadith {
-  p {
-    @apply text-xl;
-  }
   hadith-nas {
     @apply text-3xl font-semibold;
   }
@@ -11,9 +8,6 @@
   &:lang(ar),
   &:lang(ur) {
     direction: rtl;
-    p {
-      @apply leading-[3.5rem];
-    }
   }
   &:lang(ar) {
     @apply font-arabic;

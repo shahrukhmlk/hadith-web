@@ -3,6 +3,7 @@ import * as z from "zod"
 export const hadithEditFormSchema = z.object({
   num: z.coerce.number().int().min(1),
   date: z.date(),
+  status: z.string(),
   translations: z
     .array(
       z.object({

@@ -81,6 +81,7 @@ export const getHadithEditable = cache(
         id: true,
         number: true,
         date: true,
+        status: true,
         hadiths_translations: {
           orderBy: { languages: { sort: "asc" } },
         },

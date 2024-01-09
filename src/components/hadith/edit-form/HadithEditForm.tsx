@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
@@ -83,11 +84,12 @@ const HadithEditForm = ({
   const [loading, setLoading] = useState(false)
   const defaultBooksValue = [{ bookID: 0, hadithNum: 0 }]
   const defaultTranslationsValue = [
-    { langCode: "", topic: "", text: "", fontScale: 0 },
+    { langCode: "ar", topic: "", text: "", fontScale: 0 },
   ]
   const defaultFormValues = {
     num: 0,
     date: date,
+    status: "draft",
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
     fontScale: 0,
@@ -102,8 +104,9 @@ const HadithEditForm = ({
 
   useEffect(() => {
     if (hadith) {
-      form.setValue("num", hadith?.number ?? 0)
-      form.setValue("date", hadith?.date ?? date)
+      form.setValue("num", hadith.number || 0)
+      form.setValue("date", hadith.date || date)
+      form.setValue("status", hadith.status || "draft")
       bookFields.replace(
         hadith.hadiths_books.map((book) => {
           return { bookID: book.books_id, hadithNum: book.hadith_num }
@@ -122,6 +125,7 @@ const HadithEditForm = ({
     }
   }, [])
   const onSubmit = (values: z.infer<typeof hadithEditFormSchema>) => {
+    console.log(values)
     setLoading(true)
     saveHadith(values)
       .then((res) => {
@@ -433,6 +437,29 @@ const HadithEditForm = ({
             </div>
           )
         })}
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+              <FormControl>
+                <Checkbox
+                  checked={field.value === "published"}
+                  onCheckedChange={(checked) => {
+                    form.setValue(
+                      field.name,
+                      checked.valueOf() ? "published" : "draft",
+                    )
+                  }}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Publish?</FormLabel>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
         <div className="flex gap-4">
           <Button type="submit" disabled={loading}>
             {hadith ? "Save Changes" : "Save new hadith"}

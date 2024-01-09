@@ -55,7 +55,10 @@ const HadithUI = (props: HadithUIProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent
-        className={clsx("flex flex-1 flex-col justify-center text-center")}
+        className={clsx(
+          "flex flex-1 flex-col justify-center text-center text-xl",
+          props.lang === "ar" || props.lang === "ur" ? "leading-[3.5rem]" : "",
+        )}
       >
         {parsedHTML}
       </CardContent>

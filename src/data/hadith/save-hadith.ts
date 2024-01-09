@@ -6,9 +6,8 @@ import { z } from "zod"
 
 type hadithSchema = z.infer<typeof hadithEditFormSchema>
 export const saveHadith = async (hadith: hadithSchema) => {
-  console.log(JSON.stringify(hadith, null, 2))
-  const result = hadithEditFormSchema.parse(hadith)
-  prisma.$transaction(async (tx) => {
+  hadithEditFormSchema.parse(hadith)
+  const result = prisma.$transaction(async (tx) => {
     const h = await tx.hadiths.upsert({
       where: {
         number: hadith.num,
@@ -16,10 +15,12 @@ export const saveHadith = async (hadith: hadithSchema) => {
       update: {
         date: hadith.date,
         number: hadith.num,
+        status: hadith.status,
       },
       create: {
         date: hadith.date,
         number: hadith.num,
+        status: hadith.status,
       },
     })
 

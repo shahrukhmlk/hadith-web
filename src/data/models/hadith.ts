@@ -20,6 +20,7 @@ const hadithEditable = Prisma.validator<Prisma.hadithsDefaultArgs>()({
     id: true,
     number: true,
     date: true,
+    status: true,
     hadiths_translations: {
       orderBy: { languages: { sort: "asc" } },
     },
