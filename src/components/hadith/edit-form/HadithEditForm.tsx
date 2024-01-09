@@ -1,5 +1,16 @@
 "use client"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -241,14 +252,26 @@ const HadithEditForm = ({
                   </FormItem>
                 )}
               />
-              <Button
-                variant={"destructive"}
-                size={"icon"}
-                type="button"
-                onClick={() => bookFields.remove(index)}
-              >
-                <Minus />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant={"destructive"} size={"icon"} type="button">
+                    <Minus />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => bookFields.remove(index)}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           )
         })}
@@ -382,13 +405,30 @@ const HadithEditForm = ({
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Button
-                  type="button"
-                  variant={"destructive"}
-                  onClick={() => translationFields.remove(index)}
-                >
-                  <MinusSquare className="mr-2 h-4 w-4" /> Remove translation
-                </Button>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button type="button" variant={"destructive"}>
+                      <MinusSquare className="mr-2 h-4 w-4" /> Remove
+                      translation
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => translationFields.remove(index)}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           )
@@ -404,13 +444,26 @@ const HadithEditForm = ({
           >
             Clear Errors
           </Button>
-          <Button
-            type="reset"
-            variant={"destructive"}
-            onClick={() => form.reset(defaultFormValues)}
-          >
-            Reset
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button type="reset" variant={"destructive"}>
+                Reset
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => form.reset(defaultFormValues)}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </form>
       {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}

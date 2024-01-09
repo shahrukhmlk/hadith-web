@@ -21,6 +21,7 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
   const session = await auth()
   const lastDate = !session ? await getLastDate() : new Date()
   const selectedDate = date || lastDate
+  // return <HadithEditor date={selectedDate as Date} />
   if (session) {
     return <HadithEditor date={selectedDate as Date} />
   }
