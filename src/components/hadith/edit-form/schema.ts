@@ -9,6 +9,7 @@ export const hadithEditFormSchema = z.object({
         langCode: z.string().min(2).max(2),
         topic: z.string().min(1),
         text: z.string().min(1),
+        fontScale: z.number(),
       }),
     )
     .min(1)

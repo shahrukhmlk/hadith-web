@@ -34,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 import { IBookWithTranslations } from "@/data/models/book"
 import { IHadithEditable } from "@/data/models/hadith"
@@ -66,12 +67,15 @@ const HadithEditForm = ({
 }: IHadithEditForm) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
   const defaultBooksValue = [{ bookID: 0, hadithNum: 0 }]
-  const defaultTranslationsValue = [{ langCode: "", topic: "", text: "" }]
+  const defaultTranslationsValue = [
+    { langCode: "", topic: "", text: "", fontScale: 0 },
+  ]
   const defaultFormValues = {
     num: 0,
     date: date,
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
+    fontScale: 0,
   }
   const form = useForm<z.infer<typeof hadithEditFormSchema>>({
     resolver: zodResolver(hadithEditFormSchema),
@@ -96,6 +100,7 @@ const HadithEditForm = ({
             langCode: hadithT.languages_code,
             topic: hadithT.topic,
             text: hadithT.text,
+            fontScale: hadithT.fontScale || 0,
           }
         }),
       )
@@ -336,15 +341,34 @@ const HadithEditForm = ({
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    {/* <DialogHeader>
+                      <DialogTitle></DialogTitle>
                       <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete your account and remove your data from our
-                        servers.
                       </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter></DialogFooter>
+                    </DialogHeader> */}
+                    fhgdkjfhg sd hgjhfg jsdhlk
+                    <DialogFooter>
+                      <FormField
+                        control={form.control}
+                        name={`translations.${index}.fontScale`}
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormLabel>Font Scale</FormLabel>
+                            <FormControl>
+                              <Slider
+                                value={[field.value]}
+                                onValueChange={(value) =>
+                                  form.setValue(field.name, value[0])
+                                }
+                                max={100}
+                                step={1}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </DialogFooter>
                   </DialogContent>
                 </Dialog>
                 <Button
