@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
+import { saveHadith } from "@/data/hadith/save-hadith"
 import { IBookWithTranslations } from "@/data/models/book"
 import { IHadithEditable } from "@/data/models/hadith"
 import { ILanguage } from "@/data/models/language"
@@ -45,7 +46,9 @@ import clsx from "clsx"
 import { format } from "date-fns"
 import { CalendarDays, Minus, MinusSquare, Plus, ScanEye } from "lucide-react"
 import { useEffect, useState } from "react"
+import { useFormStatus } from "react-dom"
 import { useFieldArray, useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 import HadithBookSelector from "../book-selector/HadithBookSelector"
 import { hadithEditFormSchema } from "./schema"
@@ -66,6 +69,7 @@ const HadithEditForm = ({
   date,
 }: IHadithEditForm) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const defaultBooksValue = [{ bookID: 0, hadithNum: 0 }]
   const defaultTranslationsValue = [
     { langCode: "", topic: "", text: "", fontScale: 0 },
@@ -107,9 +111,16 @@ const HadithEditForm = ({
     }
   }, [])
   const onSubmit = (values: z.infer<typeof hadithEditFormSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+    setLoading(true)
+    saveHadith(values)
+      .then((res) => {
+        setLoading(false)
+        toast.success("Hadith saved successfully")
+      })
+      .catch((e: any) => {
+        setLoading(false)
+        toast.error(JSON.stringify(e, null, 2))
+      })
   }
 
   return (
@@ -383,7 +394,7 @@ const HadithEditForm = ({
           )
         })}
         <div className="flex gap-4">
-          <Button type="submit">
+          <Button type="submit" disabled={loading}>
             {hadith ? "Save Changes" : "Save new hadith"}
           </Button>
           <Button

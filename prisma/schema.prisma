@@ -466,7 +466,7 @@ model hadiths {
   date_created                                        DateTime?              @db.Timestamptz(6)
   date_updated                                        DateTime?              @db.Timestamptz(6)
   id                                                  Int                    @id @default(autoincrement())
-  number                                              Int
+  number                                              Int                    @unique(map: "hadiths_number_unique")
   sort                                                Int?
   status                                              String                 @default("draft") @db.VarChar(255)
   user_created                                        String?                @db.Uuid

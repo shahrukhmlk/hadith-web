@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/popover"
 import { IBookWithTranslations } from "@/data/models/book"
 import { cn } from "@/lib/utils"
+import clsx from "clsx"
 import * as React from "react"
 
 export interface HadithBookSelectorProps {
@@ -41,7 +42,10 @@ const HadithBookSelector = ({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-full justify-between"
+            className={clsx(
+              selectedBook ? "" : "text-muted-foreground",
+              "w-full justify-between",
+            )}
           >
             {selectedBook
               ? selectedBook.books_translations.find(

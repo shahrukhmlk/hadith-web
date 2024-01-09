@@ -1,5 +1,6 @@
 "use client"
 
+import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "next-themes"
 
 /***
@@ -14,6 +15,7 @@ export default function RootProvider({
   return (
     <ThemeProvider attribute="class" disableTransitionOnChange>
       {children}
+      <Toaster />
     </ThemeProvider>
   )
 }
