@@ -50,8 +50,6 @@ services:
     image: nextjs
     env_file:
       - .env.local
-    depends_on:
-      - directus
     restart: always
     ports:
       # Next dev server
