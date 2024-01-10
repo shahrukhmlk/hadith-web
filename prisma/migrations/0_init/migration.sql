@@ -4,11 +4,11 @@ CREATE TYPE "status" AS ENUM ('draft', 'published', 'archived');
 -- CreateTable
 CREATE TABLE "Book" (
     "id" SERIAL NOT NULL,
-    "dateCreated" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "dateCreated" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateUpdated" TIMESTAMPTZ(6),
     "userCreated" INTEGER,
     "userUpdated" INTEGER,
-    "status" "status" DEFAULT 'draft',
+    "status" "status" NOT NULL DEFAULT 'draft',
     "sort" INTEGER,
     "name" VARCHAR NOT NULL,
 
@@ -21,7 +21,7 @@ CREATE TABLE "Hadith" (
     "number" INTEGER NOT NULL,
     "date" DATE NOT NULL,
     "status" "status" NOT NULL DEFAULT 'draft',
-    "dateCreated" TIMESTAMPTZ(6),
+    "dateCreated" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateUpdated" TIMESTAMPTZ(6),
     "userCreated" INTEGER,
     "userUpdated" INTEGER,
@@ -54,7 +54,7 @@ CREATE TABLE "HadithTranslation" (
     "languageCode" VARCHAR NOT NULL,
     "topic" TEXT NOT NULL,
     "text" TEXT NOT NULL,
-    "fontScale" INTEGER,
+    "fontScale" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "HadithTranslation_pkey" PRIMARY KEY ("hadithID","languageCode")
 );

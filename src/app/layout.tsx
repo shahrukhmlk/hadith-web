@@ -6,9 +6,9 @@ import "./globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
+import { auth } from "@/config/auth"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
 import { getLanguages } from "@/data/language/languages"
-import { auth } from "@/lib/auth"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 

@@ -1,6 +1,6 @@
+import { auth } from "@/config/auth"
 import { getLastDate } from "@/data/hadith/dates"
 import { getHadith } from "@/data/hadith/hadith"
-import { auth } from "@/lib/auth"
 import clsx from "clsx"
 import HadithEditor from "../editor/HadithEditor"
 import HadithUI, { HadithUIProps } from "../ui/HadithUI"

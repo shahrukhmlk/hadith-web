@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { auth } from "@/lib/auth"
+import { auth } from "@/config/auth"
 import { CircleUserRound } from "lucide-react"
 import Link from "next/link"
 
