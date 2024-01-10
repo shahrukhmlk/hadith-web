@@ -38,7 +38,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Select,
   SelectContent,
@@ -52,18 +51,21 @@ import { saveHadith } from "@/data/hadith/save-hadith"
 import { IBookWithTranslations } from "@/data/models/book"
 import { IHadithEditable } from "@/data/models/hadith"
 import { ILanguage } from "@/data/models/language"
+import { Status } from "@/data/models/status"
+import {
+  HadithEditFormData,
+  HadithEditFormSchema,
+} from "@/data/validators/hadith-edit"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { format } from "date-fns"
 import { CalendarDays, Minus, MinusSquare, Plus, ScanEye } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useFormStatus } from "react-dom"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import HadithBookSelector from "../book-selector/HadithBookSelector"
-import { hadithEditFormSchema } from "./schema"
 
 export interface IHadithEditForm {
   className?: string
@@ -82,20 +84,20 @@ const HadithEditForm = ({
 }: IHadithEditForm) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const defaultBooksValue = [{ bookID: 0, hadithNum: 0 }]
+  const defaultBooksValue = [{ bookID: 0, hadithRefNumber: 0 }]
   const defaultTranslationsValue = [
-    { langCode: "ar", topic: "", text: "", fontScale: 0 },
+    { languageCode: "ar", topic: "", text: "", fontScale: 0 },
   ]
   const defaultFormValues = {
-    num: 0,
+    number: 0,
+    status: Status.draft,
     date: date,
-    status: "draft",
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
     fontScale: 0,
   }
-  const form = useForm<z.infer<typeof hadithEditFormSchema>>({
-    resolver: zodResolver(hadithEditFormSchema),
+  const form = useForm<HadithEditFormData>({
+    resolver: zodResolver(HadithEditFormSchema),
     defaultValues: defaultFormValues,
   })
   const { control } = form
@@ -104,18 +106,14 @@ const HadithEditForm = ({
 
   useEffect(() => {
     if (hadith) {
-      form.setValue("num", hadith.number || 0)
+      form.setValue("number", hadith.number || 0)
       form.setValue("date", hadith.date || date)
       form.setValue("status", hadith.status || "draft")
-      bookFields.replace(
-        hadith.hadiths_books.map((book) => {
-          return { bookID: book.books_id, hadithNum: book.hadith_num }
-        }),
-      )
+      bookFields.replace(hadith.books)
       translationFields.replace(
-        hadith.hadiths_translations.map((hadithT) => {
+        hadith.translations.map((hadithT) => {
           return {
-            langCode: hadithT.languages_code,
+            languageCode: hadithT.languageCode,
             topic: hadithT.topic,
             text: hadithT.text,
             fontScale: hadithT.fontScale || 0,
@@ -124,7 +122,7 @@ const HadithEditForm = ({
       )
     }
   }, [])
-  const onSubmit = (values: z.infer<typeof hadithEditFormSchema>) => {
+  const onSubmit = (values: HadithEditFormData) => {
     console.log(values)
     setLoading(true)
     saveHadith(values)
@@ -184,7 +182,7 @@ const HadithEditForm = ({
           />
           <FormField
             control={form.control}
-            name="num"
+            name="number"
             render={({ field }) => (
               <FormItem className="max-w-60 flex-1">
                 <FormControl>
@@ -242,7 +240,7 @@ const HadithEditForm = ({
               />
               <FormField
                 control={form.control}
-                name={`books.${index}.hadithNum`}
+                name={`books.${index}.hadithRefNumber`}
                 render={({ field }) => (
                   <FormItem className="w-[80px]">
                     <FormControl>
@@ -309,7 +307,7 @@ const HadithEditForm = ({
             <div className="flex flex-col gap-2" key={item.id}>
               <FormField
                 control={form.control}
-                name={`translations.${index}.langCode`}
+                name={`translations.${index}.languageCode`}
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-baseline gap-2">
                     <FormLabel>Language:</FormLabel>
@@ -358,7 +356,8 @@ const HadithEditForm = ({
                     <FormControl>
                       <Textarea
                         dir={
-                          item.langCode === "ar" || item.langCode === "ur"
+                          item.languageCode === "ar" ||
+                          item.languageCode === "ur"
                             ? "rtl"
                             : ""
                         }

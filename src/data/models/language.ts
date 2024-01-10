@@ -1,3 +1,5 @@
-import { languages } from "@prisma/client"
-
-export interface ILanguage extends Omit<languages, "sort"> {}
+export interface ILanguage {
+  code: string
+  name: string
+  rtl: boolean
+}

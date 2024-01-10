@@ -5,8 +5,8 @@ const base: HadithBookSelectorProps = {
   books: [],
   selectedBook: {
     id: 1,
-    sort: null,
-    books_translations: [{ languages_code: "en", name: "selectedBook" }],
+    name: "Book",
+    translations: [{ languageCode: "en", name: "selectedBook" }],
   },
   onBookSelect(book) {},
 }

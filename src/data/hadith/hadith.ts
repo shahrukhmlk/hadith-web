@@ -1,11 +1,12 @@
 import "server-only"
+import { IHadith, IHadithEditable } from "@/data/models/hadith"
+import { Status } from "@/data/models/status"
 import prisma from "@/data/prisma"
 import { cache } from "react"
-import { IHadith, IHadithEditable } from "../models/hadith"
 
 export const getHadith = cache(
-  async (date: Date, langs?: string[], status?: string): Promise<IHadith[]> => {
-    const res = await prisma.hadiths.findUnique({
+  async (date: Date, langs?: string[], status?: Status): Promise<IHadith[]> => {
+    const res = await prisma.hadith.findUnique({
       where: {
         date: date,
         status: status,
@@ -14,28 +15,28 @@ export const getHadith = cache(
         id: true,
         number: true,
         date: true,
-        hadiths_translations: {
+        HadithTranslation: {
           where: {
-            languages_code: { in: langs },
+            languageCode: { in: langs },
           },
           select: {
             topic: true,
             text: true,
-            languages_code: true,
+            languageCode: true,
           },
-          orderBy: { languages: { sort: "asc" } },
+          orderBy: { Language: { sort: "asc" } },
         },
-        hadiths_books: {
+        HadithBook: {
           select: {
-            books_id: true,
-            hadith_num: true,
-            books: {
+            bookID: true,
+            hadithRefNumber: true,
+            Book: {
               select: {
                 id: true,
-                books_translations: {
-                  where: { languages_code: { in: langs } },
+                BookTranslation: {
+                  where: { languageCode: { in: langs } },
                   select: {
-                    languages_code: true,
+                    languageCode: true,
                     name: true,
                   },
                 },
@@ -47,21 +48,21 @@ export const getHadith = cache(
     })
     let hadithArray: IHadith[] = []
     if (res) {
-      res.hadiths_translations.map((hadith) => {
+      res.HadithTranslation.map((hadith) => {
         hadithArray.push({
           num: res.number,
           topic: hadith.topic,
           date: res.date,
-          lang: hadith.languages_code,
+          lang: hadith.languageCode,
           text: hadith.text,
-          books: res.hadiths_books.map((book) => {
-            const book2 = book.books.books_translations.find(
-              (book) => book.languages_code === hadith.languages_code,
+          books: res.HadithBook.map((book) => {
+            const book2 = book.Book.BookTranslation.find(
+              (book) => book.languageCode === hadith.languageCode,
             )
             return {
-              id: book.books.id,
+              id: book.Book.id,
               name: book2?.name || "",
-              hadithNum: book.hadith_num,
+              hadithNum: book.hadithRefNumber,
             }
           }),
         })
@@ -73,7 +74,7 @@ export const getHadith = cache(
 
 export const getHadithEditable = cache(
   async (date: Date): Promise<IHadithEditable | null> => {
-    const res = await prisma.hadiths.findUnique({
+    const res = await prisma.hadith.findUnique({
       where: {
         date: date,
       },
@@ -82,19 +83,25 @@ export const getHadithEditable = cache(
         number: true,
         date: true,
         status: true,
-        hadiths_translations: {
-          orderBy: { languages: { sort: "asc" } },
-        },
-        hadiths_books: {
+        HadithTranslation: {
           select: {
-            books_id: true,
-            hadith_num: true,
-            books: {
+            languageCode: true,
+            topic: true,
+            text: true,
+            fontScale: true,
+          },
+          orderBy: { Language: { sort: "asc" } },
+        },
+        HadithBook: {
+          select: {
+            bookID: true,
+            hadithRefNumber: true,
+            Book: {
               select: {
                 id: true,
-                books_translations: {
+                BookTranslation: {
                   select: {
-                    languages_code: true,
+                    languageCode: true,
                     name: true,
                   },
                 },
@@ -104,6 +111,17 @@ export const getHadithEditable = cache(
         },
       },
     })
-    return res
+    if (res) {
+      return {
+        id: res.id,
+        number: res.number,
+        date: res.date,
+        status: res.status,
+        translations: res.HadithTranslation,
+        books: res.HadithBook,
+      }
+    } else {
+      return res
+    }
   },
 )

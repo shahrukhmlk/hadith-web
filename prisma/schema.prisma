@@ -60,7 +60,7 @@ model HadithTranslation {
   languageCode String   @db.VarChar
   topic        String
   text         String
-  fontScale    Int?
+  fontScale    Int      @default(0)
   Hadith       Hadith   @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_HadithID")
   Language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
 

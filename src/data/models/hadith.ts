@@ -1,4 +1,5 @@
-import { Prisma } from "@prisma/client"
+import { Status } from "@/data/models/status"
+import * as z from "zod"
 
 export interface IHadith {
   num: number
@@ -15,34 +16,27 @@ export interface IBook {
   hadithNum: number
 }
 
-const hadithEditable = Prisma.validator<Prisma.hadithsDefaultArgs>()({
-  select: {
-    id: true,
-    number: true,
-    date: true,
-    status: true,
-    hadiths_translations: {
-      orderBy: { languages: { sort: "asc" } },
-    },
-    hadiths_books: {
-      select: {
-        books_id: true,
-        hadith_num: true,
-        books: {
-          select: {
-            id: true,
-            books_translations: {
-              select: {
-                languages_code: true,
-                name: true,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
+const Translated = z.object({
+  languageCode: z.string().min(2),
+  topic: z.string().min(1),
+  text: z.string().min(1),
+  fontScale: z.number(),
 })
 
-export interface IHadithEditable
-  extends Prisma.hadithsGetPayload<typeof hadithEditable> {}
+export const HadithEditableSchema = z.object({
+  id: z.number().int(),
+  number: z.coerce.number().int().min(1),
+  date: z.date(),
+  status: z.nativeEnum(Status),
+  translations: z.array(Translated).min(1).max(4),
+  books: z
+    .array(
+      z.object({
+        bookID: z.coerce.number().int().min(1),
+        hadithRefNumber: z.coerce.number().int().min(1),
+      }),
+    )
+    .min(1),
+})
+
+export interface IHadithEditable extends z.infer<typeof HadithEditableSchema> {}

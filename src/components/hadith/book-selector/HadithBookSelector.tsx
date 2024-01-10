@@ -47,11 +47,7 @@ const HadithBookSelector = ({
               "w-full justify-between",
             )}
           >
-            {selectedBook
-              ? selectedBook.books_translations.find(
-                  (book) => book.languages_code === "en",
-                )?.name
-              : "Select book..."}
+            {selectedBook ? selectedBook.name : "Select book..."}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
@@ -59,9 +55,10 @@ const HadithBookSelector = ({
             filter={(value, search) => {
               const book = books.find((book) => book.id === parseInt(value))
               if (
-                book?.books_translations.find((bookT) =>
+                book?.translations.find((bookT) =>
                   bookT.name.includes(search),
-                )
+                ) ||
+                book?.name.includes(search)
               ) {
                 return 1
               } else {
@@ -86,11 +83,7 @@ const HadithBookSelector = ({
                       setOpen(false)
                     }}
                   >
-                    {
-                      book.books_translations.find(
-                        (book) => book.languages_code === "en",
-                      )?.name
-                    }
+                    {book.name}
                   </CommandItem>
                 ))}
               </CommandGroup>

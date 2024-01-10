@@ -1,42 +1,43 @@
 "use server"
 
-import { hadithEditFormSchema } from "@/components/hadith/edit-form/schema"
 import prisma from "@/data/prisma"
-import { z } from "zod"
+import {
+  HadithEditFormData,
+  HadithEditFormSchema,
+} from "@/data/validators/hadith-edit"
 
-type hadithSchema = z.infer<typeof hadithEditFormSchema>
-export const saveHadith = async (hadith: hadithSchema) => {
-  hadithEditFormSchema.parse(hadith)
+export const saveHadith = async (hadith: HadithEditFormData) => {
+  HadithEditFormSchema.parse(hadith)
   const result = prisma.$transaction(async (tx) => {
-    const h = await tx.hadiths.upsert({
+    const h = await tx.hadith.upsert({
       where: {
-        number: hadith.num,
+        number: hadith.number,
       },
       update: {
         date: hadith.date,
-        number: hadith.num,
+        number: hadith.number,
         status: hadith.status,
       },
       create: {
         date: hadith.date,
-        number: hadith.num,
+        number: hadith.number,
         status: hadith.status,
       },
     })
 
     /* As we dont have coposite keys we cant use upsert so... */
     //Delete existing translations
-    await tx.hadiths_translations.deleteMany({
+    await tx.hadithTranslation.deleteMany({
       where: {
-        hadiths_id: h.id,
+        hadithID: h.id,
       },
     })
     // Create the translations again
-    await tx.hadiths_translations.createMany({
+    await tx.hadithTranslation.createMany({
       data: hadith.translations.map((translation) => {
         return {
-          hadiths_id: h.id,
-          languages_code: translation.langCode,
+          hadithID: h.id,
+          languageCode: translation.languageCode,
           text: translation.text,
           topic: translation.topic,
           fontScale: translation.fontScale,
@@ -45,13 +46,13 @@ export const saveHadith = async (hadith: hadithSchema) => {
     })
 
     // same goes for the books-hadith join table
-    await tx.hadiths_books.deleteMany({ where: { hadiths_id: h.id } })
-    await tx.hadiths_books.createMany({
+    await tx.hadithBook.deleteMany({ where: { hadithID: h.id } })
+    await tx.hadithBook.createMany({
       data: hadith.books.map((book) => {
         return {
-          hadiths_id: h.id,
-          books_id: book.bookID,
-          hadith_num: book.hadithNum,
+          hadithID: h.id,
+          bookID: book.bookID,
+          hadithRefNumber: book.hadithRefNumber,
         }
       }),
     })

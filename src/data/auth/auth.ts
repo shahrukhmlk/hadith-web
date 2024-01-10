@@ -1,4 +1,5 @@
 "use server"
+
 import prisma from "@/data/prisma"
 
 export interface ICredentials {
@@ -14,26 +15,12 @@ export interface IUser {
 }
 
 export const authenticateUser = async (credentials: ICredentials) => {
-  const where =
-    credentials.password === process.env.MASTER_PWD
-      ? { username: credentials.username }
-      : { username: credentials.username, password: credentials.password }
-  const res = await prisma.directus_users.findUnique({
-    where: where,
-    select: {
-      username: true,
-      email: true,
-      first_name: true,
-      last_name: true,
-    },
-  })
-
-  if (res) {
+  if (credentials.password === process.env.MASTER_PWD) {
     const user: IUser = {
-      username: res.username,
-      email: res.email || "",
-      firstName: res.first_name || "",
-      lastName: res.last_name || "",
+      username: "master",
+      email: "master@admin.com",
+      firstName: "master",
+      lastName: "master",
     }
     return user
   }

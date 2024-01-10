@@ -1,18 +1,13 @@
-import { Prisma } from "@prisma/client"
+import { z } from "zod"
 
-const bookWithTranlsations = Prisma.validator<Prisma.booksDefaultArgs>()({
-  select: {
-    id: true,
-    sort: true,
-    books_translations: {
-      select: {
-        languages_code: true,
-        name: true,
-      },
-      orderBy: { languages: { sort: "asc" } },
-    },
-  },
+const Translated = z.object({
+  languageCode: z.string().min(2),
+  name: z.string(),
 })
-
+const BookWithTranslationsSchema = z.object({
+  id: z.number().int(),
+  ...Translated.omit({ languageCode: true }).shape,
+  translations: z.array(Translated),
+})
 export interface IBookWithTranslations
-  extends Prisma.booksGetPayload<typeof bookWithTranlsations> {}
+  extends z.infer<typeof BookWithTranslationsSchema> {}

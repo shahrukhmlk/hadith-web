@@ -1,10 +1,10 @@
 import "server-only"
 import prisma from "@/data/prisma"
-import { Prisma } from "@prisma/client"
+import { Prisma, status } from "@prisma/client"
 import { cache } from "react"
 
 export const getStartDate = cache(async () => {
-  const res = await prisma.hadiths.findFirst({
+  const res = await prisma.hadith.findFirst({
     orderBy: {
       date: "asc",
     },
@@ -12,14 +12,14 @@ export const getStartDate = cache(async () => {
       date: true,
     },
     where: {
-      status: "published",
+      status: status.published,
     },
   })
   return res?.date
 })
 
 export const getLastDate = cache(async () => {
-  const res = await prisma.hadiths.findFirst({
+  const res = await prisma.hadith.findFirst({
     orderBy: {
       date: "desc",
     },
@@ -27,7 +27,7 @@ export const getLastDate = cache(async () => {
       date: true,
     },
     where: {
-      status: "published",
+      status: status.published,
     },
   })
   return res?.date

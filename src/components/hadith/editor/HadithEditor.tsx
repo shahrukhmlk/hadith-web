@@ -1,6 +1,6 @@
-import { getBooks } from "@/data/hadith/books"
+import { getBooks } from "@/data/book/booksWithTranslations"
 import { getHadithEditable } from "@/data/hadith/hadith"
-import { getLanguages } from "@/data/hadith/languages"
+import { getLanguages } from "@/data/language/languages"
 import { clsx } from "clsx"
 import HadithEditForm from "../edit-form/HadithEditForm"
 
