@@ -5,6 +5,12 @@ services:
     extends:
       file: ../compose.yml
       service: database
+
+  db_admin:
+    extends:
+      file: ../compose.yml
+      service: db_admin
+
   cache:
     extends:
       file: ../compose.yml
