@@ -11,18 +11,18 @@ services:
       file: ../compose.yml
       service: db_admin
 
-  cache:
-    extends:
-      file: ../compose.yml
-      service: cache
+  # cache:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: cache
 
-  directus:
-    extends:
-      file: ../compose.yml
-      service: directus
-    depends_on:
-      - cache
-      - database
+  # directus:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: directus
+  #   depends_on:
+  #     - cache
+  #     - database
 
   nextjs:
     extends:
@@ -32,5 +32,3 @@ services:
       - ../../src:/app/src
       - ../../public:/app/public
       - ../../prisma:/app/prisma
-    depends_on:
-      - directus
