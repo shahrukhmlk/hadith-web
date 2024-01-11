@@ -1,31 +1,25 @@
 version: "3"
 name: hadith-web-stage
 services:
-  # database:
-  #   extends:
-  #     file: ../compose.yml
-  #     service: database
-  #   env_file:
-  #     - .env.local
   db_admin:
     extends:
       file: ../compose.yml
       service: db_admin
     env_file:
       - .env.local
-  cache:
-    extends:
-      file: ../compose.yml
-      service: cache
+  # cache:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: cache
 
-  directus:
-    extends:
-      file: ../compose.yml
-      service: directus
-    env_file:
-      - .env.local
-    depends_on:
-      - cache
+  # directus:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: directus
+  #   env_file:
+  #     - .env.local
+  #   depends_on:
+  #     - cache
 
   nextjs:
     extends:
