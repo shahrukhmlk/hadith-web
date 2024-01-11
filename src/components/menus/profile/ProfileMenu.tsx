@@ -21,12 +21,19 @@ const ProfileMenu = async ({ className }: IProfileMenu) => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant={"outline"} size={"icon"}>
-          <CircleUserRound />
+        <Button variant={"ghost"} size={"icon"}>
+          <Avatar>
+            <AvatarImage src={session?.user.image ?? ""} />
+            <AvatarFallback>
+              <CircleUserRound />
+            </AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {session?.user ? session.user.name : "My Account"}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {session?.user ? (
           <DropdownMenuItem>
