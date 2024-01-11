@@ -9,29 +9,39 @@ datasource db {
 }
 
 model Book {
-  id              Int               @id @default(autoincrement())
-  dateCreated     DateTime          @default(now()) @db.Timestamptz(6)
-  dateUpdated     DateTime?         @db.Timestamptz(6)
-  userCreated     String?
-  userUpdated     String?
-  status          status            @default(draft)
-  sort            Int?
-  name            String            @db.VarChar
-  translations    BookTranslation[]
-  hadiths         HadithBook[]
+  id            Int               @id @default(autoincrement())
+  dateCreated   DateTime          @default(now()) @db.Timestamptz(6)
+  dateUpdated   DateTime?         @db.Timestamptz(6)
+  userIDCreated String?
+  userIDUpdated String?
+  status        status            @default(draft)
+  sort          Int?
+  name          String            @db.VarChar
+  userCreated   User?             @relation("Book_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookUserCreated")
+  userUpdated   User?             @relation("Book_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookUserUpdated")
+  translations  BookTranslation[]
+  hadiths       HadithBook[]
+
+  @@index([userIDCreated], map: "fki_BookUserCreated")
+  @@index([userIDUpdated], map: "fki_BookUserUpdated")
 }
 
 model Hadith {
-  id                Int                 @id @default(autoincrement())
-  number            Int                 @unique
-  date              DateTime            @unique @db.Date
-  dateCreated       DateTime            @default(now()) @db.Timestamptz(6)
-  dateUpdated       DateTime?           @db.Timestamptz(6)
-  userCreated       String?
-  userUpdated       String?
-  status            status              @default(draft)
-  books             HadithBook[]
-  translations      HadithTranslation[]
+  id            Int                 @id @default(autoincrement())
+  number        Int                 @unique
+  date          DateTime            @unique @db.Date
+  status        status              @default(draft)
+  dateCreated   DateTime            @default(now()) @db.Timestamptz(6)
+  dateUpdated   DateTime?           @db.Timestamptz(6)
+  userIDCreated String?
+  userIDUpdated String?
+  userCreated   User?               @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserCreated")
+  userUpdated   User?               @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserUpdated")
+  books         HadithBook[]
+  translations  HadithTranslation[]
+
+  @@index([userIDCreated], map: "fki_HadithUserCreated")
+  @@index([userIDUpdated], map: "fki_HadithUserUpdated")
 }
 
 model HadithBook {
@@ -47,10 +57,10 @@ model HadithBook {
 }
 
 model Language {
-  code              String              @id @db.VarChar
-  name              String              @db.VarChar
-  rtl               Boolean             @default(false)
-  sort              Int?
+  code               String              @id @db.VarChar
+  name               String              @db.VarChar
+  rtl                Boolean             @default(false)
+  sort               Int?
   bookTranslations   BookTranslation[]
   hadithTranslations HadithTranslation[]
 }
@@ -82,20 +92,19 @@ model BookTranslation {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -109,14 +118,18 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  role          String?
-  accounts      Account[]
-  sessions      Session[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  role           String?
+  accounts       Account[]
+  booksCreated   Book[]    @relation("Book_userIDCreatedToUser")
+  booksUpdated   Book[]    @relation("Book_userIDUpdatedToUser")
+  hadithsCreated Hadith[]  @relation("Hadith_userIDCreatedToUser")
+  hadithsUpdated Hadith[]  @relation("Hadith_userIDUpdatedToUser")
+  sessions       Session[]
 }
 
 model VerificationToken {

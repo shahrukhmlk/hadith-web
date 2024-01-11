@@ -1,5 +1,6 @@
 "use server"
 
+import { auth } from "@/config/auth"
 import prisma from "@/data/prisma"
 import {
   HadithEditFormData,
@@ -8,6 +9,7 @@ import {
 
 export const saveHadith = async (hadith: HadithEditFormData) => {
   HadithEditFormSchema.parse(hadith)
+  const user = (await auth())?.user
   const result = prisma.$transaction(async (tx) => {
     const h = await tx.hadith.upsert({
       where: {
@@ -17,11 +19,14 @@ export const saveHadith = async (hadith: HadithEditFormData) => {
         date: hadith.date,
         number: hadith.number,
         status: hadith.status,
+        dateUpdated: new Date(),
+        userIDUpdated: user?.id,
       },
       create: {
         date: hadith.date,
         number: hadith.number,
         status: hadith.status,
+        userIDCreated: user?.id,
       },
     })
 
