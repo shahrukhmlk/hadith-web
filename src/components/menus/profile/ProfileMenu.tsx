@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { auth } from "@/lib/auth"
+import { auth } from "@/config/auth"
 import { CircleUserRound } from "lucide-react"
 import Link from "next/link"
 
@@ -21,12 +21,19 @@ const ProfileMenu = async ({ className }: IProfileMenu) => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant={"outline"} size={"icon"}>
-          <CircleUserRound />
+        <Button variant={"ghost"} size={"icon"}>
+          <Avatar>
+            <AvatarImage src={session?.user.image ?? ""} />
+            <AvatarFallback>
+              <CircleUserRound />
+            </AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {session?.user ? session.user.name : "My Account"}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {session?.user ? (
           <DropdownMenuItem>

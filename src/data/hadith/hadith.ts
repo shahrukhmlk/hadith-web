@@ -1,11 +1,12 @@
 import "server-only"
-import { IBook, IHadith } from "@/components/hadith/ui/HadithUI"
+import { IHadith, IHadithEditable } from "@/data/models/hadith"
+import { Status } from "@/data/models/status"
 import prisma from "@/data/prisma"
 import { cache } from "react"
 
 export const getHadith = cache(
-  async (date: Date, langs?: string[], status?: string) => {
-    const res = await prisma.hadiths.findUnique({
+  async (date: Date, langs?: string[], status?: Status): Promise<IHadith[]> => {
+    const res = await prisma.hadith.findUnique({
       where: {
         date: date,
         status: status,
@@ -14,28 +15,28 @@ export const getHadith = cache(
         id: true,
         number: true,
         date: true,
-        hadiths_translations: {
+        translations: {
           where: {
-            languages_code: { in: langs },
+            languageCode: { in: langs },
           },
           select: {
             topic: true,
             text: true,
-            languages_code: true,
+            languageCode: true,
           },
-          orderBy: { languages: { sort: "asc" } },
+          orderBy: { language: { sort: "asc" } },
         },
-        hadiths_books: {
+        books: {
           select: {
-            books_id: true,
-            hadith_num: true,
-            books: {
+            bookID: true,
+            hadithRefNumber: true,
+            book: {
               select: {
                 id: true,
-                books_translations: {
-                  where: { languages_code: { in: langs } },
+                translations: {
+                  where: { languageCode: { in: langs } },
                   select: {
-                    languages_code: true,
+                    languageCode: true,
                     name: true,
                   },
                 },
@@ -47,23 +48,69 @@ export const getHadith = cache(
     })
     let hadithArray: IHadith[] = []
     if (res) {
-      res.hadiths_translations.map((hadith) => {
+      res.translations.map((hadith) => {
         hadithArray.push({
           num: res.number,
           topic: hadith.topic,
           date: res.date,
-          lang: hadith.languages_code,
+          lang: hadith.languageCode,
           text: hadith.text,
-          books: res.hadiths_books.map((book) => {
-            const hadithNum = book.hadith_num
-            const bookName = book.books.books_translations.find(
-              (book) => book.languages_code === hadith.languages_code,
-            )?.name
-            return { name: bookName || "", hadithNum: hadithNum }
+          books: res.books.map((book) => {
+            const book2 = book.book.translations.find(
+              (book) => book.languageCode === hadith.languageCode,
+            )
+            return {
+              id: book.book.id,
+              name: book2?.name || "",
+              hadithNum: book.hadithRefNumber,
+            }
           }),
         })
       })
     }
     return hadithArray
+  },
+)
+
+export const getHadithEditable = cache(
+  async (date: Date): Promise<IHadithEditable | null> => {
+    const res = await prisma.hadith.findUnique({
+      where: {
+        date: date,
+      },
+      select: {
+        id: true,
+        number: true,
+        date: true,
+        status: true,
+        translations: {
+          select: {
+            languageCode: true,
+            topic: true,
+            text: true,
+            fontScale: true,
+          },
+          orderBy: { language: { sort: "asc" } },
+        },
+        books: {
+          select: {
+            bookID: true,
+            hadithRefNumber: true,
+            book: {
+              select: {
+                id: true,
+                translations: {
+                  select: {
+                    languageCode: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+    return res
   },
 )

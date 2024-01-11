@@ -1,40 +1,49 @@
+import { Button } from "@/components/ui/button"
+import { isAdmin } from "@/data/auth/roles"
 import { getLastDate } from "@/data/hadith/dates"
 import { getHadith } from "@/data/hadith/hadith"
-import { auth } from "@/lib/auth"
 import clsx from "clsx"
-import HadithUI, { IHadith } from "../ui/HadithUI"
+import Link from "next/link"
+import HadithEditor from "../editor/HadithEditor"
+import HadithUI, { HadithUIProps } from "../ui/HadithUI"
 
 export interface IHadithHoc {
   className?: string
   date?: Date
   langs?: string[]
+  edit?: boolean
 }
 
-const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
+const HadithHoc = async ({ className, date, langs, edit }: IHadithHoc) => {
   /**
    * > Check if date is supplied else use latest date
    * > Check for languages else load locale default if available else default site language
    * > Load hadith for that day and languages from database
    * > Display all hadiths using hadith component.
    */
-  const session = await auth()
-  const lastDate = !session ? await getLastDate() : undefined
+  const admin = await isAdmin()
+  const lastDate = !admin ? await getLastDate() : new Date()
   const selectedDate = date || lastDate
-  let hadiths = new Array<IHadith>()
+  if (admin && edit) {
+    return <HadithEditor date={selectedDate as Date} />
+  }
+  let hadiths = new Array<HadithUIProps>()
   if (selectedDate) {
     hadiths = await getHadith(
       selectedDate,
       langs,
-      !session ? "published" : undefined,
+      !admin ? "published" : undefined,
     )
   }
   return (
     <div
-      className={clsx(
-        "flex max-w-xl flex-col items-center gap-4 p-4",
-        className,
-      )}
+      className={clsx("flex w-full flex-col items-center gap-4 p-4", className)}
     >
+      {admin && !edit && (
+        <Button variant={"secondary"} asChild>
+          <Link href={"?edit=true"}>Edit</Link>
+        </Button>
+      )}
       {hadiths.map((hadith, index) => (
         <HadithUI
           key={index}

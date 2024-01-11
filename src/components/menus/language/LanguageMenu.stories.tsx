@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react"
-import LanguageMenu, { ILanguageMenu } from "./LanguageMenu"
+import LanguageMenu, { LanguageMenuProps } from "./LanguageMenu"
 import { mockLanguageMenuProps } from "./LanguageMenu.mocks"
 
 export default {
@@ -16,4 +16,4 @@ export const Base = Template.bind({})
 
 Base.args = {
   ...mockLanguageMenuProps.base,
-} as ILanguageMenu
+} as LanguageMenuProps

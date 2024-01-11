@@ -4,12 +4,16 @@ import { getLangArrayFromURL } from "@/lib/utils"
 export default function Home({
   searchParams,
 }: {
-  searchParams: { [languages: string]: string | string[] | undefined }
+  searchParams: {
+    [key: string]: string | undefined
+    languages: string | undefined
+    edit: string
+  }
 }) {
   const langs = getLangArrayFromURL(searchParams.languages)
   return (
-    <main className="flex h-full w-full flex-col items-center">
-      <HadithHoc langs={langs} />
+    <main className="h-full w-full">
+      <HadithHoc langs={langs} edit={searchParams.edit === "true"} />
     </main>
   )
 }

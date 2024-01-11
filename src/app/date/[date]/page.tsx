@@ -6,13 +6,21 @@ export default function Home({
   searchParams,
 }: {
   params: { date: string }
-  searchParams: { [languages: string]: string | undefined }
+  searchParams: {
+    [key: string]: string | undefined
+    languages: string | undefined
+    edit: string
+  }
 }) {
   const langs = getLangArrayFromURL(searchParams.languages)
   const dateArray = params.date
   return (
-    <main className="flex h-full w-full flex-col items-center">
-      <HadithHoc date={getDateFromPath(params.date)} langs={langs} />
+    <main className="h-full w-full">
+      <HadithHoc
+        date={getDateFromPath(params.date)}
+        langs={langs}
+        edit={searchParams.edit === "true"}
+      />
     </main>
   )
 }

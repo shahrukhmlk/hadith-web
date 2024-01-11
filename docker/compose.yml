@@ -12,6 +12,17 @@ services:
       - ../data/database:/var/lib/postgresql/data
     env_file:
       - .env.local
+
+  db_admin:
+    image: dpage/pgadmin4:latest
+    env_file:
+      - .env.local
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ../data/pgadmin:/var/lib/pgadmin
+
   cache:
     image: redis:6
 
@@ -41,8 +52,6 @@ services:
     image: nextjs
     env_file:
       - .env.local
-    depends_on:
-      - directus
     restart: always
     ports:
       # Next dev server

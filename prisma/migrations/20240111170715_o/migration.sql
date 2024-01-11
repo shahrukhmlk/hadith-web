@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Hadith" ALTER COLUMN "date" SET DATA TYPE DATE;

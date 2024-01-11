@@ -1,10 +1,16 @@
 version: "3"
 name: hadith-web-stage
 services:
-  database:
+  # database:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: database
+  #   env_file:
+  #     - .env.local
+  db_admin:
     extends:
       file: ../compose.yml
-      service: database
+      service: db_admin
     env_file:
       - .env.local
   cache:
@@ -20,7 +26,6 @@ services:
       - .env.local
     depends_on:
       - cache
-      - database
 
   nextjs:
     extends:
@@ -31,5 +36,3 @@ services:
       dockerfile: docker/staging/Dockerfile
     env_file:
       - .env.local
-    depends_on:
-      - directus

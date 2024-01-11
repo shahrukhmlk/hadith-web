@@ -1,32 +1,26 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
-import { CheckSquare2, Square } from "lucide-react"
+import { ILanguage } from "@/data/models/language"
+import { CheckSquare2, Globe, Square } from "lucide-react"
 import { Route } from "next"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 
-export interface ILanguageMenu {
+export interface LanguageMenuProps {
   className?: string
   languages: ILanguage[]
 }
 
-export interface ILanguage {
-  code: string
-  name: string
-  rtl: boolean
-}
-
-const LanguageMenu = ({ className, languages }: ILanguageMenu) => {
+const LanguageMenu = ({ className, languages }: LanguageMenuProps) => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const langCodes = searchParams.get("languages")?.split(",")
@@ -49,7 +43,9 @@ const LanguageMenu = ({ className, languages }: ILanguageMenu) => {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Show/Hide Languages</NavigationMenuTrigger>
+          <NavigationMenuTrigger>
+            <Globe />
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="flex w-48 flex-col gap-1 p-2">
               {languages.map((language, index) => {

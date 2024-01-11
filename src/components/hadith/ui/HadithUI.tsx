@@ -6,28 +6,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { IHadith } from "@/data/models/hadith"
 import { getFont } from "@/lib/fonts"
 import clsx from "clsx"
 import parse from "html-react-parser"
 import sanitizeHtml from "sanitize-html"
 import styles from "./hadithui.module.scss"
 
-export interface IHadith {
+export interface HadithUIProps extends IHadith {
   className?: string
-  num: number
-  topic: string
-  date: Date
-  lang: string
-  text: string
-  books: IBook[]
 }
 
-export interface IBook {
-  name: string
-  hadithNum: number
-}
-
-const HadithUI = (props: IHadith) => {
+const HadithUI = (props: HadithUIProps) => {
   const html = props.text.replaceAll(
     /("|«|&laquo;).+?("|»|&raquo;)/g,
     "<hadith-nas>$&</hadith-nas>",
@@ -65,13 +55,15 @@ const HadithUI = (props: IHadith) => {
         </CardDescription>
       </CardHeader>
       <CardContent
-        className={clsx("flex flex-1 flex-col justify-center text-center")}
+        className={clsx(
+          "flex flex-1 flex-col justify-center text-center text-xl",
+          props.lang === "ar" || props.lang === "ur" ? "leading-[3.5rem]" : "",
+        )}
       >
         {parsedHTML}
       </CardContent>
       <CardFooter className="justify-end">
         <p>
-          {" "}
           {props.books.map((book, index) => {
             return (
               <span key={index}>

@@ -6,9 +6,9 @@ import "./globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
+import { isAdmin } from "@/data/auth/roles"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
-import { getLanguages } from "@/data/hadith/languages"
-import { auth } from "@/lib/auth"
+import { getLanguages } from "@/data/language/languages"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -22,9 +22,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
-  const startDate = !session ? await getStartDate() : undefined
-  const lastDate = !session ? await getLastDate() : undefined
+  const admin = await isAdmin()
+  const startDate = !admin ? await getStartDate() : undefined
+  const lastDate = !admin ? await getLastDate() : undefined
   const languages = await getLanguages()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
