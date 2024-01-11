@@ -10,6 +10,7 @@ import {
 export const saveHadith = async (hadith: HadithEditFormData) => {
   HadithEditFormSchema.parse(hadith)
   const user = (await auth())?.user
+  console.log(JSON.stringify(user, null, 2))
   const result = prisma.$transaction(async (tx) => {
     const h = await tx.hadith.upsert({
       where: {
