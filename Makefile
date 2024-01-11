@@ -10,6 +10,18 @@ dev-start: ## Start the development docker container.
 dev-stop: ## Stop the development docker container.
 	docker compose -f docker/development/docker-compose.yml down
 
+.PHONY: build-dev-vercel
+dev-vercel-build: ## Build the development docker image.
+	docker compose -f docker/dev-vercel/docker-compose.yml build
+
+.PHONY: start-dev-vercel
+dev-vercel-start: ## Start the development docker container.
+	docker compose -f docker/dev-vercel/docker-compose.yml up -d
+
+.PHONY: stop-dev-vercel
+dev-vercel-stop: ## Stop the development docker container.
+	docker compose -f docker/dev-vercel/docker-compose.yml down
+
 .PHONY: build-staging
 stage-build: ## Build the staging docker image.
 	docker compose -f docker/staging/docker-compose.yml build

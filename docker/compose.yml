@@ -10,13 +10,13 @@ services:
       - 5432:5432
     volumes:
       - ../data/database:/var/lib/postgresql/data
-    env_file:
-      - .env.local
+    # env_file:
+    #   - .env.local
 
   db_admin:
     image: dpage/pgadmin4:latest
-    env_file:
-      - .env.local
+    # env_file:
+    #   - .env.local
     restart: always
     ports:
       - 8080:80
@@ -37,8 +37,8 @@ services:
     volumes:
       - ../data/uploads:/directus/uploads
       - ../data/directus-snapshots:/directus/snapshots
-    env_file:
-      - .env.local
+    # env_file:
+    #   - .env.local
     environment:
       # WEBSOCKETS_ENABLED: true
       CACHE_ENABLED: "true"
@@ -50,8 +50,8 @@ services:
       context: ../
       dockerfile: docker/development/Dockerfile
     image: nextjs
-    env_file:
-      - .env.local
+    # env_file:
+    #   - .env.local
     restart: always
     ports:
       # Next dev server

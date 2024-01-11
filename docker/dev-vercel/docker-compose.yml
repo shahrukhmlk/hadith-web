@@ -1,12 +1,13 @@
 version: "3"
-name: hadith-web-stage
+name: hadith-web-dev-vercel
 services:
   db_admin:
     extends:
       file: ../compose.yml
       service: db_admin
     env_file:
-      - .env.local
+      - ./.env.local
+
   # cache:
   #   extends:
   #     file: ../compose.yml
@@ -16,17 +17,17 @@ services:
   #   extends:
   #     file: ../compose.yml
   #     service: directus
-  #   env_file:
-  #     - .env.local
   #   depends_on:
   #     - cache
+  #     - database
 
   nextjs:
     extends:
       file: ../compose.yml
       service: hadith-nextjs
-    build:
-      context: ../../
-      dockerfile: docker/staging/Dockerfile
+    volumes:
+      - ../../src:/app/src
+      - ../../public:/app/public
+      - ../../prisma:/app/prisma
     env_file:
-      - .env.local
+      - ./.env.local
