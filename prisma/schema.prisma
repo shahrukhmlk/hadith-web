@@ -12,8 +12,8 @@ model Book {
   id              Int               @id @default(autoincrement())
   dateCreated     DateTime          @default(now()) @db.Timestamptz(6)
   dateUpdated     DateTime?         @db.Timestamptz(6)
-  userCreated     Int?
-  userUpdated     Int?
+  userCreated     String?
+  userUpdated     String?
   status          status            @default(draft)
   sort            Int?
   name            String            @db.VarChar
@@ -25,11 +25,11 @@ model Hadith {
   id                Int                 @id @default(autoincrement())
   number            Int                 @unique
   date              DateTime            @unique @db.Date
-  status            status              @default(draft)
   dateCreated       DateTime            @default(now()) @db.Timestamptz(6)
   dateUpdated       DateTime?           @db.Timestamptz(6)
-  userCreated       Int?
-  userUpdated       Int?
+  userCreated       String?
+  userUpdated       String?
+  status            status              @default(draft)
   books             HadithBook[]
   translations      HadithTranslation[]
 }
