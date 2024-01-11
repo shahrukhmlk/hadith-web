@@ -153,6 +153,8 @@ const HadithEditForm = ({
                     <FormControl>
                       <Button
                         variant={"outline"}
+                        // disable editing date till timezone issue is resolved
+                        disabled
                         className={cn(
                           "pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground",
