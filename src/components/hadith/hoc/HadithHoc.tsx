@@ -1,4 +1,4 @@
-import { auth } from "@/config/auth"
+import { isAdmin } from "@/data/auth/roles"
 import { getLastDate } from "@/data/hadith/dates"
 import { getHadith } from "@/data/hadith/hadith"
 import clsx from "clsx"
@@ -18,11 +18,11 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
    * > Load hadith for that day and languages from database
    * > Display all hadiths using hadith component.
    */
-  const session = await auth()
-  const lastDate = !session ? await getLastDate() : new Date()
+  const admin = await isAdmin()
+  const lastDate = !admin ? await getLastDate() : new Date()
   const selectedDate = date || lastDate
   // return <HadithEditor date={selectedDate as Date} />
-  if (session) {
+  if (admin) {
     return <HadithEditor date={selectedDate as Date} />
   }
   let hadiths = new Array<HadithUIProps>()
@@ -30,7 +30,7 @@ const HadithHoc = async ({ className, date, langs }: IHadithHoc) => {
     hadiths = await getHadith(
       selectedDate,
       langs,
-      !session ? "published" : undefined,
+      !admin ? "published" : undefined,
     )
   }
   return (

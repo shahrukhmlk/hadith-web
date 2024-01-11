@@ -8,7 +8,19 @@ export const {
   auth,
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  providers: [Google({})],
+  providers: [
+    Google({
+      /* profile(profile) {
+        return {
+          role: profile.role ?? "user",
+          id: profile.id,
+          email: profile.email,
+          image: profile.image,
+          name: profile.name,
+        }
+      }, */
+    }),
+  ],
   callbacks: {
     session({ session, user }) {
       session.user.role = user.role

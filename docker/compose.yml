@@ -20,6 +20,8 @@ services:
     restart: always
     ports:
       - 8080:80
+    volumes:
+      - ../data/pgadmin:/var/lib/pgadmin
 
   cache:
     image: redis:6
