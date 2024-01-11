@@ -17,8 +17,8 @@ model Book {
   status          status            @default(draft)
   sort            Int?
   name            String            @db.VarChar
-  BookTranslation BookTranslation[]
-  HadithBook      HadithBook[]
+  translations    BookTranslation[]
+  hadiths         HadithBook[]
 }
 
 model Hadith {
@@ -30,16 +30,16 @@ model Hadith {
   dateUpdated       DateTime?           @db.Timestamptz(6)
   userCreated       Int?
   userUpdated       Int?
-  HadithBook        HadithBook[]
-  HadithTranslation HadithTranslation[]
+  books             HadithBook[]
+  translations      HadithTranslation[]
 }
 
 model HadithBook {
   hadithID        Int
   bookID          Int
   hadithRefNumber Int
-  Book            Book   @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Book_id")
-  Hadith          Hadith @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Hadith_id")
+  book            Book   @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Book_id")
+  hadith          Hadith @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Hadith_id")
 
   @@id([hadithID, bookID, hadithRefNumber])
   @@index([hadithID], map: "fki_HadithBook_Hadith_id")
@@ -49,10 +49,10 @@ model HadithBook {
 model Language {
   code              String              @id @db.VarChar
   name              String              @db.VarChar
-  rtl               Boolean?            @default(false)
+  rtl               Boolean             @default(false)
   sort              Int?
-  BookTranslation   BookTranslation[]
-  HadithTranslation HadithTranslation[]
+  bookTranslations   BookTranslation[]
+  hadithTranslations HadithTranslation[]
 }
 
 model HadithTranslation {
@@ -61,8 +61,8 @@ model HadithTranslation {
   topic        String
   text         String
   fontScale    Int      @default(0)
-  Hadith       Hadith   @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_HadithID")
-  Language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
+  hadith       Hadith   @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_HadithID")
+  language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
 
   @@id([hadithID, languageCode])
   @@index([languageCode], map: "fki_HadithTranslation_LanguageCode")
@@ -73,8 +73,8 @@ model BookTranslation {
   bookID       Int
   languageCode String   @db.VarChar
   name         String   @db.VarChar
-  Book         Book     @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_BookID")
-  Language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
+  book         Book     @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_BookID")
+  language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
 
   @@id([bookID, languageCode])
   @@index([bookID], map: "fki_BookTranslation_BookID")

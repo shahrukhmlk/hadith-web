@@ -12,7 +12,7 @@ export const getBooks = cache(
         id: true,
         sort: true,
         name: true,
-        BookTranslation: {
+        translations: {
           where: {
             languageCode: languageCode,
           },
@@ -20,17 +20,11 @@ export const getBooks = cache(
             languageCode: true,
             name: true,
           },
-          orderBy: { Language: { sort: "asc" } },
+          orderBy: { language: { sort: "asc" } },
         },
       },
       orderBy: { sort: "asc" },
     })
-    return res.map((book) => {
-      return {
-        id: book.id,
-        name: book.name,
-        translations: book.BookTranslation,
-      }
-    })
+    return res
   },
 )

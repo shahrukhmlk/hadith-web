@@ -15,7 +15,7 @@ export const getHadith = cache(
         id: true,
         number: true,
         date: true,
-        HadithTranslation: {
+        translations: {
           where: {
             languageCode: { in: langs },
           },
@@ -24,16 +24,16 @@ export const getHadith = cache(
             text: true,
             languageCode: true,
           },
-          orderBy: { Language: { sort: "asc" } },
+          orderBy: { language: { sort: "asc" } },
         },
-        HadithBook: {
+        books: {
           select: {
             bookID: true,
             hadithRefNumber: true,
-            Book: {
+            book: {
               select: {
                 id: true,
-                BookTranslation: {
+                translations: {
                   where: { languageCode: { in: langs } },
                   select: {
                     languageCode: true,
@@ -48,19 +48,19 @@ export const getHadith = cache(
     })
     let hadithArray: IHadith[] = []
     if (res) {
-      res.HadithTranslation.map((hadith) => {
+      res.translations.map((hadith) => {
         hadithArray.push({
           num: res.number,
           topic: hadith.topic,
           date: res.date,
           lang: hadith.languageCode,
           text: hadith.text,
-          books: res.HadithBook.map((book) => {
-            const book2 = book.Book.BookTranslation.find(
+          books: res.books.map((book) => {
+            const book2 = book.book.translations.find(
               (book) => book.languageCode === hadith.languageCode,
             )
             return {
-              id: book.Book.id,
+              id: book.book.id,
               name: book2?.name || "",
               hadithNum: book.hadithRefNumber,
             }
@@ -83,23 +83,23 @@ export const getHadithEditable = cache(
         number: true,
         date: true,
         status: true,
-        HadithTranslation: {
+        translations: {
           select: {
             languageCode: true,
             topic: true,
             text: true,
             fontScale: true,
           },
-          orderBy: { Language: { sort: "asc" } },
+          orderBy: { language: { sort: "asc" } },
         },
-        HadithBook: {
+        books: {
           select: {
             bookID: true,
             hadithRefNumber: true,
-            Book: {
+            book: {
               select: {
                 id: true,
-                BookTranslation: {
+                translations: {
                   select: {
                     languageCode: true,
                     name: true,
@@ -111,17 +111,6 @@ export const getHadithEditable = cache(
         },
       },
     })
-    if (res) {
-      return {
-        id: res.id,
-        number: res.number,
-        date: res.date,
-        status: res.status,
-        translations: res.HadithTranslation,
-        books: res.HadithBook,
-      }
-    } else {
-      return res
-    }
+    return res
   },
 )
