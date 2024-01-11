@@ -18,9 +18,9 @@ export interface IBook {
 
 const Translated = z.object({
   languageCode: z.string().min(2),
-  topic: z.string().min(1),
-  text: z.string().min(1),
-  fontScale: z.number(),
+  topic: z.string().trim().min(1),
+  text: z.string().trim().min(1),
+  fontScale: z.number().int().min(0).max(100),
 })
 
 export const HadithEditableSchema = z.object({
