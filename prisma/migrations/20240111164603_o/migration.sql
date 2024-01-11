@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Hadith" ALTER COLUMN "date" SET DATA TYPE TIMESTAMPTZ(6);

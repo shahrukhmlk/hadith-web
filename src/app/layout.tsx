@@ -12,9 +12,31 @@ import { getLanguages } from "@/data/language/languages"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
+const title = "سلسة الأحاديث النبوية"
+const description = `تحت إشراف "مؤسسة دار المَلِكْ" (بريلي-الهند)`
+
 export const metadata: Metadata = {
-  title: "سلسة الأحاديث النبوية",
-  description: `تحت إشراف "مؤسسة دار المَلِكْ" (بريلي-الهند)`,
+  metadataBase: new URL(`https://${process.env.MAIN_URL}`),
+  title: title,
+  description: description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: title,
+    description: description,
+    url: "/",
+    siteName: title,
+    images: [
+      {
+        url: "/hadith_cover.webp",
+        width: 800,
+        height: 600,
+        alt: title,
+      },
+    ],
+    type: "website",
+  },
 }
 
 export default async function RootLayout({
