@@ -1,0 +1,33 @@
+version: "3"
+name: hadith-web-dev-vercel
+services:
+  db_admin:
+    extends:
+      file: ../compose.yml
+      service: db_admin
+    env_file:
+      - ./.env.local
+
+  # cache:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: cache
+
+  # directus:
+  #   extends:
+  #     file: ../compose.yml
+  #     service: directus
+  #   depends_on:
+  #     - cache
+  #     - database
+
+  nextjs:
+    extends:
+      file: ../compose.yml
+      service: hadith-nextjs
+    volumes:
+      - ../../src:/app/src
+      - ../../public:/app/public
+      - ../../prisma:/app/prisma
+    env_file:
+      - ./.env.local
