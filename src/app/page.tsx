@@ -12,7 +12,7 @@ export default function Home({
 }) {
   const langs = getLangArrayFromURL(searchParams.languages)
   return (
-    <main className="h-full w-full">
+    <main className="flex h-full w-full">
       <HadithHoc langs={langs} edit={searchParams.edit === "true"} />
     </main>
   )
