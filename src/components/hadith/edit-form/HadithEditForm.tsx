@@ -62,6 +62,7 @@ import { useEffect, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import HadithBookSelector from "../book-selector/HadithBookSelector"
+import HadithImageGenerator from "../image-generator/HadithImageGenerator"
 
 export interface IHadithEditForm {
   className?: string
@@ -245,8 +246,16 @@ const HadithEditForm = ({
                         <ScanEye className="mr-2 h-4 w-4" /> Preview
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
-                      fhgdkjfhg sd hgjhfg jsdhlk
+                    <DialogContent className="h-full w-full overflow-scroll">
+                      <HadithImageGenerator
+                        num={form.getValues("number")}
+                        date={date}
+                        topic={item.topic}
+                        text={item.text}
+                        fontScale={item.fontScale}
+                        lang={item.languageCode}
+                        books={[]}
+                      />
                       <DialogFooter>
                         <FormField
                           control={form.control}

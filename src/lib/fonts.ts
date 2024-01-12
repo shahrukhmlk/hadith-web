@@ -1,4 +1,12 @@
-import { Gulzar } from "next/font/google"
+import { Gulzar, Inter } from "next/font/google"
+
+export const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+
+const urdu_nastaliq = Gulzar({
+  weight: "400",
+  subsets: ["arabic"],
+  variable: "--font-urdu",
+})
 
 export const getFont = (language: string) => {
   switch (language) {
@@ -9,9 +17,3 @@ export const getFont = (language: string) => {
       break
   }
 }
-
-const urdu_nastaliq = Gulzar({
-  weight: "400",
-  subsets: ["arabic"],
-  variable: "--font-urdu",
-})

@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button"
 import { getBooks } from "@/data/book/booksWithTranslations"
 import { getHadithEditable } from "@/data/hadith/hadith"
 import { getLanguages } from "@/data/language/languages"
-import Link from "next/link"
 import HadithEditForm from "../edit-form/HadithEditForm"
 
 export interface IHadithEditor {
