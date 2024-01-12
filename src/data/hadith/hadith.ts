@@ -114,3 +114,43 @@ export const getHadithEditable = cache(
     return res
   },
 )
+
+export const getHadithsEditable = cache(
+  async (): Promise<IHadithEditable[]> => {
+    const res = await prisma.hadith.findMany({
+      select: {
+        id: true,
+        number: true,
+        date: true,
+        status: true,
+        translations: {
+          select: {
+            languageCode: true,
+            topic: true,
+            text: true,
+            fontScale: true,
+          },
+          orderBy: { language: { sort: "asc" } },
+        },
+        books: {
+          select: {
+            bookID: true,
+            hadithRefNumber: true,
+            book: {
+              select: {
+                id: true,
+                translations: {
+                  select: {
+                    languageCode: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+    return res
+  },
+)

@@ -11,20 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { IHadithEditable } from "@/data/models/hadith"
 import { Status } from "@/data/models/status"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Hadith = {
-  id: number
-  number: number
-  topic: string
-  status: Status
-}
 
-export const columns: ColumnDef<Hadith>[] = [
+export const columns: ColumnDef<IHadithEditable>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -52,15 +47,15 @@ export const columns: ColumnDef<Hadith>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Number" />
     ),
-    cell: ({ row }) => {
-      return row.getValue("number")
-    },
   },
   {
-    accessorKey: "topic",
+    accessorKey: "date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Topic" />
+      <DataTableColumnHeader column={column} title="Date" />
     ),
+    cell: ({ row }) => {
+      return row.original.date.toDateString()
+    },
   },
   {
     accessorKey: "status",

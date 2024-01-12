@@ -24,12 +24,12 @@ import { useState } from "react"
 import { DataTablePagination } from "./DataTablePagination"
 import { DataTableViewOptions } from "./DataTableViewOptions"
 
-interface DataTableProps<TData, TValue> {
+export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export default function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -59,8 +59,8 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="rounded-md border">
-      <div className="flex items-center py-4">
+    <div className="flex flex-col space-y-2 rounded-md border">
+      {/* <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
@@ -69,10 +69,10 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-      </div>
+      </div> */}
 
-      <DataTableViewOptions table={table} />
-      <Table>
+      {/* <DataTableViewOptions table={table} /> */}
+      <Table className="flex-1">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
