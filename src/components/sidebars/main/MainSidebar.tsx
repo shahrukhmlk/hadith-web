@@ -2,7 +2,7 @@ import clsx from "clsx"
 
 export interface MainSidebarProps {
   className?: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 const MainSidebar = ({ className, children }: MainSidebarProps) => {

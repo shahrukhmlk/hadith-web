@@ -57,15 +57,14 @@ export default async function RootLayout({
       <body className={"flex h-screen w-full flex-col"}>
         <RootProvider>
           <HomeHeader languages={languages} />
-          <div className="flex w-full flex-1 flex-col justify-center pt-16 md:flex-row">
-            <div className="md:order-3 md:flex-1">{children}</div>
-            <MainSidebar className="md:order-1">
-              <HadithCalendar startDate={startDate} lastDate={lastDate} />
-            </MainSidebar>
+          <div className="flex w-full flex-1 flex-col pt-16">
+            {children}
+            {/* <div className="md:order-3 md:flex-1">{children}</div>
+            <MainSidebar className="md:order-1"></MainSidebar>
             <Separator
               orientation={"vertical"}
               className="hidden md:order-2 md:block"
-            />
+            /> */}
           </div>
           <ThemeSwitchUtility className="fixed bottom-4 right-4" />
         </RootProvider>
