@@ -10,16 +10,11 @@ import { useRef } from "react"
 import { Button, DayProps, useDayRender } from "react-day-picker"
 
 export interface IHadithCalendar {
-  className?: string
   startDate?: Date
   lastDate?: Date
 }
 
-const HadithCalendar = ({
-  className,
-  startDate,
-  lastDate,
-}: IHadithCalendar) => {
+const HadithCalendar = ({ startDate, lastDate }: IHadithCalendar) => {
   const pathname = usePathname()
   const selectedDate = getDateFromPath(pathname) || lastDate
   return (

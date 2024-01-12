@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Inter, Noto_Nastaliq_Urdu } from "next/font/google"
 import "./globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
+import MainSidebar from "@/components/sidebars/main/MainSidebar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { isAdmin } from "@/data/auth/roles"
@@ -53,11 +54,11 @@ export default async function RootLayout({
       <body className={"flex h-screen w-full flex-col"}>
         <RootProvider>
           <HomeHeader languages={languages} />
-          <div className="flex w-full flex-1 flex-col justify-center pb-11 pt-16 md:flex-row">
+          <div className="flex w-full flex-1 flex-col justify-center pt-16 md:flex-row">
             <div className="md:order-3 md:flex-1">{children}</div>
-            <div className="flex flex-col p-4 md:order-1">
+            <MainSidebar className="md:order-1">
               <HadithCalendar startDate={startDate} lastDate={lastDate} />
-            </div>
+            </MainSidebar>
             <Separator
               orientation={"vertical"}
               className="hidden md:order-2 md:block"
