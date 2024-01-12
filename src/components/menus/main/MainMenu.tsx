@@ -6,6 +6,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
+import { ROUTES } from "@/constants/routs"
 import { Route } from "next"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
@@ -16,8 +17,9 @@ export interface IMainMenu {
 
 const MainMenu = ({ className }: IMainMenu) => {
   const pathName = usePathname()
-  const menuItems = [
-    { path: "/?" + useSearchParams().toString(), text: "Home" },
+  let menuItems = [
+    { path: ROUTES.HOME + "?" + useSearchParams().toString(), text: "Home" },
+    { path: ROUTES.ADMIN, text: "Admin" },
   ]
   const menuItemsUI = menuItems.map((item, index) => (
     <NavigationMenuItem key={index}>

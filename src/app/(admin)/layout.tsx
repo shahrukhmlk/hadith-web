@@ -6,10 +6,12 @@ import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
 import MainSidebar from "@/components/sidebars/main/MainSidebar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
+import { ROUTES } from "@/constants/routs"
 import { isAdmin } from "@/data/auth/roles"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
 import { getLanguages } from "@/data/language/languages"
 import { inter } from "@/lib/fonts"
+import { redirect } from "next/navigation"
 
 const title = "Admin"
 const description = "Admin"
@@ -44,8 +46,11 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const admin = await isAdmin()
-  const startDate = !admin ? await getStartDate() : undefined
-  const lastDate = !admin ? await getLastDate() : undefined
+  if (!admin) {
+    redirect(ROUTES.LOGIN)
+  }
+  const startDate = /* !admin ? await getStartDate() : */ undefined
+  const lastDate = /* !admin ? await getLastDate() : */ undefined
   const languages = await getLanguages()
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
