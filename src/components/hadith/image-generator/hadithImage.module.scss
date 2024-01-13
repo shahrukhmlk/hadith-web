@@ -1,0 +1,27 @@
+.hadithImage {
+  hadith-nas {
+    font-size: 2em;
+  }
+  &:lang(en) {
+    direction: ltr;
+    line-height: 1;
+    hadith-nas {
+      @apply font-semibold;
+    }
+  }
+  &:lang(ar),
+  &:lang(ur) {
+    direction: rtl;
+  }
+  &:lang(ar) {
+    font-family: var(--font-arabic-normal);
+    hadith-nas {
+      font-family: var(--font-arabic-nas);
+    }
+  }
+  &:lang(ur) {
+    font-family: var(--font-urdu-kasheeda);
+    hadith-nas {
+    }
+  }
+}

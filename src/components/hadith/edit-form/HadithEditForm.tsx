@@ -56,6 +56,7 @@ import {
 } from "@/data/validators/hadith-edit"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import clsx from "clsx"
 import { format } from "date-fns"
 import { CalendarDays, Minus, MinusSquare, Plus, ScanEye } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -111,7 +112,7 @@ const HadithEditForm = ({
             languageCode: hadithT.languageCode,
             topic: hadithT.topic,
             text: hadithT.text,
-            fontScale: hadithT.fontScale || 0,
+            fontScale: hadithT.fontScale,
           }
         }),
       )
@@ -135,7 +136,9 @@ const HadithEditForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={"flex w-full flex-1 flex-col sm:flex-row sm:justify-start"}
+        className={clsx(
+          "flex w-full flex-1 flex-col sm:flex-row sm:justify-start",
+        )}
       >
         <div className="flex-1 space-y-4 p-4">
           <FormField
@@ -238,46 +241,51 @@ const HadithEditForm = ({
                   )}
                 />
                 <div className="flex flex-row flex-wrap justify-end gap-2">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button type="button" variant={"secondary"}>
-                        <ScanEye className="mr-2 h-4 w-4" /> Preview
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="h-full w-full overflow-scroll">
-                      <HadithImageGenerator
-                        num={form.getValues("number")}
-                        date={form.getValues("date")}
-                        topic={item.topic}
-                        text={item.text}
-                        fontScale={item.fontScale}
-                        lang={item.languageCode}
-                        books={[]}
-                      />
-                      <DialogFooter>
-                        <FormField
-                          control={form.control}
-                          name={`translations.${index}.fontScale`}
-                          render={({ field }) => (
+                  <FormField
+                    control={form.control}
+                    name={`translations.${index}.fontScale`}
+                    render={({ field }) => (
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button type="button" variant={"secondary"}>
+                            <ScanEye className="mr-2 h-4 w-4" /> Preview
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="h-full w-full overflow-scroll">
+                          <HadithImageGenerator
+                            num={form.getValues("number")}
+                            date={form.getValues("date")}
+                            topic={form.getValues(
+                              `translations.${index}.topic`,
+                            )}
+                            text={form.getValues(`translations.${index}.text`)}
+                            fontScale={field.value}
+                            lang={form.getValues(
+                              `translations.${index}.languageCode`,
+                            )}
+                            books={[]}
+                          />
+                          <DialogFooter>
                             <FormItem className="flex-1">
-                              <FormLabel>Font Scale</FormLabel>
+                              <FormLabel>Font Scale: {field.value}</FormLabel>
                               <FormControl>
                                 <Slider
                                   value={[field.value]}
                                   onValueChange={(value) =>
                                     form.setValue(field.name, value[0])
                                   }
+                                  min={-100}
                                   max={100}
                                   step={1}
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
-                          )}
-                        />
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                  />
 
                   <AlertDialog>
                     <AlertDialogTrigger asChild>

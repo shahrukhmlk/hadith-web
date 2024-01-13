@@ -1,15 +1,36 @@
 import { IHadith } from "@/data/models/hadith"
 import clsx from "clsx"
+import parse from "html-react-parser"
+import sanitizeHtml from "sanitize-html"
+import { arabicNas, arabicNormal, rumooz, urduKasheeda } from "./fontsLoader"
+import styles from "./hadithImage.module.scss"
 
 export interface HadithImageGeneratorProps extends IHadith {
   fontScale: number
 }
 
 const HadithImageGenerator = (props: HadithImageGeneratorProps) => {
+  const html = props.text.replaceAll(
+    /("|«|&laquo;).+?("|»|&raquo;)/g,
+    "<hadith-nas>$&</hadith-nas>",
+  )
+  const parsedHTML = parse(
+    sanitizeHtml(html, {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+        "hadith-nas",
+        "ramz",
+      ]),
+    }),
+  )
   return (
     <div
+      lang={props.lang}
       className={clsx(
-        "hadithImage",
+        styles.hadithImage,
+        rumooz.variable,
+        arabicNas.variable,
+        arabicNormal.variable,
+        urduKasheeda.variable,
         "flex h-[500px] w-[500px] flex-col items-stretch",
       )}
     >
@@ -23,10 +44,17 @@ const HadithImageGenerator = (props: HadithImageGeneratorProps) => {
       </div>
       <div
         className={clsx(
-          "flex flex-1 items-center justify-center bg-white text-black",
+          "flex flex-1 items-center justify-center bg-white text-[20px]",
         )}
       >
-        <p>{props.text}</p>
+        <div
+          className="w-full whitespace-pre-line p-4 text-center align-baseline text-black"
+          style={{
+            fontSize: props.fontScale / 100 + 1 + "em",
+          }}
+        >
+          {parsedHTML}
+        </div>
       </div>
       <div className={clsx("flex h-[50px] items-center bg-slate-800")}>
         Footer
