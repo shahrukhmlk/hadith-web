@@ -251,7 +251,7 @@ const HadithEditForm = ({
                             <ScanEye className="mr-2 h-4 w-4" /> Preview
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="h-full w-full overflow-scroll">
+                        <DialogContent className="h-full pt-8">
                           <HadithImageGenerator
                             num={form.getValues("number")}
                             date={form.getValues("date")}
@@ -266,7 +266,7 @@ const HadithEditForm = ({
                             books={[]}
                           />
                           <DialogFooter>
-                            <FormItem className="flex-1">
+                            <FormItem>
                               <FormLabel>Font Scale: {field.value}</FormLabel>
                               <FormControl>
                                 <Slider
@@ -274,13 +274,14 @@ const HadithEditForm = ({
                                   onValueChange={(value) =>
                                     form.setValue(field.name, value[0])
                                   }
-                                  min={-100}
+                                  min={-99}
                                   max={100}
                                   step={1}
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
+                            <Button>OK</Button>
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>

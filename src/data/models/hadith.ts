@@ -20,7 +20,7 @@ const Translated = z.object({
   languageCode: z.string().min(2),
   topic: z.string().trim().min(1),
   text: z.string().trim().min(1),
-  fontScale: z.number().int().min(-100).max(100),
+  fontScale: z.number().int().min(-99).max(100),
 })
 
 export const HadithEditableSchema = z.object({
