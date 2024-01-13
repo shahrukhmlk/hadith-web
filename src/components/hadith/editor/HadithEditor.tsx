@@ -5,23 +5,14 @@ import HadithEditForm from "../edit-form/HadithEditForm"
 
 export interface IHadithEditor {
   className?: string
-  date: Date
+  hadithID: number
 }
 
-const HadithEditor = async ({ className, date }: IHadithEditor) => {
+const HadithEditor = async ({ className, hadithID }: IHadithEditor) => {
   const languages = await getLanguages()
   const books = await getBooks()
-  const hadith = await getHadithEditable(date)
-  if (languages && books) {
-  }
-  return (
-    <HadithEditForm
-      languages={languages}
-      books={books}
-      hadith={hadith}
-      date={date}
-    />
-  )
+  const hadith = await getHadithEditable(undefined, hadithID)
+  return <HadithEditForm languages={languages} books={books} hadith={hadith} />
 }
 
 export default HadithEditor

@@ -69,7 +69,6 @@ export interface IHadithEditForm {
   languages: ILanguage[]
   books: IBookWithTranslations[]
   hadith: IHadithEditable | null
-  date: Date
 }
 
 const HadithEditForm = ({
@@ -77,7 +76,6 @@ const HadithEditForm = ({
   languages,
   books,
   hadith,
-  date,
 }: IHadithEditForm) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -88,7 +86,7 @@ const HadithEditForm = ({
   const defaultFormValues = {
     number: 0,
     status: Status.draft,
-    date: date,
+    date: new Date(),
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
     fontScale: 0,
@@ -104,7 +102,7 @@ const HadithEditForm = ({
   useEffect(() => {
     if (hadith) {
       form.setValue("number", hadith.number || 0)
-      form.setValue("date", hadith.date || date)
+      form.setValue("date", hadith.date || new Date())
       form.setValue("status", hadith.status || "draft")
       bookFields.replace(hadith.books)
       translationFields.replace(
@@ -249,7 +247,7 @@ const HadithEditForm = ({
                     <DialogContent className="h-full w-full overflow-scroll">
                       <HadithImageGenerator
                         num={form.getValues("number")}
-                        date={date}
+                        date={form.getValues("date")}
                         topic={item.topic}
                         text={item.text}
                         fontScale={item.fontScale}
