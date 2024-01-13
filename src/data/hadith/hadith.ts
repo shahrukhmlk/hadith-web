@@ -73,13 +73,18 @@ export const getHadith = cache(
 )
 
 export const getHadithEditable = cache(
-  async (date?: Date, id?: number): Promise<IHadithEditable | null> => {
+  async (
+    date?: Date,
+    id?: number,
+    hadithNumber?: number,
+  ): Promise<IHadithEditable | null> => {
     console.log("date", date)
     console.log("id", id)
     const res = await prisma.hadith.findUnique({
       where: {
         date: date,
         id: id,
+        number: hadithNumber,
       },
       select: {
         id: true,

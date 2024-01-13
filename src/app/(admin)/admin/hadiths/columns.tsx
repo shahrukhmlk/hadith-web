@@ -63,7 +63,9 @@ export const columns: ColumnDef<IHadithEditable>[] = [
     cell: ({ row }) => {
       const hadith = row.original
       return (
-        <Link href={`${ROUTES.ADMIN_HADITH}/${hadith.id}` as Route}>Edit</Link>
+        <Link href={`${ROUTES.ADMIN_HADITH}/${hadith.number}` as Route}>
+          Edit
+        </Link>
       )
     },
   },
