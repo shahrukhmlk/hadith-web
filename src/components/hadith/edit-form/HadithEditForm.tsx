@@ -58,12 +58,20 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { format } from "date-fns"
-import { CalendarDays, Minus, MinusSquare, Plus, ScanEye } from "lucide-react"
-import { useEffect, useState } from "react"
+import {
+  CalendarDays,
+  Loader2,
+  Minus,
+  MinusSquare,
+  Plus,
+  ScanEye,
+} from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import HadithBookSelector from "../book-selector/HadithBookSelector"
 import HadithImageGenerator from "../image-generator/HadithImageGenerator"
+import HadithImagePreview from "../image-preview/HadithImagePreview"
 
 export interface IHadithEditForm {
   className?: string
@@ -252,7 +260,7 @@ const HadithEditForm = ({
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="h-full pt-8">
-                          <HadithImageGenerator
+                          <HadithImagePreview
                             num={form.getValues("number")}
                             date={form.getValues("date")}
                             topic={form.getValues(
@@ -272,7 +280,7 @@ const HadithEditForm = ({
                                 <Slider
                                   value={[field.value]}
                                   onValueChange={(value) =>
-                                    form.setValue(field.name, value[0])
+                                    field.onChange(value)
                                   }
                                   min={-99}
                                   max={100}
@@ -515,6 +523,9 @@ const HadithEditForm = ({
                     <FormMessage />
                   </div>
                   <Button type="submit" disabled={loading}>
+                    {loading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : null}
                     {hadith ? "Save Changes" : "Save new hadith"}
                   </Button>
                 </FormItem>
