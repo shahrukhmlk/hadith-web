@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { getSelectColumn } from "@/components/ui/data-table/columns"
 import { DataTableColumnHeader } from "@/components/ui/data-table/DataTableColumnHeader"
 import { ROUTES } from "@/constants/routs"
 import { IHadithEditable } from "@/data/models/hadith"
@@ -15,28 +16,7 @@ import Link from "next/link"
 // You can use a Zod schema here if you want.
 
 export const columns: ColumnDef<IHadithEditable>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  getSelectColumn<IHadithEditable>(),
   {
     accessorKey: "number",
     header: ({ column }) => (
