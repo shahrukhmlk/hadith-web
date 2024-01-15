@@ -5,6 +5,7 @@
   &:lang(en) {
     direction: ltr;
     line-height: 1;
+    font-family: var(--font-cairo);
     hadith-nas {
       @apply font-semibold;
     }

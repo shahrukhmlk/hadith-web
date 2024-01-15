@@ -12,6 +12,7 @@ import {
   aadil,
   arabicNas,
   arabicNormal,
+  cairo,
   rumooz,
   urduKasheeda,
 } from "./fontsLoader"
@@ -52,6 +53,7 @@ const HadithImageGenerator = forwardRef(
             arabicNormal.variable,
             urduKasheeda.variable,
             aadil.variable,
+            cairo.variable,
             "relative flex h-[300px] w-[300px] flex-col items-stretch bg-white text-[10px]",
           )}
         >

@@ -333,7 +333,7 @@ const HadithEditForm = ({
               control={form.control}
               name="number"
               render={({ field }) => (
-                <FormItem className="max-w-12">
+                <FormItem className="max-w-24">
                   <FormControl>
                     <Input
                       placeholder="Serial Number"
