@@ -15,12 +15,6 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -43,7 +37,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
-import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 import { saveHadith } from "@/data/hadith/save-hadith"
 import { IBookWithTranslations } from "@/data/models/book"
@@ -58,19 +51,11 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { format } from "date-fns"
-import {
-  CalendarDays,
-  Loader2,
-  Minus,
-  MinusSquare,
-  Plus,
-  ScanEye,
-} from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { CalendarDays, Loader2, Minus, MinusSquare, Plus } from "lucide-react"
+import { useEffect, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import HadithBookSelector from "../book-selector/HadithBookSelector"
-import HadithImageGenerator from "../image-generator/HadithImageGenerator"
 import HadithImagePreview from "../image-preview/HadithImagePreview"
 
 export interface IHadithEditForm {
@@ -253,49 +238,20 @@ const HadithEditForm = ({
                     control={form.control}
                     name={`translations.${index}.fontScale`}
                     render={({ field }) => (
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button type="button" variant={"secondary"}>
-                            <ScanEye className="mr-2 h-4 w-4" /> Preview
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="h-full pt-8">
-                          <HadithImagePreview
-                            num={form.getValues("number")}
-                            date={form.getValues("date")}
-                            topic={form.getValues(
-                              `translations.${index}.topic`,
-                            )}
-                            text={form.getValues(`translations.${index}.text`)}
-                            fontScale={field.value}
-                            lang={form.getValues(
-                              `translations.${index}.languageCode`,
-                            )}
-                            books={[]}
-                          />
-                          <DialogFooter>
-                            <FormItem>
-                              <FormLabel>Font Scale: {field.value}</FormLabel>
-                              <FormControl>
-                                <Slider
-                                  value={[field.value]}
-                                  onValueChange={(value) =>
-                                    field.onChange(value)
-                                  }
-                                  min={-99}
-                                  max={100}
-                                  step={1}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                            <Button>OK</Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
+                      <HadithImagePreview
+                        num={form.getValues("number")}
+                        date={form.getValues("date")}
+                        topic={form.getValues(`translations.${index}.topic`)}
+                        text={form.getValues(`translations.${index}.text`)}
+                        fontScale={field.value}
+                        lang={form.getValues(
+                          `translations.${index}.languageCode`,
+                        )}
+                        books={[]}
+                        onFontScaleChange={field.onChange}
+                      />
                     )}
                   />
-
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button type="button" variant={"destructive"}>

@@ -11,7 +11,7 @@ export interface HadithImageGeneratorProps extends IHadith {
 }
 
 const HadithImageGenerator = forwardRef(
-  (props: HadithImageGeneratorProps, ref: ForwardedRef<null>) => {
+  (props: HadithImageGeneratorProps, ref: ForwardedRef<HTMLDivElement>) => {
     const html = props.text.replaceAll(
       /("|«|&laquo;).+?("|»|&raquo;)/g,
       "<hadith-nas>$&</hadith-nas>",
