@@ -35,6 +35,7 @@ model Hadith {
   dateUpdated   DateTime?           @db.Timestamptz(6)
   userIDCreated String?
   userIDUpdated String?
+  color         String             @default("#000000") @db.VarChar
   userCreated   User?               @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserCreated")
   userUpdated   User?               @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserUpdated")
   books         HadithBook[]

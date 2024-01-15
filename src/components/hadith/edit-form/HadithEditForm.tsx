@@ -53,7 +53,7 @@ import clsx from "clsx"
 import { format } from "date-fns"
 import { CalendarDays, Loader2, Minus, MinusSquare, Plus } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import HadithBookSelector from "../book-selector/HadithBookSelector"
 import HadithImagePreview from "../image-preview/HadithImagePreview"
@@ -81,23 +81,25 @@ const HadithEditForm = ({
     number: 0,
     status: Status.draft,
     date: new Date(),
+    color: "#000000",
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
-    fontScale: 0,
   }
   const form = useForm<HadithEditFormData>({
     resolver: zodResolver(HadithEditFormSchema),
     defaultValues: defaultFormValues,
   })
   const { control } = form
+  const watchColor = useWatch({ control, name: "color" })
   const translationFields = useFieldArray({ name: "translations", control })
   const bookFields = useFieldArray({ name: "books", control })
 
   useEffect(() => {
     if (hadith) {
-      form.setValue("number", hadith.number || 0)
-      form.setValue("date", hadith.date || new Date())
-      form.setValue("status", hadith.status || "draft")
+      form.setValue("number", hadith.number)
+      form.setValue("date", hadith.date)
+      form.setValue("status", hadith.status)
+      form.setValue("color", hadith.color)
       bookFields.replace(hadith.books)
       translationFields.replace(
         hadith.translations.map((hadithT) => {
@@ -241,14 +243,16 @@ const HadithEditForm = ({
                       <HadithImagePreview
                         num={form.getValues("number")}
                         date={form.getValues("date")}
+                        color={watchColor}
+                        onColorChange={(color) => form.setValue("color", color)}
                         topic={form.getValues(`translations.${index}.topic`)}
                         text={form.getValues(`translations.${index}.text`)}
                         fontScale={field.value}
+                        onFontScaleChange={field.onChange}
                         lang={form.getValues(
                           `translations.${index}.languageCode`,
                         )}
                         books={[]}
-                        onFontScaleChange={field.onChange}
                       />
                     )}
                   />

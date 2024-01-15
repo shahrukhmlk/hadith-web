@@ -5,6 +5,7 @@ export interface IHadith {
   num: number
   date: Date
   topic: string
+  color: string
   lang: string
   text: string
   books: IBook[]
@@ -28,6 +29,7 @@ export const HadithEditableSchema = z.object({
   number: z.coerce.number().int().min(1),
   date: z.date(),
   status: z.nativeEnum(Status),
+  color: z.string().trim().min(1),
   translations: z.array(Translated).min(1).max(4),
   books: z
     .array(

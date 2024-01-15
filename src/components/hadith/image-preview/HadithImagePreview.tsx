@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { IHadith } from "@/data/models/hadith"
 import Panzoom, { PanzoomObject } from "@panzoom/panzoom"
@@ -19,6 +21,8 @@ import HadithImageGenerator from "../image-generator/HadithImageGenerator"
 export interface HadithImagePreviewProps extends IHadith {
   fontScale: number
   onFontScaleChange: (fontScale: number) => void
+  color: string
+  onColorChange: (color: string) => void
 }
 
 const HadithImagePreview = ({ ...props }: HadithImagePreviewProps) => {
@@ -31,12 +35,16 @@ const HadithImagePreview = ({ ...props }: HadithImagePreviewProps) => {
     if (imageDivRef.current) {
       panzoom = Panzoom(imageDivRef.current, {
         //contain: "outside",
+        //startY: 150,
         startScale: 1,
+        canvas: true,
       })
       imageDivRef.current.parentElement?.addEventListener(
         "wheel",
         panzoom.zoomWithWheel,
       )
+
+      //document.documentElement.style.setProperty("--hadith-color", props.color)
     }
     return () => {
       panzoom?.destroy()
@@ -63,7 +71,7 @@ const HadithImagePreview = ({ ...props }: HadithImagePreviewProps) => {
           <ScanEye className="mr-2 h-4 w-4" /> Preview
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-full max-h-[85vh]">
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Preview</DialogTitle>
           <DialogDescription>
@@ -79,6 +87,12 @@ const HadithImagePreview = ({ ...props }: HadithImagePreviewProps) => {
             min={-99}
             max={100}
             step={1}
+          />
+          <Input
+            id="color"
+            value={props.color}
+            onChange={(e) => props.onColorChange(e.target.value)}
+            type="color"
           />
           <Button onClick={generateImage} disabled={generatingImage}>
             {generatingImage ? (

@@ -16,4 +16,8 @@ const urduKasheeda = localFont({
   src: "./fonts/urdu-kasheeda.ttf",
   variable: "--font-urdu-kasheeda",
 })
-export { arabicNas, arabicNormal, rumooz, urduKasheeda }
+const aadil = localFont({
+  src: "./fonts/aadil.ttf",
+  variable: "--font-aadil",
+})
+export { arabicNas, arabicNormal, rumooz, urduKasheeda, aadil }

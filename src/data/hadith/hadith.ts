@@ -15,6 +15,7 @@ export const getHadith = cache(
         id: true,
         number: true,
         date: true,
+        color: true,
         translations: {
           where: {
             languageCode: { in: langs },
@@ -53,6 +54,7 @@ export const getHadith = cache(
           num: res.number,
           topic: hadith.topic,
           date: res.date,
+          color: res.color,
           lang: hadith.languageCode,
           text: hadith.text,
           books: res.books.map((book) => {
@@ -89,6 +91,7 @@ export const getHadithEditable = cache(
         number: true,
         date: true,
         status: true,
+        color: true,
         translations: {
           select: {
             languageCode: true,
@@ -129,6 +132,7 @@ export const getHadithsEditable = cache(
         number: true,
         date: true,
         status: true,
+        color: true,
         translations: {
           select: {
             languageCode: true,

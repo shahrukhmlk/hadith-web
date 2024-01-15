@@ -19,6 +19,7 @@ export const saveHadith = async (hadith: HadithEditFormData) => {
         date: hadith.date,
         number: hadith.number,
         status: hadith.status,
+        color: hadith.color,
         dateUpdated: new Date(),
         userIDUpdated: user?.id,
       },
@@ -26,6 +27,7 @@ export const saveHadith = async (hadith: HadithEditFormData) => {
         date: hadith.date,
         number: hadith.number,
         status: hadith.status,
+        color: hadith.color,
         userIDCreated: user?.id,
       },
     })
