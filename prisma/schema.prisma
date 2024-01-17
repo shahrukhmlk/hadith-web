@@ -14,7 +14,7 @@ model Book {
   dateUpdated   DateTime?         @db.Timestamptz(6)
   userIDCreated String?
   userIDUpdated String?
-  status        status            @default(draft)
+  status        Status            @default(draft)
   sort          Int?
   name          String            @db.VarChar
   userCreated   User?             @relation("Book_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookUserCreated")
@@ -28,14 +28,17 @@ model Book {
 
 model Hadith {
   id            Int                 @id @default(autoincrement())
-  number        Int                 @unique
-  date          DateTime            @unique @db.Date
-  status        status              @default(draft)
   dateCreated   DateTime            @default(now()) @db.Timestamptz(6)
   dateUpdated   DateTime?           @db.Timestamptz(6)
   userIDCreated String?
   userIDUpdated String?
-  color         String             @default("#000000") @db.VarChar
+  number        Int                 @unique
+  date          DateTime            @unique @db.Date
+  color         String              @default("#000000") @db.VarChar
+  fontScale     Int                 @default(0)
+  status        Status              @default(draft)
+  topic         String
+  text          String
   userCreated   User?               @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserCreated")
   userUpdated   User?               @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserUpdated")
   books         HadithBook[]
@@ -67,27 +70,43 @@ model Language {
 }
 
 model HadithTranslation {
-  hadithID     Int
-  languageCode String   @db.VarChar
-  topic        String
-  text         String
-  fontScale    Int      @default(0)
-  hadith       Hadith   @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_HadithID")
-  language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
+  hadithID      Int
+  languageCode  String    @db.VarChar
+  dateCreated   DateTime  @default(now()) @db.Timestamptz(6)
+  dateUpdated   DateTime? @db.Timestamptz(6)
+  userIDCreated String?
+  userIDUpdated String?
+  topic         String
+  text          String
+  fontScale     Int       @default(0)
+  userCreated   User?     @relation("HadithTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
+  userUpdated   User?     @relation("HadithTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
+  hadith        Hadith    @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_HadithID")
+  language      Language  @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
 
   @@id([hadithID, languageCode])
+  @@index([userIDCreated], map: "fki_HadithTranslationUserCreated")
+  @@index([userIDUpdated], map: "fki_HadithTranslationUserUpdated")
   @@index([languageCode], map: "fki_HadithTranslation_LanguageCode")
   @@index([hadithID], map: "fki_HadithTranslation_HadithID")
 }
 
 model BookTranslation {
-  bookID       Int
-  languageCode String   @db.VarChar
-  name         String   @db.VarChar
-  book         Book     @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_BookID")
-  language     Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
+  bookID        Int
+  languageCode  String    @db.VarChar
+  dateCreated   DateTime  @default(now()) @db.Timestamptz(6)
+  dateUpdated   DateTime? @db.Timestamptz(6)
+  userIDCreated String?
+  userIDUpdated String?
+  name          String    @db.VarChar
+  userCreated   User?     @relation("BookTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserCreated")
+  userUpdated   User?     @relation("BookTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserUpdated")
+  book          Book      @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_BookID")
+  language      Language  @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
 
   @@id([bookID, languageCode])
+  @@index([userIDCreated], map: "fki_BookTranslationUserCreated")
+  @@index([userIDUpdated], map: "fki_BookTranslationUserUpdated")
   @@index([bookID], map: "fki_BookTranslation_BookID")
   @@index([languageCode], map: "fki_BookTranslation_LanguageCode")
 }
@@ -119,18 +138,22 @@ model Session {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  role           String?
-  accounts       Account[]
-  booksCreated   Book[]    @relation("Book_userIDCreatedToUser")
-  booksUpdated   Book[]    @relation("Book_userIDUpdatedToUser")
-  hadithsCreated Hadith[]  @relation("Hadith_userIDCreatedToUser")
-  hadithsUpdated Hadith[]  @relation("Hadith_userIDUpdatedToUser")
-  sessions       Session[]
+  id                         String              @id @default(cuid())
+  name                       String?
+  email                      String?             @unique
+  emailVerified              DateTime?
+  image                      String?
+  role                       String?
+  accounts                   Account[]
+  sessions                   Session[]
+  booksCreated               Book[]              @relation("Book_userIDCreatedToUser")
+  booksUpdated               Book[]              @relation("Book_userIDUpdatedToUser")
+  hadithsCreated             Hadith[]            @relation("Hadith_userIDCreatedToUser")
+  hadithsUpdated             Hadith[]            @relation("Hadith_userIDUpdatedToUser")
+  bookTranslationsCreated    BookTranslation[]   @relation("BookTranslation_userIDCreatedToUser")
+  bookTranslationsUpdated    BookTranslation[]   @relation("BookTranslation_userIDUpdatedToUser")
+  hadithTranslationsCreated  HadithTranslation[] @relation("HadithTranslation_userIDCreatedToUser")
+  hadithTranslationssUpdated HadithTranslation[] @relation("HadithTranslation_userIDUpdatedToUser")
 }
 
 model VerificationToken {
@@ -141,8 +164,10 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-enum status {
+enum Status {
   draft
   published
   archived
+
+  @@map("Status")
 }
