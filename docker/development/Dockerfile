@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json* ./
+COPY .npmrc .
 RUN npm ci;
 
 COPY src ./src

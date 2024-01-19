@@ -4,6 +4,11 @@ module.exports = {
   experimental: {
     typedRoutes: true,
   },
+  transpilePackages: [
+    "@refinedev/nextjs-router",
+    "@refinedev/antd",
+    "@refinedev/inferencer",
+  ],
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>

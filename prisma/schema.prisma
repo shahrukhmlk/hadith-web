@@ -169,5 +169,4 @@ enum Status {
   published
   archived
 
-  @@map("Status")
 }
