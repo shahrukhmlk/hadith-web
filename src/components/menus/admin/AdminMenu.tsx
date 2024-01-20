@@ -11,15 +11,15 @@ import { Route } from "next"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 
-export interface IMainMenu {
+export interface AdminMenuProps {
   className?: string
 }
 
-const MainMenu = ({ className }: IMainMenu) => {
+const AdminMenu = ({ className }: AdminMenuProps) => {
   const pathName = usePathname()
   let menuItems = [
-    { path: ROUTES.HOME + "?" + useSearchParams().toString(), text: "Home" },
-    { path: ROUTES.ADMIN, text: "Admin" },
+    { path: ROUTES.HOME, text: "Home" },
+    { path: ROUTES.ADMIN.ROOT, text: "Admin" },
   ]
   const menuItemsUI = menuItems.map((item, index) => (
     <NavigationMenuItem key={index}>
@@ -39,5 +39,4 @@ const MainMenu = ({ className }: IMainMenu) => {
     </NavigationMenu>
   )
 }
-
-export default MainMenu
+export default AdminMenu

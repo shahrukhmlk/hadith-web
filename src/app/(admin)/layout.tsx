@@ -2,6 +2,11 @@ import { isAdmin } from "@/data/auth/roles"
 import { inter } from "@/lib/fonts"
 import RootProvider from "@/providers/RootProvider"
 import type { Metadata } from "next"
+import "@/app/globals.css"
+import AdminHeader from "@/components/headers/admin/AdminHeader"
+import AdminSidebar from "@/components/sidebars/admin/AdminSidebar"
+import { Separator } from "@/components/ui/separator"
+import { redirect, RedirectType } from "next/navigation"
 
 const title = "Admin"
 const description = "Admin"
@@ -36,10 +41,22 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const admin = await isAdmin()
+  if (!admin) {
+    redirect("/api/auth/signin")
+  }
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className={"flex h-screen w-full flex-col"}>
-        <RootProvider>{children}</RootProvider>
+        <RootProvider>
+          <AdminHeader />
+          <div className="flex h-full w-full flex-wrap pt-16">
+            <AdminSidebar className="hidden sm:block" />
+            <Separator className="hidden sm:block" orientation={"vertical"} />
+            <div className="min-w-[50%] flex-grow-[999] basis-0">
+              {children}
+            </div>
+          </div>
+        </RootProvider>
       </body>
     </html>
   )

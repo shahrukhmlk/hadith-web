@@ -1,7 +1,7 @@
 "use client"
 
 import { Calendar } from "@/components/ui/calendar"
-import { ROUTES } from "@/constants/routs"
+import { ROUTES } from "@/constants/routes"
 import { getDateFromPath } from "@/lib/utils"
 import { format } from "date-fns"
 import { Route } from "next"
