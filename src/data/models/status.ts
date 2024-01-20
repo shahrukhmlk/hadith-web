@@ -1,3 +1,3 @@
-import { status } from "@prisma/client"
+import { Status } from "@prisma/client"
 
-export { status as Status }
+export { Status }

@@ -3,6 +3,10 @@ module.exports = {
   output: "standalone",
   experimental: {
     typedRoutes: true,
+    serverComponentsExternalPackages: [
+      "@zenstackhq/runtime",
+      "@zenstackhq/server",
+    ],
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports

@@ -1,6 +1,6 @@
 import "server-only"
+import { Status } from "@/data/models/status"
 import prisma from "@/data/prisma"
-import { Prisma, status } from "@prisma/client"
 import { cache } from "react"
 
 export const getStartDate = cache(async () => {
@@ -12,7 +12,7 @@ export const getStartDate = cache(async () => {
       date: true,
     },
     where: {
-      status: status.published,
+      status: Status.published,
     },
   })
   return res?.date
@@ -27,7 +27,7 @@ export const getLastDate = cache(async () => {
       date: true,
     },
     where: {
-      status: status.published,
+      status: Status.published,
     },
   })
   return res?.date

@@ -15,6 +15,7 @@ COPY postcss.config.js .
 COPY tailwind.config.js .
 # copy prsima schema
 COPY prisma ./prisma
+COPY zmodel ./zmodel
 # Copy story book
 COPY .storybook ./.storybook
 

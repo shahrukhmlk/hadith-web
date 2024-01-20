@@ -36,5 +36,6 @@ services:
       - ../../src:/app/src
       - ../../public:/app/public
       - ../../prisma:/app/prisma
+      - ../../zmodel:/app/zmodel
     env_file:
       - .env.local

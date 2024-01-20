@@ -53,3 +53,7 @@ certificates
 /directus_email
 /db_password
 /db_user
+
+# Prisma generated
+/prisma/*
+!/prisma/.gitkeep
