@@ -1,10 +1,7 @@
 import { isAdmin } from "@/data/auth/roles"
 import { inter } from "@/lib/fonts"
-import AntdConfigProvider from "@/providers/AntdConfigProivder"
-import { AntdRegistry } from "@ant-design/nextjs-registry"
+import RootProvider from "@/providers/RootProvider"
 import type { Metadata } from "next"
-import "@refinedev/antd/dist/reset.css"
-import RefineProvider from "@/providers/refine"
 
 const title = "Admin"
 const description = "Admin"
@@ -42,11 +39,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className={"flex h-screen w-full flex-col"}>
-        <AntdRegistry>
-          <AntdConfigProvider>
-            <RefineProvider>{children}</RefineProvider>
-          </AntdConfigProvider>
-        </AntdRegistry>
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   )

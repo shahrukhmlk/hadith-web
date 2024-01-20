@@ -3,12 +3,11 @@ module.exports = {
   output: "standalone",
   experimental: {
     typedRoutes: true,
+    serverComponentsExternalPackages: [
+      "@zenstackhq/runtime",
+      "@zenstackhq/server",
+    ],
   },
-  transpilePackages: [
-    "@refinedev/nextjs-router",
-    "@refinedev/antd",
-    "@refinedev/inferencer",
-  ],
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>

@@ -4,7 +4,6 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json* ./
-COPY .npmrc .
 RUN npm ci;
 
 COPY src ./src
@@ -16,6 +15,7 @@ COPY postcss.config.js .
 COPY tailwind.config.js .
 # copy prsima schema
 COPY prisma ./prisma
+COPY zmodel ./zmodel
 # Copy story book
 COPY .storybook ./.storybook
 
