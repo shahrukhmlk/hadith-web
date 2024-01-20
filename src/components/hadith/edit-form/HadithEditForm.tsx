@@ -39,14 +39,14 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { saveHadith } from "@/data/hadith/save-hadith"
-import { IBookWithTranslations } from "@/data/models/book"
-import { IHadithEditable } from "@/data/models/hadith"
-import { ILanguage } from "@/data/models/language"
-import { Status } from "@/data/models/status"
+import { IBook } from "@/data/models/book/book"
 import {
-  HadithEditFormData,
-  HadithEditFormSchema,
-} from "@/data/validators/hadith-edit"
+  HadithDetailsSchema,
+  IHadith,
+  IHadithDetails,
+} from "@/data/models/hadith/hadith"
+import { ILanguage } from "@/data/models/language/language"
+import { Status } from "@/data/models/status/status"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
@@ -59,18 +59,12 @@ import HadithBookSelector from "../book-selector/HadithBookSelector"
 import HadithImagePreview from "../image-preview/HadithImagePreview"
 
 export interface IHadithEditForm {
-  className?: string
   languages: ILanguage[]
-  books: IBookWithTranslations[]
-  hadith: IHadithEditable | null
+  books: IBook[]
+  hadith: IHadithDetails | null
 }
 
-const HadithEditForm = ({
-  className,
-  languages,
-  books,
-  hadith,
-}: IHadithEditForm) => {
+const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const defaultBooksValue = [{ bookID: 0, hadithRefNumber: 0 }]
@@ -82,11 +76,14 @@ const HadithEditForm = ({
     status: Status.draft,
     date: new Date(),
     color: "#000000",
+    topic: "",
+    text: "",
+    fontScale: 0,
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
   }
-  const form = useForm<HadithEditFormData>({
-    resolver: zodResolver(HadithEditFormSchema),
+  const form = useForm<IHadithDetails>({
+    resolver: zodResolver(HadithDetailsSchema),
     defaultValues: defaultFormValues,
   })
   const { control } = form
@@ -100,6 +97,9 @@ const HadithEditForm = ({
       form.setValue("date", hadith.date)
       form.setValue("status", hadith.status)
       form.setValue("color", hadith.color)
+      form.setValue("topic", hadith.topic)
+      form.setValue("text", hadith.text)
+      form.setValue("fontScale", hadith.fontScale)
       bookFields.replace(hadith.books)
       translationFields.replace(
         hadith.translations.map((hadithT) => {
@@ -113,7 +113,7 @@ const HadithEditForm = ({
       )
     }
   }, [])
-  const onSubmit = (values: HadithEditFormData) => {
+  const onSubmit = (values: IHadithDetails) => {
     console.log(values)
     setLoading(true)
     saveHadith(values)
@@ -135,7 +135,7 @@ const HadithEditForm = ({
           "flex w-full flex-1 flex-col sm:flex-row sm:justify-start",
         )}
       >
-        <div className="flex-1 space-y-4 p-4">
+        {/* <div className="flex-1 space-y-4 p-4">
           <FormField
             control={form.control}
             name="translations"
@@ -283,7 +283,7 @@ const HadithEditForm = ({
               </div>
             )
           })}
-        </div>
+        </div> */}
         <Separator orientation={"vertical"} />
         <HadithEditSidebar className="space-y-4">
           <div className="flex space-x-2">

@@ -2,13 +2,10 @@
 
 import { auth } from "@/config/auth"
 import prisma from "@/data/prisma"
-import {
-  HadithEditFormData,
-  HadithEditFormSchema,
-} from "@/data/validators/hadith-edit"
+import { HadithDetailsSchema, IHadithDetails } from "../models/hadith/hadith"
 
-export const saveHadith = async (hadith: HadithEditFormData) => {
-  HadithEditFormSchema.parse(hadith)
+export const saveHadith = async (hadith: IHadithDetails) => {
+  HadithDetailsSchema.parse(hadith)
   const user = (await auth())?.user
   const result = prisma.$transaction(async (tx) => {
     const h = await tx.hadith.upsert({
@@ -20,6 +17,9 @@ export const saveHadith = async (hadith: HadithEditFormData) => {
         number: hadith.number,
         status: hadith.status,
         color: hadith.color,
+        text: hadith.text,
+        topic: hadith.topic,
+        fontScale: hadith.fontScale,
         dateUpdated: new Date(),
         userIDUpdated: user?.id,
       },
@@ -28,6 +28,9 @@ export const saveHadith = async (hadith: HadithEditFormData) => {
         number: hadith.number,
         status: hadith.status,
         color: hadith.color,
+        text: hadith.text,
+        topic: hadith.topic,
+        fontScale: hadith.fontScale,
         userIDCreated: user?.id,
       },
     })

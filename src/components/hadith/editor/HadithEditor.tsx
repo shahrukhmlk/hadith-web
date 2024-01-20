@@ -1,16 +1,16 @@
 import { getBooks } from "@/data/book/booksWithTranslations"
 import { getHadithEditable } from "@/data/hadith/hadith"
-import { getLanguages } from "@/data/language/languages"
+import { getLanguages } from "@/data/language/getLanguages"
 import HadithEditForm from "../edit-form/HadithEditForm"
 
 export interface IHadithEditor {
-  hadithNumber: number
+  hadithID?: number
 }
 
-const HadithEditor = async ({ hadithNumber }: IHadithEditor) => {
+const HadithEditor = async ({ hadithID }: IHadithEditor) => {
   const languages = await getLanguages()
   const books = await getBooks()
-  const hadith = await getHadithEditable(undefined, undefined, hadithNumber)
+  const hadith = hadithID ? await getHadithEditable(hadithID) : null
   return <HadithEditForm languages={languages} books={books} hadith={hadith} />
 }
 

@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { isAdmin } from "@/data/auth/roles"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
-import { getLanguages } from "@/data/language/languages"
+import { getLanguages } from "@/data/language/getLanguages"
 import { inter } from "@/lib/fonts"
 
 const title = "سلسة الأحاديث النبوية"

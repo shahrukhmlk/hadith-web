@@ -14,15 +14,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { IBookWithTranslations } from "@/data/models/book"
-import { cn } from "@/lib/utils"
+import { IBook } from "@/data/models/book/book"
 import clsx from "clsx"
 import * as React from "react"
 
 export interface HadithBookSelectorProps {
   className?: string
-  books: IBookWithTranslations[]
-  selectedBook?: IBookWithTranslations
+  books: IBook[]
+  selectedBook?: IBook
   onBookSelect: (bookID: number) => void
 }
 
@@ -54,12 +53,7 @@ const HadithBookSelector = ({
           <Command
             filter={(value, search) => {
               const book = books.find((book) => book.id === parseInt(value))
-              if (
-                book?.translations.find((bookT) =>
-                  bookT.name.includes(search),
-                ) ||
-                book?.name.includes(search)
-              ) {
+              if (book?.name.includes(search)) {
                 return 1
               } else {
                 return 0

@@ -2,10 +2,10 @@ import { z } from "zod"
 import { Status } from "../status/status"
 
 export const IDNumberSchema = z.object({
-  id: z.number(),
+  id: z.number().int(),
 })
 export const IDStringSchema = z.object({
-  id: z.number(),
+  id: z.string(),
 })
 
 export const TranslationSchema = z.object({

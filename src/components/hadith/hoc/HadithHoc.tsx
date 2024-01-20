@@ -1,7 +1,7 @@
 import { isAdmin } from "@/data/auth/roles"
 import { getLastDate } from "@/data/hadith/dates"
 import { getHadith } from "@/data/hadith/hadith"
-import { Status } from "@/data/models/status"
+import { Status } from "@/data/models/status/status"
 import clsx from "clsx"
 import HadithUI, { HadithUIProps } from "../ui/HadithUI"
 

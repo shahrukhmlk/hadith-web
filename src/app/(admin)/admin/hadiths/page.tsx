@@ -5,7 +5,7 @@ import { columns } from "./columns"
 export default async function Home() {
   const hadiths = await getHadiths()
   return (
-    <main className="flex h-full w-full">
+    <main className="h-full w-full">
       <DataTable columns={columns} data={hadiths} />
     </main>
   )

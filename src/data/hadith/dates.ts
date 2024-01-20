@@ -1,7 +1,7 @@
 import "server-only"
-import { Status } from "@/data/models/status"
 import prisma from "@/data/prisma"
 import { cache } from "react"
+import { Status } from "../models/status/status"
 
 export const getStartDate = cache(async () => {
   const res = await prisma.hadith.findFirst({
