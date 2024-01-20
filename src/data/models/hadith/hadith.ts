@@ -7,10 +7,12 @@ const TranslatedSchema = z.object({
   fontScale: z.number().int().min(-99).max(100),
 })
 
-const HadithSchema = IDNumberSchema.merge(StatusSchema).extend({
-  number: z.coerce.number().int().min(1),
-  date: z.date(),
-})
+const HadithSchema = IDNumberSchema.merge(StatusSchema)
+  .merge(TranslatedSchema)
+  .extend({
+    number: z.coerce.number().int().min(1),
+    date: z.date(),
+  })
 type Hadith = z.infer<typeof HadithSchema>
 export interface IHadith extends Hadith {}
 

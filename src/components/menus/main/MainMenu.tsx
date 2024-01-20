@@ -19,7 +19,7 @@ const MainMenu = ({ className }: IMainMenu) => {
   const pathName = usePathname()
   let menuItems = [
     { path: ROUTES.HOME + "?" + useSearchParams().toString(), text: "Home" },
-    { path: ROUTES.ADMIN, text: "Admin" },
+    { path: ROUTES.ADMIN.ROOT, text: "Admin" },
   ]
   const menuItemsUI = menuItems.map((item, index) => (
     <NavigationMenuItem key={index}>

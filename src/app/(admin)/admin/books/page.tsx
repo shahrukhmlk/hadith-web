@@ -1,12 +1,12 @@
 import DataTable from "@/components/ui/data-table/DataTable"
-import { getHadiths } from "@/data/hadith/getHadiths"
+import { getBooks } from "@/data/book/getBooks"
 import { columns } from "./columns"
 
 export default async function Home() {
-  const hadiths = await getHadiths()
+  const books = await getBooks()
   return (
     <main className="flex h-full w-full">
-      <DataTable columns={columns} data={hadiths} />
+      <DataTable columns={columns} data={books} />
     </main>
   )
 }

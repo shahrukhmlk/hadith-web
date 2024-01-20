@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { Status } from "../status"
+import { Status } from "../status/status"
 
 export const IDNumberSchema = z.object({
   id: z.number(),

@@ -1,5 +1,5 @@
 import "server-only"
-import { ILanguage } from "@/data/models/language"
+import { ILanguage } from "@/data/models/language/language"
 import prisma from "@/data/prisma"
 import { cache } from "react"
 

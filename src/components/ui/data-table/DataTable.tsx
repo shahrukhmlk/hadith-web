@@ -21,6 +21,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useState } from "react"
+import { getSelectColumn } from "./columns"
 import { DataTablePagination } from "./DataTablePagination"
 import { DataTableViewOptions } from "./DataTableViewOptions"
 
@@ -40,7 +41,7 @@ export default function DataTable<TData, TValue>({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: [getSelectColumn<TData>(), ...columns],
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
