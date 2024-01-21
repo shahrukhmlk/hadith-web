@@ -57,3 +57,6 @@ certificates
 # Prisma generated
 /prisma/*
 !/prisma/.gitkeep
+
+# zenstackGenerated
+/src/lib/hooks/query

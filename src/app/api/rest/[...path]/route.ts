@@ -15,7 +15,6 @@ async function getPrisma(req: NextRequest) {
 const handler = NextRequestHandler({
   getPrisma,
   useAppDir: true,
-  handler: RestApiHandler({ endpoint: "http://localhost/api/rest" }),
 })
 
 export {

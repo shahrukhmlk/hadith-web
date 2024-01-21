@@ -14,6 +14,13 @@ plugin prisma {
     format = true
 }
 
+plugin hooks {
+  provider = '@zenstackhq/tanstack-query'
+  target = 'react'
+  version = 'v5'
+  output = '../src/lib/hooks/query'
+}
+
 model Book {
     id Int @id @default(autoincrement())
     dateCreated DateTime @default(now()) @db.Timestamptz(6)
