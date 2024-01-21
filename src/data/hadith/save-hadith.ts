@@ -2,10 +2,13 @@
 
 import { auth } from "@/config/auth"
 import prisma from "@/data/prisma"
-import { HadithDetailsSchema, IHadithDetails } from "../models/hadith/hadith"
+import {
+  HadithDetailsEditSchema,
+  IHadithDetailsEdit,
+} from "../models/hadith/hadith"
 
-export const saveHadith = async (hadith: IHadithDetails) => {
-  HadithDetailsSchema.parse(hadith)
+export const saveHadith = async (hadith: IHadithDetailsEdit) => {
+  HadithDetailsEditSchema.parse(hadith)
   const user = (await auth())?.user
   const result = prisma.$transaction(async (tx) => {
     const h = await tx.hadith.upsert({

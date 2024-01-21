@@ -34,3 +34,11 @@ export const HadithDetailsSchema = HadithSchema.merge(TranslatedSchema).extend({
 })
 type HadithDetails = z.infer<typeof HadithDetailsSchema>
 export interface IHadithDetails extends HadithDetails {}
+
+export const HadithDetailsEditSchema = HadithDetailsSchema.merge(
+  z.object({
+    id: z.number().int().optional(),
+  }),
+)
+type HadithDetailsEdit = z.infer<typeof HadithDetailsEditSchema>
+export interface IHadithDetailsEdit extends HadithDetailsEdit {}

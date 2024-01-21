@@ -1,6 +1,5 @@
 import { isAdmin } from "@/data/auth/roles"
 import { getLastDate } from "@/data/hadith/dates"
-import { getHadith } from "@/data/hadith/hadith"
 import { Status } from "@/data/models/status/status"
 import clsx from "clsx"
 import HadithUI, { HadithUIProps } from "../ui/HadithUI"
@@ -24,7 +23,7 @@ const HadithHoc = async ({ className, date, langs, edit }: IHadithHoc) => {
   const selectedDate = date || lastDate
   let hadiths = new Array<HadithUIProps>()
   if (selectedDate) {
-    hadiths = await getHadith(selectedDate, langs, Status.published)
+    //hadiths = await getHadith(selectedDate, langs, Status.published)
   }
   return (
     <div

@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
-import { IHadith } from "@/data/models/hadith"
+import { IHadith } from "@/data/models/hadith/hadith"
 import Panzoom, { PanzoomObject } from "@panzoom/panzoom"
 import html2canvas from "html2canvas"
 import { Image, Loader2, ScanEye } from "lucide-react"

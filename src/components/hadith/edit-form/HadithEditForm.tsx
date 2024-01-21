@@ -41,9 +41,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { saveHadith } from "@/data/hadith/save-hadith"
 import { IBook } from "@/data/models/book/book"
 import {
-  HadithDetailsSchema,
-  IHadith,
+  HadithDetailsEditSchema,
   IHadithDetails,
+  IHadithDetailsEdit,
 } from "@/data/models/hadith/hadith"
 import { ILanguage } from "@/data/models/language/language"
 import { Status } from "@/data/models/status/status"
@@ -69,7 +69,8 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
   const [loading, setLoading] = useState(false)
   const defaultBooksValue = [{ bookID: 0, hadithRefNumber: 0 }]
   const defaultTranslationsValue = [
-    { languageCode: "ar", topic: "", text: "", fontScale: 0 },
+    { languageCode: "ur", topic: "", text: "", fontScale: 0 },
+    { languageCode: "en", topic: "", text: "", fontScale: 0 },
   ]
   const defaultFormValues = {
     number: 0,
@@ -82,8 +83,8 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
     translations: defaultTranslationsValue,
     books: defaultBooksValue,
   }
-  const form = useForm<IHadithDetails>({
-    resolver: zodResolver(HadithDetailsSchema),
+  const form = useForm<IHadithDetailsEdit>({
+    resolver: zodResolver(HadithDetailsEditSchema),
     defaultValues: defaultFormValues,
   })
   const { control } = form
@@ -93,6 +94,7 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
 
   useEffect(() => {
     if (hadith) {
+      form.setValue("id", hadith.id)
       form.setValue("number", hadith.number)
       form.setValue("date", hadith.date)
       form.setValue("status", hadith.status)
@@ -113,7 +115,7 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
       )
     }
   }, [])
-  const onSubmit = (values: IHadithDetails) => {
+  const onSubmit = (values: IHadithDetailsEdit) => {
     console.log(values)
     setLoading(true)
     saveHadith(values)
@@ -135,7 +137,34 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
           "flex w-full flex-1 flex-col sm:flex-row sm:justify-start",
         )}
       >
-        {/* <div className="flex-1 space-y-4 p-4">
+        <div className="flex-1 space-y-4 p-4">
+          <FormField
+            control={form.control}
+            name={"topic"}
+            render={({ field }) => (
+              <FormItem className="min-w-full flex-1">
+                <FormLabel>Topic</FormLabel>
+                <FormControl>
+                  <Input dir="auto" placeholder="Topic" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"text"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Text</FormLabel>
+                <FormControl>
+                  <Textarea dir="rtl" className="resize-none" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="translations"
@@ -236,12 +265,12 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
                   )}
                 />
                 <div className="flex flex-row flex-wrap justify-end gap-2">
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name={`translations.${index}.fontScale`}
                     render={({ field }) => (
                       <HadithImagePreview
-                        num={form.getValues("number")}
+                        number={form.getValues("number")}
                         date={form.getValues("date")}
                         color={watchColor}
                         onColorChange={(color) => form.setValue("color", color)}
@@ -255,7 +284,7 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
                         books={[]}
                       />
                     )}
-                  />
+                  /> */}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button type="button" variant={"destructive"}>
@@ -283,7 +312,7 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
               </div>
             )
           })}
-        </div> */}
+        </div>
         <Separator orientation={"vertical"} />
         <HadithEditSidebar className="space-y-4">
           <div className="flex space-x-2">
@@ -494,7 +523,6 @@ const HadithEditForm = ({ languages, books, hadith }: IHadithEditForm) => {
           </div>
         </HadithEditSidebar>
       </form>
-      {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
     </Form>
   )
 }
