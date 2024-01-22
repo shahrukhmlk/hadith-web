@@ -14,6 +14,8 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -23,7 +25,7 @@ import {
 import { useState } from "react"
 import { getSelectColumn } from "./columns"
 import { DataTablePagination } from "./DataTablePagination"
-import { DataTableViewOptions } from "./DataTableViewOptions"
+import { DataTableToolbar } from "./DataTableToolbar"
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -48,6 +50,8 @@ export default function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     // onRowSelectionChange: setRowSelection,
     // onColumnVisibilityChange: setColumnVisibility,
 
@@ -60,19 +64,9 @@ export default function DataTable<TData, TValue>({
   })
 
   return (
-    <div>
-      {/* <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("status")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div> */}
-      {/* <DataTableViewOptions table={table} /> */}
-      <div className="flex flex-col space-y-2 rounded-md border">
+    <div className="space-y-4">
+      <DataTableToolbar table={table} />
+      <div className="rounded-md border">
         <Table className="flex-1">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

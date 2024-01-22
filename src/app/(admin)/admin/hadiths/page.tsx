@@ -5,7 +5,7 @@ import { columns } from "./columns"
 export default async function Home() {
   const hadiths = await getHadiths()
   return (
-    <main className="h-full w-full">
+    <main>
       <DataTable columns={columns} data={hadiths} />
     </main>
   )
