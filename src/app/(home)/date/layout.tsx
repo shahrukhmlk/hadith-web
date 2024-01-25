@@ -1,16 +1,12 @@
-import HomeHeader from "@/components/headers/Home/HomeHeader"
-import RootProvider from "@/providers/RootProvider"
-import type { Metadata } from "next"
-import { Inter, Noto_Nastaliq_Urdu } from "next/font/google"
-import "@/app/globals.css"
 import HadithCalendar from "@/components/hadith/calendar/HadithCalendar"
+import HomeHeader from "@/components/headers/Home/HomeHeader"
 import MainSidebar from "@/components/sidebars/main/MainSidebar"
 import { Separator } from "@/components/ui/separator"
 import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { isAdmin } from "@/data/auth/roles"
 import { getLastDate, getStartDate } from "@/data/hadith/dates"
 import { getLanguages } from "@/data/language/getLanguages"
-import { inter } from "@/lib/fonts"
+import type { Metadata } from "next"
 
 const title = "سلسة الأحاديث النبوية"
 const description = `تحت إشراف "مؤسسة دار المَلِكْ" (بريلي-الهند)`
@@ -49,23 +45,19 @@ export default async function RootLayout({
   const lastDate = !admin ? await getLastDate() : undefined
   const languages = await getLanguages()
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className={"flex h-screen w-full flex-col"}>
-        <RootProvider>
-          <HomeHeader languages={languages} />
-          <div className="flex w-full flex-1 flex-col justify-center pt-16 md:flex-row">
-            <div className="md:order-3 md:flex-1">{children}</div>
-            <MainSidebar className="md:order-1">
-              <HadithCalendar startDate={startDate} lastDate={lastDate} />
-            </MainSidebar>
-            <Separator
-              orientation={"vertical"}
-              className="hidden md:order-2 md:block"
-            />
-          </div>
-          <ThemeSwitchUtility className="fixed bottom-4 right-4" />
-        </RootProvider>
-      </body>
-    </html>
+    <>
+      <HomeHeader languages={languages} />
+      <div className="flex w-full flex-1 flex-col justify-center pt-16 md:flex-row">
+        <div className="md:order-3 md:flex-1">{children}</div>
+        <MainSidebar className="md:order-1">
+          <HadithCalendar startDate={startDate} lastDate={lastDate} />
+        </MainSidebar>
+        <Separator
+          orientation={"vertical"}
+          className="hidden md:order-2 md:block"
+        />
+      </div>
+      <ThemeSwitchUtility className="fixed bottom-4 right-4" />
+    </>
   )
 }

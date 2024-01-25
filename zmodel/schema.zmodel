@@ -1,3 +1,4 @@
+import "base"
 generator client {
     provider = "prisma-client-js"
 }
@@ -15,18 +16,14 @@ plugin prisma {
 }
 
 plugin hooks {
-  provider = '@zenstackhq/tanstack-query'
-  target = 'react'
-  version = 'v5'
-  output = '../src/lib/hooks/query'
+    provider = '@zenstackhq/tanstack-query'
+    target = 'react'
+    version = 'v5'
+    output = '../src/lib/hooks/query'
 }
 
-model Book {
+model Book extends Base {
     id Int @id @default(autoincrement())
-    dateCreated DateTime @default(now()) @db.Timestamptz(6)
-    dateUpdated DateTime? @db.Timestamptz(6)
-    userIDCreated String?
-    userIDUpdated String?
     status Status @default(draft)
     sort Int?
     name String
@@ -37,14 +34,11 @@ model Book {
 
     @@index([userIDCreated], map: "fki_BookUserCreated")
     @@index([userIDUpdated], map: "fki_BookUserUpdated")
+    @@allow('all', auth().role == "admin")
 }
 
-model Hadith {
+model Hadith extends Base {
     id Int @id @default(autoincrement())
-    dateCreated DateTime @default(now()) @db.Timestamptz(6)
-    dateUpdated DateTime? @db.Timestamptz(6)
-    userIDCreated String?
-    userIDUpdated String?
     number Int @unique
     date DateTime @unique @db.Date
     color String @default("#000000")
@@ -82,15 +76,13 @@ model Language {
     sort Int?
     bookTranslations BookTranslation[]
     hadithTranslations HadithTranslation[]
+        @@allow('all', auth().role == "admin")
+
 }
 
-model HadithTranslation {
+model HadithTranslation extends Base {
     hadithID Int
     languageCode String
-    dateCreated DateTime @default(now()) @db.Timestamptz(6)
-    dateUpdated DateTime? @db.Timestamptz(6)
-    userIDCreated String?
-    userIDUpdated String?
     topic String
     text String
     fontScale Int @default(0)
@@ -106,13 +98,9 @@ model HadithTranslation {
     @@index([hadithID], map: "fki_HadithTranslation_HadithID")
 }
 
-model BookTranslation {
+model BookTranslation extends Base {
     bookID Int
     languageCode String
-    dateCreated DateTime @default(now()) @db.Timestamptz(6)
-    dateUpdated DateTime? @db.Timestamptz(6)
-    userIDCreated String?
-    userIDUpdated String?
     name String
     userCreated User? @relation("BookTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserCreated")
     userUpdated User? @relation("BookTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserUpdated")
@@ -124,6 +112,8 @@ model BookTranslation {
     @@index([userIDUpdated], map: "fki_BookTranslationUserUpdated")
     @@index([bookID], map: "fki_BookTranslation_BookID")
     @@index([languageCode], map: "fki_BookTranslation_LanguageCode")
+        @@allow('all', auth().role == "admin")
+
 }
 
 model Account {

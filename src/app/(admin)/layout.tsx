@@ -45,19 +45,16 @@ export default async function RootLayout({
     redirect("/api/auth/signin")
   }
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className={"flex h-screen w-full flex-col"}>
-        <RootProvider>
-          <AdminHeader />
-          <div className="flex h-full w-full flex-wrap pt-16">
-            <AdminSidebar className="hidden sm:block" />
-            <Separator className="hidden sm:block" orientation={"vertical"} />
-            <div className="min-w-[50%] flex-grow-[999] basis-0">
-              {children}
-            </div>
-          </div>
-        </RootProvider>
-      </body>
-    </html>
+    <>
+      <AdminHeader />
+      <div className="flex w-full flex-1 flex-wrap pt-16">
+        <AdminSidebar className="hidden sm:block" />
+        <Separator
+          className="hidden h-auto sm:block"
+          orientation={"vertical"}
+        />
+        <div className="min-w-[50%] flex-grow-[999] basis-0">{children}</div>
+      </div>
+    </>
   )
 }

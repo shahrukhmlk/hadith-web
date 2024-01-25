@@ -6,9 +6,9 @@
     "schema": "zmodel/schema.zmodel"
   },
   "scripts": {
-    "dev": "zenstack generate && prisma generate && next dev",
-    "dev-sb": "prisma generate && concurrently npm:dev npm:storybook",
-    "build": "prisma generate && next build",
+    "dev": "next dev",
+    "dev-sb": "concurrently npm:dev npm:storybook",
+    "build": "zenstack generate && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",

@@ -1,6 +1,8 @@
 "use client"
 
 import { Toaster } from "@/components/ui/sonner"
+import { API_ROUTES } from "@/constants/routes"
+import { Provider as ZenStackHooksProvider } from "@/lib/hooks/query"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ThemeProvider } from "next-themes"
 import { useState } from "react"
@@ -29,7 +31,9 @@ export default function RootProvider({
   return (
     <ThemeProvider attribute="class" disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <ZenStackHooksProvider value={{ endpoint: API_ROUTES.TRPC }}>
+          {children}
+        </ZenStackHooksProvider>
         <Toaster />
       </QueryClientProvider>
     </ThemeProvider>

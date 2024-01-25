@@ -10,3 +10,6 @@ export const ROUTES = {
   LOGIN: "/api/auth/signin",
   HADITH_BY_DATE: "/date",
 }
+export const API_ROUTES = {
+  TRPC: "/api/default",
+}
