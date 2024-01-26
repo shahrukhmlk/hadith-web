@@ -59,6 +59,7 @@ export const BookTranslationEditForm = forwardRef<
     values: findUniqueBookTranslation.data,
     defaultValues: { bookID: -1, languageCode: "", name: "" },
   })
+  const { control, handleSubmit, formState } = form
 
   const onSubmit = (values: IBookTranslation) => {
     upsertBookTranslation.mutate(
@@ -93,11 +94,11 @@ export const BookTranslationEditForm = forwardRef<
       <form
         ref={ref}
         className={clsx("space-y-4")}
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         {...props}
       >
         <FormField
-          control={form.control}
+          control={control}
           name={"name"}
           render={({ field }) => (
             <FormItem>
@@ -112,7 +113,7 @@ export const BookTranslationEditForm = forwardRef<
         <div className="flex justify-end space-x-2">
           <ButtonLoading
             isLoading={upsertBookTranslation.isPending}
-            disabled={!form.formState.isDirty}
+            disabled={!formState.isDirty}
           >
             Save
           </ButtonLoading>
