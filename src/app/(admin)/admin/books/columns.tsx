@@ -29,7 +29,7 @@ export const columns: ColumnDef<IBook>[] = [
     id: "actions",
     cell: ({ row }) => (
       <div className="flex space-x-2">
-        <Button variant={"secondary"} asChild>
+        <Button variant={"ghost"} asChild>
           <Link href={`${ROUTES.ADMIN.BOOKS}/${row.original.id}` as Route}>
             Edit
           </Link>
