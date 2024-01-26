@@ -7,9 +7,9 @@ import type { NextRequest } from "next/server"
 
 // create an enhanced Prisma client with user context
 async function getPrisma(req: NextRequest) {
-  // getSessionUser extracts the current session user from the request, its
-  // implementation depends on your auth solution
-  return enhance(prisma, { user: (await auth())?.user })
+  const session = await auth()
+  // @ts-expect-error
+  return enhance(prisma, { user: session?.user })
 }
 
 const handler = NextRequestHandler({
