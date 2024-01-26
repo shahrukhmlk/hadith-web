@@ -3,6 +3,7 @@ import DataTable from "@/components/ui/data-table/DataTable"
 import { ROUTES } from "@/constants/routes"
 import { getHadiths } from "@/data/hadith/getHadiths"
 import { Plus } from "lucide-react"
+import { Route } from "next"
 import Link from "next/link"
 import { columns } from "./columns"
 
@@ -10,7 +11,7 @@ export default async function Home() {
   const hadiths = await getHadiths()
   return (
     <main className="flex flex-col items-start p-8">
-      <Link href={ROUTES.ADMIN.HADITHS + "/new"}>
+      <Link href={(ROUTES.ADMIN.HADITHS + "/new") as Route}>
         <Button size={"sm"} className="h-8" variant={"secondary"}>
           <Plus className="mr-2 h-4 w-4" />
           Add New Hadith
