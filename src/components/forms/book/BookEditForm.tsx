@@ -65,14 +65,6 @@ export const BookEditForm = ({
     { initialData: book },
   )
 
-  /***
-   * If book is available from props and the query returns no data it means the data has changed on the server after
-   * the server render, so we return null.
-   */
-  if (book && !findUniqueBook.data) {
-    return null
-  }
-
   const findManyBookTranslation = useFindManyBookTranslation(
     {
       where: {
@@ -97,6 +89,14 @@ export const BookEditForm = ({
   })
 
   const { control } = form
+
+  /***
+   * If book is available from props and the query returns no data it means the data has changed on the server after
+   * the server render, so we return null.
+   */
+  if (book && !findUniqueBook.data) {
+    return null
+  }
 
   const addBookTranslation = (translation: IBookTranslation) => {
     createBookTranslation.mutate(

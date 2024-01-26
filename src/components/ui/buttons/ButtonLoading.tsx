@@ -6,7 +6,7 @@ export interface ButtonLoadingProps extends ButtonProps {
   isLoading: boolean
 }
 
-export const ButtonLoading = forwardRef<HTMLButtonElement, ButtonLoadingProps>(
+const ButtonLoading = forwardRef<HTMLButtonElement, ButtonLoadingProps>(
   ({ isLoading, children, disabled, ...props }, ref) => {
     return (
       <Button ref={ref} disabled={disabled || isLoading} {...props}>
@@ -16,4 +16,6 @@ export const ButtonLoading = forwardRef<HTMLButtonElement, ButtonLoadingProps>(
     )
   },
 )
-Button.displayName = "ButtonLoading"
+ButtonLoading.displayName = "ButtonLoading"
+
+export { ButtonLoading }

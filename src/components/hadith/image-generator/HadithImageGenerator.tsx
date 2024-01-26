@@ -122,4 +122,6 @@ const HadithImageGenerator = forwardRef(
   },
 )
 
+HadithImageGenerator.displayName = "HadithImageGenerator"
+
 export default HadithImageGenerator
