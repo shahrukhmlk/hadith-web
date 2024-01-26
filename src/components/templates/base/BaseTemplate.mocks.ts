@@ -1,8 +1,6 @@
 import { BaseTemplateProps } from "./BaseTemplate"
 
-const base: BaseTemplateProps = {
-  className: undefined,
-}
+const base: BaseTemplateProps = {}
 
 export const mockBaseTemplateProps = {
   base,
