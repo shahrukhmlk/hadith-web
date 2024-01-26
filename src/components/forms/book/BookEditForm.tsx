@@ -29,6 +29,7 @@ import { ILanguage } from "@/data/models/language/language"
 import { Status } from "@/data/models/status/status"
 import {
   useCreateBookTranslation,
+  useFindManyBookTranslation,
   useFindUniqueBook,
   useUpsertBook,
 } from "@/lib/hooks/query"
@@ -59,17 +60,32 @@ export const BookEditForm = ({
         id: true,
         name: true,
         status: true,
-        translations: {
-          select: {
-            bookID: true,
-            languageCode: true,
-            name: true,
-          },
-          orderBy: { language: { sort: "asc" } },
-        },
       },
     },
     { initialData: book },
+  )
+
+  /***
+   * If book is available from props and the query returns no data it means the data has changed on the server after
+   * the server render, so we return null.
+   */
+  if (book && !findUniqueBook.data) {
+    return null
+  }
+
+  const findManyBookTranslation = useFindManyBookTranslation(
+    {
+      where: {
+        bookID: book?.id || -1,
+      },
+      select: {
+        bookID: true,
+        languageCode: true,
+        name: true,
+      },
+      orderBy: { language: { sort: "asc" } },
+    },
+    { initialData: book?.translations },
   )
   const upsertBook = useUpsertBook()
   const createBookTranslation = useCreateBookTranslation()
@@ -82,7 +98,7 @@ export const BookEditForm = ({
 
   const { control } = form
 
-  const saveBookTranslation = (translation: IBookTranslation) => {
+  const addBookTranslation = (translation: IBookTranslation) => {
     createBookTranslation.mutate(
       {
         data: translation,
@@ -129,8 +145,8 @@ export const BookEditForm = ({
   const notTranlsatedLanguages = () => {
     return languages.filter(
       (language) =>
-        findUniqueBook.data &&
-        !findUniqueBook.data.translations.some(
+        findManyBookTranslation.data &&
+        !findManyBookTranslation.data.some(
           (translation) => translation.languageCode === language.code,
         ),
     )
@@ -181,7 +197,7 @@ export const BookEditForm = ({
                   key={language.code}
                   onClick={() => {
                     if (findUniqueBook.data) {
-                      saveBookTranslation({
+                      addBookTranslation({
                         bookID: findUniqueBook.data.id,
                         languageCode: language.code,
                         name: "",
@@ -199,7 +215,7 @@ export const BookEditForm = ({
          */}{" "}
         {/* <DevTool control={control} /> */}
       </Form>
-      {findUniqueBook.data?.translations.map((translation, index) => (
+      {findManyBookTranslation.data?.map((translation, index) => (
         <div className="space-y-2" key={index}>
           <Label>
             {languages.find((l) => l.code === translation.languageCode)?.name}
