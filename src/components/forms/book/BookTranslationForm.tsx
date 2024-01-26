@@ -21,18 +21,20 @@ import {
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
+import { FormHTMLAttributes, forwardRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-export interface IBookTranslationEditFormProps {
+export interface IBookTranslationEditFormProps
+  extends FormHTMLAttributes<HTMLFormElement> {
   bookTranslation?: IBookTranslation
   onBookTranslationCreate?: (bookTranslation: IBookTranslation) => void
 }
 
-export const BookTranslationEditForm = ({
-  bookTranslation,
-  onBookTranslationCreate,
-}: IBookTranslationEditFormProps) => {
+export const BookTranslationEditForm = forwardRef<
+  HTMLFormElement,
+  IBookTranslationEditFormProps
+>(({ bookTranslation, onBookTranslationCreate, ...props }, ref) => {
   const findUniqueBookTranslation = useFindUniqueBookTranslation(
     {
       where: {
@@ -89,8 +91,10 @@ export const BookTranslationEditForm = ({
   return (
     <Form {...form}>
       <form
+        ref={ref}
         className={clsx("space-y-4")}
         onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
       >
         <FormField
           control={form.control}
@@ -108,7 +112,7 @@ export const BookTranslationEditForm = ({
         <div className="flex justify-end space-x-2">
           <ButtonLoading
             isLoading={upsertBookTranslation.isPending}
-            disabled={!form.getFieldState("name").isDirty}
+            disabled={!form.formState.isDirty}
           >
             Save
           </ButtonLoading>
@@ -135,4 +139,6 @@ export const BookTranslationEditForm = ({
        */}{" "}
     </Form>
   )
-}
+})
+
+BookTranslationEditForm.displayName = "BookTranslationEditForm"
