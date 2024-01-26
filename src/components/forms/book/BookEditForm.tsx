@@ -36,9 +36,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { Plus } from "lucide-react"
+import { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { BookTranslationEditForm } from "./BookTranslationForm"
+import { BookTranslationEditForm } from "./BookTranslationEditForm"
 
 export interface IBookEditForm {
   book?: IBookWithTranslations
@@ -51,6 +52,8 @@ export const BookEditForm = ({
   languages,
   onBookCreate,
 }: IBookEditForm) => {
+  const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
+
   const findUniqueBook = useFindUniqueBook(
     {
       where: {
@@ -140,6 +143,7 @@ export const BookEditForm = ({
         },
       },
     )
+    translationsRef.current.forEach((el) => el.requestSubmit())
   }
 
   const notTranlsatedLanguages = () => {
@@ -220,12 +224,23 @@ export const BookEditForm = ({
           <Label>
             {languages.find((l) => l.code === translation.languageCode)?.name}
           </Label>
-          <BookTranslationEditForm key={index} bookTranslation={translation} />
+          <BookTranslationEditForm
+            ref={(el) => {
+              if (el) {
+                translationsRef.current.set(translation.languageCode, el)
+              } else {
+                translationsRef.current.delete(translation.languageCode)
+              }
+            }}
+            key={index}
+            bookTranslation={translation}
+          />
         </div>
       ))}
-      <div className="flex justify-end space-x-2">
+      <div className="flex space-x-2">
         <ButtonLoading
           type="button"
+          variant={"secondary"}
           isLoading={
             upsertBook.isPending && form.getValues("status") === Status.draft
           }
@@ -246,7 +261,9 @@ export const BookEditForm = ({
             form.handleSubmit(onSubmit)()
           }}
         >
-          Publish
+          {findUniqueBook.data?.status === Status.published
+            ? "Update"
+            : "Publish"}
         </ButtonLoading>
       </div>
     </>
