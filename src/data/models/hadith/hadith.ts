@@ -1,14 +1,14 @@
 import { z } from "zod"
 import { IDNumberSchema, StatusSchema, TranslationSchema } from "../base/base"
 
-const TranslatedSchema = z.object({
+const HadithTranslatedFieldsSchema = z.object({
   topic: z.string().trim().min(1),
   text: z.string().trim().min(1),
   fontScale: z.number().int().min(-99).max(100),
 })
 
 export const HadithSchema = IDNumberSchema.merge(StatusSchema)
-  .merge(TranslatedSchema)
+  .merge(HadithTranslatedFieldsSchema)
   .extend({
     number: z.coerce.number().int().min(1),
     date: z.date(),
@@ -18,27 +18,23 @@ type Hadith = z.infer<typeof HadithSchema>
 export interface IHadith extends Hadith {}
 
 const HadithBookSchema = z.object({
+  hadithID: z.number().int(),
   bookID: z.number().int(),
   hadithRefNumber: z.number().int(),
 })
 type HadithBook = z.infer<typeof HadithBookSchema>
 export interface IHadithBook extends HadithBook {}
 
-const HadithTranslationSchema = TranslationSchema.merge(TranslatedSchema)
+const HadithTranslationSchema = TranslationSchema.extend({
+  hadithID: z.number().int(),
+  ...HadithTranslatedFieldsSchema.shape,
+})
 type HadithTranslation = z.infer<typeof HadithTranslationSchema>
 export interface IHadithTranslation extends HadithTranslation {}
 
-export const HadithDetailsSchema = HadithSchema.merge(TranslatedSchema).extend({
+export const HadithWithDetailsSchema = HadithSchema.extend({
   books: z.array(HadithBookSchema),
   translations: z.array(HadithTranslationSchema),
 })
-type HadithDetails = z.infer<typeof HadithDetailsSchema>
-export interface IHadithDetails extends HadithDetails {}
-
-export const HadithDetailsEditSchema = HadithDetailsSchema.merge(
-  z.object({
-    id: z.number().int().optional(),
-  }),
-)
-type HadithDetailsEdit = z.infer<typeof HadithDetailsEditSchema>
-export interface IHadithDetailsEdit extends HadithDetailsEdit {}
+type HadithWithDetails = z.infer<typeof HadithWithDetailsSchema>
+export interface IHadithWithDetails extends HadithWithDetails {}
