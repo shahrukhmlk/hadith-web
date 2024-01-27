@@ -31,6 +31,7 @@ export interface SearchableSelectInputProps<T> extends PopoverTriggerProps {
   placeHolder?: string
   selectText?: string
   emptyText?: string
+  isLoading?: boolean
   onItemSelect?: (item: SelectItem<T>) => void
   onFilterChange?: (search: string) => void
 }
@@ -38,9 +39,10 @@ export interface SearchableSelectInputProps<T> extends PopoverTriggerProps {
 export default function SearchableSelectInput<T>({
   items = [],
   selectedItem,
-  placeHolder,
-  selectText,
-  emptyText,
+  placeHolder = "Search...",
+  selectText = "Select item",
+  emptyText = "No item found.",
+  isLoading = false,
   onItemSelect,
   onFilterChange,
   ...props
@@ -53,25 +55,24 @@ export default function SearchableSelectInput<T>({
         <Button
           variant="outline"
           role="combobox"
+          aria-expanded={open}
           className={cn(
             "w-[200px] justify-between",
             !selectedItem && "text-muted-foreground",
           )}
         >
-          {selectedItem
-            ? items.find((item) => item.value === selectedItem.value)?.label
-            : selectText ?? "Select item"}
+          {selectedItem ? selectedItem.label : selectText}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder={placeHolder ?? "Search..."}
+            placeholder={placeHolder}
             onValueChange={onFilterChange}
             className="h-9"
           />
-          <CommandEmpty>{emptyText ?? "No item found."}</CommandEmpty>
+          <CommandEmpty>{isLoading ? "Loading..." : emptyText}</CommandEmpty>
           <CommandGroup>
             {items.map((item) => (
               <CommandItem
