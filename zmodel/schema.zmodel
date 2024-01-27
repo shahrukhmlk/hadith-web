@@ -64,7 +64,7 @@ model HadithBook {
     book Book @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Book_id")
     hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Hadith_id")
 
-    @@id([hadithID, bookID, hadithRefNumber])
+    @@id([hadithID, bookID])
     @@index([hadithID], map: "fki_HadithBook_Hadith_id")
     @@index([bookID], map: "fki_HadithBook_Book_id")
 }

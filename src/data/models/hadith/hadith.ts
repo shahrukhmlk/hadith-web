@@ -17,10 +17,10 @@ export const HadithSchema = IDNumberSchema.merge(StatusSchema)
 type Hadith = z.infer<typeof HadithSchema>
 export interface IHadith extends Hadith {}
 
-const HadithBookSchema = z.object({
-  hadithID: z.number().int(),
-  bookID: z.number().int(),
-  hadithRefNumber: z.number().int(),
+export const HadithBookSchema = z.object({
+  hadithID: z.coerce.number().int(),
+  bookID: z.coerce.number().int(),
+  hadithRefNumber: z.coerce.number().int(),
 })
 type HadithBook = z.infer<typeof HadithBookSchema>
 export interface IHadithBook extends HadithBook {}
