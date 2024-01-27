@@ -71,6 +71,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
     const form = useForm<IHadithBook>({
       resolver: zodResolver(HadithBookSchema),
       values: findUniqueHadithBook.data,
+      // @ts-ignore
       defaultValues: { bookID: -1, hadithID: -1, hadithRefNumber: "" },
     })
     const { control, handleSubmit, formState } = form
