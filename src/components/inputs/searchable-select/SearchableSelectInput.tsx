@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
-  CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command"
 import {
   Popover,
@@ -15,9 +15,8 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { PopoverProps, PopoverTriggerProps } from "@radix-ui/react-popover"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { forwardRef, HTMLAttributes, useState } from "react"
+import { PopoverTriggerProps } from "@radix-ui/react-popover"
+import { useState } from "react"
 
 export interface SelectItem<T> {
   label: string
@@ -31,6 +30,7 @@ export interface SearchableSelectInputProps<T> extends PopoverTriggerProps {
   placeHolder?: string
   selectText?: string
   emptyText?: string
+  name?: string
   isLoading?: boolean
   onItemSelect?: (item: SelectItem<T>) => void
   onFilterChange?: (search: string) => void
@@ -43,6 +43,7 @@ export default function SearchableSelectInput<T>({
   selectText = "Select item",
   emptyText = "No item found.",
   isLoading = false,
+  name = "search",
   onItemSelect,
   onFilterChange,
   ...props
@@ -66,14 +67,14 @@ export default function SearchableSelectInput<T>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command shouldFilter={false}>
+        <Command shouldFilter={false} label={name}>
           <CommandInput
             placeholder={placeHolder}
             onValueChange={onFilterChange}
             className="h-9"
           />
           <CommandEmpty>{isLoading ? "Loading..." : emptyText}</CommandEmpty>
-          <CommandGroup>
+          <CommandList>
             {items.map((item) => (
               <CommandItem
                 value={item.value}
@@ -96,7 +97,7 @@ export default function SearchableSelectInput<T>({
                 />
               </CommandItem>
             ))}
-          </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
