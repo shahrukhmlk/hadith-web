@@ -107,7 +107,6 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
       return (
         findManyBook.data?.map((book) => {
           return {
-            item: book,
             label: book.name,
             value: book.id.toString(),
           }
@@ -132,11 +131,13 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
                   <SearchableSelectInput
                     items={getSelectableBooks()}
                     selectedItem={getSelectableBooks().find(
-                      (item) => item.item.id === field.value,
+                      (item) => parseInt(item.value) === field.value,
                     )}
                     isLoading={findManyBook.isFetching}
                     selectText="Select Book"
-                    onItemSelect={(item) => field.onChange(item.item.id)}
+                    onItemSelect={(item) =>
+                      field.onChange(parseInt(item.value))
+                    }
                     onFilterChange={setBookSearch}
                   />
                 </FormControl>

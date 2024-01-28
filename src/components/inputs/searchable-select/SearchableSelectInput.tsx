@@ -18,25 +18,24 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { PopoverTriggerProps } from "@radix-ui/react-popover"
 import { useState } from "react"
 
-export interface SelectItem<T> {
+export interface SelectItem {
   label: string
   value: string
-  item: T
 }
 
-export interface SearchableSelectInputProps<T> extends PopoverTriggerProps {
-  items: SelectItem<T>[]
-  selectedItem?: SelectItem<T>
+export interface SearchableSelectInputProps extends PopoverTriggerProps {
+  items: SelectItem[]
+  selectedItem?: SelectItem
   placeHolder?: string
   selectText?: string
   emptyText?: string
   name?: string
   isLoading?: boolean
-  onItemSelect?: (item: SelectItem<T>) => void
+  onItemSelect?: (item: SelectItem) => void
   onFilterChange?: (search: string) => void
 }
 
-export default function SearchableSelectInput<T>({
+export default function SearchableSelectInput({
   items = [],
   selectedItem,
   placeHolder = "Search...",
@@ -47,7 +46,7 @@ export default function SearchableSelectInput<T>({
   onItemSelect,
   onFilterChange,
   ...props
-}: SearchableSelectInputProps<T>) {
+}: SearchableSelectInputProps) {
   const [open, setOpen] = useState(false)
 
   return (
