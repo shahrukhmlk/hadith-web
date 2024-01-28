@@ -20,6 +20,7 @@ import {
   useUpsertHadithBook,
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { keepPreviousData } from "@tanstack/react-query"
 import clsx from "clsx"
 import { forwardRef, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -63,7 +64,10 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
           name: true,
         },
       },
-      { initialData: bookSearch?.length ? undefined : books },
+      {
+        initialData: bookSearch?.length ? undefined : books,
+        placeholderData: keepPreviousData,
+      },
     )
     const upsertHadithBook = useUpsertHadithBook()
     const deleteHadithBook = useDeleteHadithBook()
