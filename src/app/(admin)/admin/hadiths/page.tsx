@@ -2,6 +2,7 @@ import HadithList from "@/components/hadith/list/HadithList"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/constants/routes"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
+import { createNewHadith } from "@/serverActions/hadith/createHadith"
 import { Plus } from "lucide-react"
 import { Route } from "next"
 import Link from "next/link"
@@ -38,12 +39,12 @@ export default async function Home({
   })
   return (
     <main className="flex flex-col items-start p-8">
-      <Link href={(ROUTES.ADMIN.HADITHS + "/create") as Route}>
+      <form action={createNewHadith}>
         <Button size={"sm"} className="h-8" variant={"secondary"}>
           <Plus className="mr-2 h-4 w-4" />
           Add New Hadith
         </Button>
-      </Link>
+      </form>
       <HadithList hadiths={hadiths} />
     </main>
   )
