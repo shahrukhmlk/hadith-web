@@ -34,7 +34,7 @@ model Book extends Base {
 
     @@index([userIDCreated], map: "fki_BookUserCreated")
     @@index([userIDUpdated], map: "fki_BookUserUpdated")
-    
+
     @@allow('all', auth().role == "admin")
 }
 
@@ -137,6 +137,8 @@ model Account {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+
+    @@allow('all', auth().role == "admin")
 }
 
 model Session {
@@ -164,6 +166,8 @@ model User {
     bookTranslationsUpdated BookTranslation[] @relation("BookTranslation_userIDUpdatedToUser")
     hadithTranslationsCreated HadithTranslation[] @relation("HadithTranslation_userIDCreatedToUser")
     hadithTranslationssUpdated HadithTranslation[] @relation("HadithTranslation_userIDUpdatedToUser")
+
+    @@allow('all', auth().role == "admin")
 }
 
 model VerificationToken {
