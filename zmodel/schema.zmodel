@@ -34,6 +34,7 @@ model Book extends Base {
 
     @@index([userIDCreated], map: "fki_BookUserCreated")
     @@index([userIDUpdated], map: "fki_BookUserUpdated")
+    
     @@allow('all', auth().role == "admin")
 }
 
@@ -54,7 +55,7 @@ model Hadith extends Base {
     @@index([userIDCreated], map: "fki_HadithUserCreated")
     @@index([userIDUpdated], map: "fki_HadithUserUpdated")
 
-    @@allow('read', true)
+    @@allow('all', auth().role == "admin")
 }
 
 model HadithBook {
@@ -67,6 +68,8 @@ model HadithBook {
     @@id([hadithID, bookID])
     @@index([hadithID], map: "fki_HadithBook_Hadith_id")
     @@index([bookID], map: "fki_HadithBook_Book_id")
+
+    @@allow('all', auth().role == "admin")
 }
 
 model Language {
@@ -76,8 +79,8 @@ model Language {
     sort Int?
     bookTranslations BookTranslation[]
     hadithTranslations HadithTranslation[]
-        @@allow('all', auth().role == "admin")
 
+    @@allow('all', auth().role == "admin")
 }
 
 model HadithTranslation extends Base {
@@ -96,6 +99,8 @@ model HadithTranslation extends Base {
     @@index([userIDUpdated], map: "fki_HadithTranslationUserUpdated")
     @@index([languageCode], map: "fki_HadithTranslation_LanguageCode")
     @@index([hadithID], map: "fki_HadithTranslation_HadithID")
+
+    @@allow('all', auth().role == "admin")
 }
 
 model BookTranslation extends Base {
@@ -112,8 +117,8 @@ model BookTranslation extends Base {
     @@index([userIDUpdated], map: "fki_BookTranslationUserUpdated")
     @@index([bookID], map: "fki_BookTranslation_BookID")
     @@index([languageCode], map: "fki_BookTranslation_LanguageCode")
-        @@allow('all', auth().role == "admin")
 
+    @@allow('all', auth().role == "admin")
 }
 
 model Account {
