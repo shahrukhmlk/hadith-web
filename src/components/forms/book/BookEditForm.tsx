@@ -42,22 +42,17 @@ import { toast } from "sonner"
 import { BookTranslationEditForm } from "./BookTranslationEditForm"
 
 export interface IBookEditForm {
-  book?: IBookWithTranslations
+  book: IBookWithTranslations
   languages: ILanguage[]
-  onBookCreate?: (bookID: number) => void
 }
 
-export const BookEditForm = ({
-  book,
-  languages,
-  onBookCreate,
-}: IBookEditForm) => {
+export const BookEditForm = ({ book, languages }: IBookEditForm) => {
   const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
 
   const findUniqueBook = useFindUniqueBook(
     {
       where: {
-        id: book?.id ?? -1,
+        id: book.id,
       },
       select: {
         id: true,
@@ -71,7 +66,7 @@ export const BookEditForm = ({
   const findManyBookTranslation = useFindManyBookTranslation(
     {
       where: {
-        bookID: book?.id || -1,
+        bookID: book.id,
       },
       select: {
         bookID: true,
@@ -80,7 +75,7 @@ export const BookEditForm = ({
       },
       orderBy: { language: { sort: "asc" } },
     },
-    { initialData: book?.translations },
+    { initialData: book.translations },
   )
   const upsertBook = useUpsertBook()
   const createBookTranslation = useCreateBookTranslation()
@@ -126,7 +121,7 @@ export const BookEditForm = ({
     upsertBook.mutate(
       {
         create: values,
-        where: { id: values.id || -1 },
+        where: { id: values.id },
         update: values,
         select: {
           id: true,
@@ -137,9 +132,6 @@ export const BookEditForm = ({
       {
         onSuccess(data, variables, context) {
           toast.success("Done!")
-          if (data && !book) {
-            onBookCreate ? onBookCreate(data.id) : null
-          }
         },
       },
     )
@@ -154,6 +146,9 @@ export const BookEditForm = ({
           (translation) => translation.languageCode === language.code,
         ),
     )
+  }
+  if (!findUniqueBook.data) {
+    return null
   }
 
   return (
@@ -184,9 +179,7 @@ export const BookEditForm = ({
               <ButtonLoading
                 variant={"outline"}
                 size={"icon"}
-                disabled={
-                  !findUniqueBook.data || notTranlsatedLanguages().length === 0
-                }
+                disabled={notTranlsatedLanguages().length === 0}
                 isLoading={createBookTranslation.isPending}
                 type="button"
               >
@@ -200,13 +193,11 @@ export const BookEditForm = ({
                 <DropdownMenuItem
                   key={language.code}
                   onClick={() => {
-                    if (findUniqueBook.data) {
-                      addBookTranslation({
-                        bookID: findUniqueBook.data.id,
-                        languageCode: language.code,
-                        name: "",
-                      })
-                    }
+                    addBookTranslation({
+                      bookID: findUniqueBook.data.id,
+                      languageCode: language.code,
+                      name: "",
+                    })
                   }}
                 >
                   {language.name}
@@ -215,9 +206,6 @@ export const BookEditForm = ({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {/*         <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
-         */}{" "}
-        {/* <DevTool control={control} /> */}
       </Form>
       {findManyBookTranslation.data?.map((translation, index) => (
         <div className="space-y-2" key={index}>
@@ -261,7 +249,7 @@ export const BookEditForm = ({
             form.handleSubmit(onSubmit)()
           }}
         >
-          {findUniqueBook.data?.status === Status.published
+          {findUniqueBook.data.status === Status.published
             ? "Update"
             : "Publish"}
         </ButtonLoading>

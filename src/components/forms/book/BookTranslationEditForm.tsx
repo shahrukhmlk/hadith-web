@@ -27,20 +27,19 @@ import { toast } from "sonner"
 
 export interface IBookTranslationEditFormProps
   extends FormHTMLAttributes<HTMLFormElement> {
-  bookTranslation?: IBookTranslation
-  onBookTranslationCreate?: (bookTranslation: IBookTranslation) => void
+  bookTranslation: IBookTranslation
 }
 
 export const BookTranslationEditForm = forwardRef<
   HTMLFormElement,
   IBookTranslationEditFormProps
->(({ bookTranslation, onBookTranslationCreate, ...props }, ref) => {
+>(({ bookTranslation, ...props }, ref) => {
   const findUniqueBookTranslation = useFindUniqueBookTranslation(
     {
       where: {
         bookID_languageCode: {
-          languageCode: bookTranslation?.languageCode || "",
-          bookID: bookTranslation?.bookID || -1,
+          languageCode: bookTranslation.languageCode,
+          bookID: bookTranslation.bookID,
         },
       },
       select: {
@@ -67,8 +66,8 @@ export const BookTranslationEditForm = forwardRef<
         create: values,
         where: {
           bookID_languageCode: {
-            bookID: bookTranslation?.bookID || -1,
-            languageCode: bookTranslation?.languageCode || "",
+            bookID: bookTranslation.bookID,
+            languageCode: bookTranslation.languageCode,
           },
         },
         update: values,
@@ -81,9 +80,6 @@ export const BookTranslationEditForm = forwardRef<
       {
         onSuccess(data, variables, context) {
           toast.success("Done!")
-          if (data && !bookTranslation) {
-            onBookTranslationCreate ? onBookTranslationCreate(data) : null
-          }
         },
       },
     )
@@ -125,8 +121,8 @@ export const BookTranslationEditForm = forwardRef<
               deleteBookTranslation.mutate({
                 where: {
                   bookID_languageCode: {
-                    bookID: bookTranslation?.bookID ?? -1,
-                    languageCode: bookTranslation?.languageCode ?? "",
+                    bookID: bookTranslation.bookID,
+                    languageCode: bookTranslation.languageCode,
                   },
                 },
               })
@@ -136,8 +132,6 @@ export const BookTranslationEditForm = forwardRef<
           </ButtonLoading>
         </div>
       </form>
-      {/*       <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
-       */}{" "}
     </Form>
   )
 })
