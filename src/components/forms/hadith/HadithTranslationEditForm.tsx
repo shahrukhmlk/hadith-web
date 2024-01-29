@@ -109,26 +109,31 @@ export const HadithTranslationEditForm = forwardRef<
   }
 
   const imageDivRef = useRef<HTMLDivElement>(null)
+  const panzoomRef = useRef<PanzoomObject>()
   const [imageData, setImageData] = useState("null")
   const [generatingImage, setGeneratingImage] = useState(false)
-  let panzoom: PanzoomObject | undefined
-  useEffect(() => {
-    if (imageDivRef.current) {
-      panzoom = Panzoom(imageDivRef.current, {
+  if (imageDivRef.current) {
+    if (!panzoomRef.current) {
+      panzoomRef.current = Panzoom(imageDivRef.current, {
         //contain: "outside",
         //startY: 150,
         startScale: 1,
         canvas: true,
       })
-      imageDivRef.current.parentElement?.addEventListener(
+    }
+  }
+  useEffect(() => {
+    if (panzoomRef.current) {
+      imageDivRef.current?.parentElement?.addEventListener(
         "wheel",
-        panzoom.zoomWithWheel,
+        panzoomRef.current.zoomWithWheel,
       )
 
       //document.documentElement.style.setProperty("--hadith-color", props.color)
     }
     return () => {
-      panzoom?.destroy()
+      panzoomRef.current?.destroy()
+      panzoomRef.current = undefined
     }
   }, [])
 

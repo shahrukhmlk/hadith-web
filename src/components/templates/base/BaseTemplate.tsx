@@ -9,4 +9,6 @@ const BaseTemplate = forwardRef<HTMLDivElement, BaseTemplateProps>(
   },
 )
 
+BaseTemplate.displayName = "BaseTemplate"
+
 export default BaseTemplate

@@ -212,4 +212,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
   },
 )
 
+HadithEditForm.displayName = "HadithEditForm"
+
 export default HadithEditForm

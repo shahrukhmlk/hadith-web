@@ -40,4 +40,6 @@ const HadithList = forwardRef<HTMLDivElement, HadithListProps>(
   },
 )
 
+HadithList.displayName = "HadithList"
+
 export default HadithList
