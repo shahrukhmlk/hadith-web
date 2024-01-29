@@ -33,6 +33,7 @@ import {
   useFindUniqueBook,
   useUpsertBook,
 } from "@/lib/hooks/query"
+import { deleteBook } from "@/serverActions/book/deleteBook"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { Plus } from "lucide-react"
@@ -253,6 +254,12 @@ export const BookEditForm = ({ book, languages }: IBookEditForm) => {
             ? "Update"
             : "Publish"}
         </ButtonLoading>
+        <form
+          action={(e) => deleteBook(book.id)}
+          className="flex flex-1 justify-end"
+        >
+          <ButtonLoading variant={"destructive"}>Delete Book</ButtonLoading>
+        </form>
       </div>
     </>
   )

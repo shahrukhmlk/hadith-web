@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import DataTable from "@/components/ui/data-table/DataTable"
 import { getBooks } from "@/data/book/getBooks"
-import { createNewBook } from "@/serverActions/hadith/createBook"
+import { createNewBook } from "@/serverActions/book/createBook"
 import { Plus } from "lucide-react"
 import { columns } from "./columns"
 

@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
 import { useFindUniqueHadith, useUpsertHadith } from "@/lib/hooks/query"
+import { deleteHadith } from "@/serverActions/hadith/deleteHadith"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { forwardRef } from "react"
@@ -206,6 +207,12 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               ? "Update"
               : "Publish"}
           </ButtonLoading>
+          <form
+            action={(e) => deleteHadith(hadith.id)}
+            className="flex flex-1 justify-end"
+          >
+            <ButtonLoading variant={"destructive"}>Delete Hadith</ButtonLoading>
+          </form>
         </div>
       </>
     )
