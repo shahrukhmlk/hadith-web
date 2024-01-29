@@ -28,7 +28,7 @@ import { toast } from "sonner"
 
 export interface HadithBookFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
-  hadithBook?: IHadithBook
+  hadithBook: IHadithBook
   books: IBook[]
 }
 
@@ -39,8 +39,8 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
       {
         where: {
           hadithID_bookID: {
-            bookID: hadithBook?.bookID ?? -1,
-            hadithID: hadithBook?.hadithID ?? -1,
+            bookID: hadithBook.bookID,
+            hadithID: hadithBook.hadithID,
           },
         },
         select: {
@@ -49,7 +49,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
           hadithRefNumber: true,
         },
       },
-      { initialData: hadithBook, enabled: !!hadithBook },
+      { initialData: hadithBook },
     )
     const findManyBook = useFindManyBook(
       {
@@ -100,9 +100,6 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
         {
           onSuccess(data, variables, context) {
             toast.success("Done!")
-            if (data && !hadithBook) {
-              //onBookTranslationCreate ? onBookTranslationCreate(data) : null
-            }
           },
         },
       )
@@ -116,6 +113,10 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
           }
         }) ?? []
       )
+    }
+
+    if (!findUniqueHadithBook.data) {
+      return null
     }
 
     return (
@@ -176,8 +177,8 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
                 deleteHadithBook.mutate({
                   where: {
                     hadithID_bookID: {
-                      bookID: findUniqueHadithBook.data?.bookID ?? -1,
-                      hadithID: findUniqueHadithBook.data?.hadithID ?? -1,
+                      bookID: findUniqueHadithBook.data.bookID,
+                      hadithID: findUniqueHadithBook.data.hadithID,
                     },
                   },
                 })

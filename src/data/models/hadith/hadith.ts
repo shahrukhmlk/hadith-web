@@ -25,7 +25,7 @@ export const HadithBookSchema = z.object({
 type HadithBook = z.infer<typeof HadithBookSchema>
 export interface IHadithBook extends HadithBook {}
 
-const HadithTranslationSchema = TranslationSchema.extend({
+export const HadithTranslationSchema = TranslationSchema.extend({
   hadithID: z.number().int(),
   ...HadithTranslatedFieldsSchema.shape,
 })
