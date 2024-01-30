@@ -157,7 +157,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormLabel>Topic</FormLabel>
                   <FormControl>
-                    <Input placeholder="Topic" {...field} />
+                    <Input dir="auto" placeholder="Topic" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -170,7 +170,12 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormLabel>Text</FormLabel>
                   <FormControl>
-                    <Textarea dir="auto" placeholder="Text..." {...field} />
+                    <Textarea
+                      dir="auto"
+                      placeholder="Text..."
+                      {...field}
+                      className="resize-none text-base"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

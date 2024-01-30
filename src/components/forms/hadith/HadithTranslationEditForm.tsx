@@ -158,7 +158,7 @@ export const HadithTranslationEditForm = forwardRef<
         onSubmit={handleSubmit(onSubmit)}
         {...props}
       >
-        <div className="flex-1 basis-48 space-y-4">
+        <div className="flex flex-1 basis-48 flex-col space-y-4">
           <FormField
             control={form.control}
             name={"topic"}
@@ -166,7 +166,7 @@ export const HadithTranslationEditForm = forwardRef<
               <FormItem>
                 <FormLabel>Topic</FormLabel>
                 <FormControl>
-                  <Input placeholder="Topic" {...field} />
+                  <Input dir="auto" placeholder="Topic" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -176,10 +176,15 @@ export const HadithTranslationEditForm = forwardRef<
             control={form.control}
             name={"text"}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex flex-1 flex-col">
                 <FormLabel>Text</FormLabel>
                 <FormControl>
-                  <Textarea dir="auto" placeholder="Text..." {...field} />
+                  <Textarea
+                    dir="auto"
+                    placeholder="Text..."
+                    {...field}
+                    className="flex-1 resize-none text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
