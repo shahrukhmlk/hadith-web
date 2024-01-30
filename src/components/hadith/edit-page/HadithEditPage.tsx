@@ -37,6 +37,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
   ({ hadith, books, languages, ...props }, ref) => {
     const hadithEditFormRef = useRef<HTMLFormElement | null>(null)
     const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
+    const booksRef = useRef<Map<number, HTMLFormElement>>(new Map())
 
     const findUniqueHadith = useFindUniqueHadith(
       {
@@ -86,7 +87,6 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
       },
       { initialData: hadith.translations },
     )
-    const createHadithBook = useCreateHadithBook()
     const createHadithTranslation = useCreateHadithTranslation()
     const notTranlsatedLanguages = () => {
       return languages.filter(
@@ -102,30 +102,46 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
 
     return (
       <div className="space-y-4" ref={ref} {...props}>
-        <div className="flex items-center gap-2">
-          Books
-          <ButtonLoading
-            variant={"outline"}
-            size={"icon"}
-            isLoading={createHadithBook.isPending}
-            type="button"
-            /* onClick={() => createHadithBook.mutate({
-              data: {
-                hadithID:findUniqueHadith.data.id,
-                bookID: 
-              }
-            })} */
-          >
-            <Plus className="h-4 w-4" />
-          </ButtonLoading>
-        </div>
-        {findManyHadithBook.data?.map((book, index) => (
-          <HadithBookForm key={index} hadithBook={book} books={books} />
-        ))}
         <HadithEditForm
           hadith={findUniqueHadith.data}
           ref={hadithEditFormRef}
         />
+        <div className="flex items-center gap-2">
+          Books
+          {/* <ButtonLoading
+            variant={"outline"}
+            size={"icon"}
+            isLoading={createHadithBook.isPending}
+            type="button"
+            onClick={() =>
+              createHadithBook.mutate({
+                data: {
+                  hadithID: findUniqueHadith.data.id,
+                  bookID: 0,
+                  hadithRefNumber: 0,
+                },
+              })
+            }
+          >
+            <Plus className="h-4 w-4" />
+          </ButtonLoading> */}
+        </div>
+        {findManyHadithBook.data?.map((book, index) => (
+          <HadithBookForm
+            key={index}
+            hadithID={findUniqueHadith.data.id}
+            hadithBook={book}
+            books={books}
+            ref={(el) => {
+              if (el) {
+                booksRef.current.set(book.bookID, el)
+              } else {
+                booksRef.current.delete(book.bookID)
+              }
+            }}
+          />
+        ))}
+        <HadithBookForm hadithID={findUniqueHadith.data.id} books={books} />
         <div className="flex items-center gap-2">
           Translations
           <DropdownMenu>

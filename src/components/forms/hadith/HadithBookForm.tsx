@@ -28,19 +28,20 @@ import { toast } from "sonner"
 
 export interface HadithBookFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
-  hadithBook: IHadithBook
+  hadithID: number
+  hadithBook?: IHadithBook
   books: IBook[]
 }
 
 const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
-  ({ hadithBook, books, ...props }, ref) => {
+  ({ hadithID, hadithBook, books, ...props }, ref) => {
     const [bookSearch, setBookSearch] = useState<string>()
     const findUniqueHadithBook = useFindUniqueHadithBook(
       {
         where: {
           hadithID_bookID: {
-            bookID: hadithBook.bookID,
-            hadithID: hadithBook.hadithID,
+            bookID: hadithBook?.bookID ?? -1,
+            hadithID: hadithID,
           },
         },
         select: {
@@ -49,7 +50,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
           hadithRefNumber: true,
         },
       },
-      { initialData: hadithBook },
+      { initialData: hadithBook, enabled: !!hadithBook },
     )
     const findManyBook = useFindManyBook(
       {
@@ -76,7 +77,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
       resolver: zodResolver(HadithBookSchema),
       values: findUniqueHadithBook.data,
       // @ts-ignore
-      defaultValues: { bookID: -1, hadithID: -1, hadithRefNumber: "" },
+      defaultValues: { bookID: "", hadithID: hadithID, hadithRefNumber: "" },
     })
     const { control, handleSubmit, formState } = form
 
@@ -100,6 +101,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
         {
           onSuccess(data, variables, context) {
             toast.success("Done!")
+            form.reset()
           },
         },
       )
@@ -113,10 +115,6 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
           }
         }) ?? []
       )
-    }
-
-    if (!findUniqueHadithBook.data) {
-      return null
     }
 
     return (
@@ -167,13 +165,17 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
               isLoading={upsertHadithBook.isPending}
               disabled={!formState.isDirty}
             >
-              Save
+              {!!hadithBook ? "Save" : "Add"}
             </ButtonLoading>
             <ButtonLoading
               type="button"
               variant={"destructive"}
               isLoading={deleteHadithBook.isPending}
+              disabled={!findUniqueHadithBook.data}
               onClick={() => {
+                if (!findUniqueHadithBook.data) {
+                  return
+                }
                 deleteHadithBook.mutate({
                   where: {
                     hadithID_bookID: {
