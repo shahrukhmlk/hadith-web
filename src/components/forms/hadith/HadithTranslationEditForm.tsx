@@ -20,6 +20,7 @@ import {
 } from "@/data/models/hadith/hadith"
 import {
   useDeleteHadithTranslation,
+  useFindManyHadithBook,
   useFindUniqueHadithTranslation,
   useUpsertHadithTranslation,
 } from "@/lib/hooks/query"
@@ -65,6 +66,19 @@ export const HadithTranslationEditForm = forwardRef<
     },
     { initialData: hadithTranslation },
   )
+  const findManyHadithBook = useFindManyHadithBook({
+    where: {
+      hadithID: hadith.id,
+    },
+    select: {
+      book: {
+        select: {
+          name: true,
+        },
+      },
+      hadithRefNumber: true,
+    },
+  })
   const upsertHadithTranslation = useUpsertHadithTranslation()
   const deleteHadithTranslation = useDeleteHadithTranslation()
 
@@ -123,13 +137,11 @@ export const HadithTranslationEditForm = forwardRef<
     }
   }
   useEffect(() => {
-    if (panzoomRef.current) {
-      imageDivRef.current?.parentElement?.addEventListener(
+    if (panzoomRef.current && imageDivRef.current) {
+      imageDivRef.current.parentElement?.addEventListener(
         "wheel",
         panzoomRef.current.zoomWithWheel,
       )
-
-      //document.documentElement.style.setProperty("--hadith-color", props.color)
     }
     return () => {
       panzoomRef.current?.destroy()
@@ -218,6 +230,7 @@ export const HadithTranslationEditForm = forwardRef<
         </div>
         <div className="flex-1 basis-48 space-y-4">
           <HadithImageGenerator
+            ref={imageDivRef}
             languageCode={hadithTranslation.languageCode}
             color={hadith.color}
             number={hadith.number}
@@ -226,7 +239,14 @@ export const HadithTranslationEditForm = forwardRef<
             translationFontScale={watch().fontScale}
             translationTopic={watch().topic}
             translationText={watch().text}
-            ref={imageDivRef}
+            bookText={
+              findManyHadithBook.data
+                ?.map(
+                  (book) =>
+                    `${book.book.name}: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+                )
+                .join() ?? ""
+            }
           />
 
           <FormField

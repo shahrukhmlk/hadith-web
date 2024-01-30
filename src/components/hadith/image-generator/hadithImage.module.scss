@@ -1,6 +1,7 @@
-.hadithImage {
+.hadithTranslation {
   hadith-nas {
-    font-size: 2em;
+    font-size: 1.2em;
+    color: var(--color-hadith);
   }
   &:lang(en) {
     direction: ltr;
@@ -24,5 +25,13 @@
     font-family: var(--font-urdu-kasheeda);
     hadith-nas {
     }
+  }
+}
+
+.hadithArabic {
+  font-family: var(--font-arabic-normal);
+  hadith-nas {
+    font-family: var(--font-arabic-nas);
+    color: var(--color-hadith);
   }
 }

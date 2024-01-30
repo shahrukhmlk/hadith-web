@@ -27,6 +27,7 @@ export interface HadithImageGeneratorProps
   translationTopic: string
   translationText: string
   translationFontScale: number
+  bookText: string
 }
 
 const HadithImageGenerator = forwardRef<
@@ -43,24 +44,22 @@ const HadithImageGenerator = forwardRef<
       translationTopic,
       translationText,
       translationFontScale,
+      bookText,
       ...props
     },
     ref,
   ) => {
-    const html = translationText.replaceAll(
-      /("|«|&laquo;).+?("|»|&raquo;)/g,
-      `<hadith-nas style="color: ${color}">$&</hadith-nas>`,
+    const hadithParsed = parse(
+      sanitizeHtml(text).replaceAll(
+        /("|«|&laquo;).+?("|»|&raquo;)/g,
+        `<hadith-nas>$&</hadith-nas>`,
+      ),
     )
-    const parsedHTML = parse(
-      sanitizeHtml(html, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-          "hadith-nas",
-          "ramz",
-        ]),
-        allowedAttributes: {
-          "hadith-nas": ["style"],
-        },
-      }),
+    const translationParsed = parse(
+      sanitizeHtml(translationText).replaceAll(
+        /("|«|&laquo;).+?("|»|&raquo;)/g,
+        `<hadith-nas>$&</hadith-nas>`,
+      ),
     )
 
     return (
@@ -69,7 +68,6 @@ const HadithImageGenerator = forwardRef<
           ref={ref}
           lang={languageCode}
           className={clsx(
-            styles.hadithImage,
             rumooz.variable,
             arabicNas.variable,
             arabicNormal.variable,
@@ -78,9 +76,9 @@ const HadithImageGenerator = forwardRef<
             cairo.variable,
             "relative flex h-[300px] w-[300px] flex-col items-stretch bg-white text-[10px] text-black",
           )}
+          style={{ "--color-hadith": color } as React.CSSProperties}
         >
           <div
-            dir="ltr"
             className={clsx(
               "flex h-[5%] items-center justify-between px-[3%] py-[1%] text-white",
             )}
@@ -91,58 +89,53 @@ const HadithImageGenerator = forwardRef<
             </p>
             <Series className={"h-full w-auto"} fill={"#ffffff"} />
           </div>
+          <div className="absolute right-[5%] top-[5%] aspect-[44.09/30.78] h-auto w-[10%]">
+            <Dome
+              className="absolute inset-0 h-full w-full object-contain text-transparent"
+              fill={color}
+            />
+            <p
+              className="relative z-10 text-center text-white"
+              style={{ fontFamily: "var(--font-arabic-nas)" }}
+            >
+              {number.toLocaleString("ar-EG", { useGrouping: false })}
+            </p>
+          </div>
           <div
             className={clsx(
-              "relative flex flex-1 flex-col items-center justify-around  text-[1em]",
+              "flex flex-1 flex-col items-center justify-around overflow-clip whitespace-pre-line p-[5%] text-justify align-baseline text-[1em]",
             )}
             style={{
               background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}40 100%)`,
+              textAlignLast: "center",
             }}
           >
-            <div className="absolute right-[5%] top-[-1px] aspect-[44.09/30.78] h-auto w-[10%]">
-              <Dome
-                className="absolute inset-0 h-full w-full object-contain text-transparent"
-                fill={color}
-              />
-              <p
-                className="relative z-10 text-center text-white"
-                style={{ fontFamily: "var(--font-arabic-nas)" }}
-              >
-                {number.toLocaleString("ar-EG", { useGrouping: false })}
-              </p>
+            <div dir="rtl" className={clsx(styles.hadithArabic)}>
+              {hadithParsed}
             </div>
             <div
-              className="w-full whitespace-pre-line p-[5%] text-center align-baseline "
-              /* style={{
-                fontSize: translationFontScale + 100 + "%",
-              }} */
-            >
-              {parsedHTML}
-            </div>
-            <div
-              className="w-full whitespace-pre-line p-[5%] text-center align-baseline "
+              className={clsx(styles.hadithTranslation)}
               style={{
                 fontSize: translationFontScale + 100 + "%",
               }}
             >
-              {parsedHTML}
+              {translationParsed}
             </div>
-            <div>Books</div>
-            <div className="absolute bottom-0 left-[5%] aspect-[44.09/30.78] h-auto w-[10%]">
-              <Dome
-                className="absolute inset-0 h-full w-full rotate-180 object-contain text-transparent"
-                fill={color}
-              />
-              <Logo
-                className={
-                  "absolute bottom-[-12px] left-[5px] z-10 aspect-[31.59/40.65] h-auto w-[70%]"
-                }
-                fill={"#ffffff"}
-              />
-            </div>
+            <div>{bookText}</div>
+          </div>
+          <div className="absolute bottom-[5%] left-[5%] aspect-[44.09/30.78] h-auto w-[10%]">
+            <Dome
+              className="absolute inset-0 h-full w-full rotate-180 object-contain text-transparent"
+              fill={color}
+            />
+            <Logo
+              className={
+                "absolute bottom-[-12px] left-[5px] z-10 aspect-[31.59/40.65] h-auto w-[70%]"
+              }
+              fill={"#ffffff"}
+            />
           </div>
           <div
-            dir="ltr"
             className={clsx(
               "flex h-[5%] items-center justify-center py-[1%] text-white",
             )}
