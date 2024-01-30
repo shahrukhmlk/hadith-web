@@ -1,5 +1,6 @@
 "use client"
 
+import StatusBadge from "@/components/badges/status/StatusBadge"
 import { Button } from "@/components/ui/button"
 import { DataTableColumnHeader } from "@/components/ui/data-table/DataTableColumnHeader"
 import { ROUTES } from "@/constants/routes"
@@ -24,6 +25,7 @@ export const columns: ColumnDef<IBook>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
+    cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
   {
     id: "actions",
