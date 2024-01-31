@@ -1,0 +1,6 @@
+abstract model Base {
+    dateCreated DateTime @default(now()) @db.Timestamptz(6)
+    dateUpdated DateTime? @updatedAt @db.Timestamptz(6)
+    userIDCreated String?
+    userIDUpdated String?
+}

@@ -15,6 +15,7 @@ COPY postcss.config.js .
 COPY tailwind.config.js .
 # copy prsima schema
 COPY prisma ./prisma
+COPY zmodel ./zmodel
 # Copy story book
 COPY .storybook ./.storybook
 
@@ -22,6 +23,8 @@ COPY .storybook ./.storybook
 # Uncomment the following line to disable telemetry at run time
 ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN npm run z:gen;
+RUN npm run prisma:generate;
 # Note: Don't expose ports here, Compose will handle that for us
 
 # Start Next.js in development mode

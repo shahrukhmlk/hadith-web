@@ -22,6 +22,7 @@ export const {
     }),
   ],
   callbacks: {
+    // @ts-expect-error
     session({ session, user }) {
       session.user.role = user.role
       session.user.id = user.id

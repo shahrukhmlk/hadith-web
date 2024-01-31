@@ -3,7 +3,7 @@ import MainMenu from "@/components/menus/main/MainMenu"
 import ProfileMenu from "@/components/menus/profile/ProfileMenu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { ILanguage } from "@/data/models/language"
+import { ILanguage } from "@/data/models/language/language"
 import Link from "next/link"
 
 export interface IHomeHeader {

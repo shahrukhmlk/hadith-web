@@ -5,11 +5,15 @@ services:
     extends:
       file: ../compose.yml
       service: database
+    env_file:
+      - .env.local
 
   db_admin:
     extends:
       file: ../compose.yml
       service: db_admin
+    env_file:
+      - .env.local
 
   # cache:
   #   extends:
@@ -32,3 +36,6 @@ services:
       - ../../src:/app/src
       - ../../public:/app/public
       - ../../prisma:/app/prisma
+      - ../../zmodel:/app/zmodel
+    env_file:
+      - .env.local

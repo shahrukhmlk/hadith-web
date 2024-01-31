@@ -1,61 +1,73 @@
-import { Button } from "@/components/ui/button"
 import { isAdmin } from "@/data/auth/roles"
+import getEnhancedPrisma from "@/data/enhanced-prisma"
 import { getLastDate } from "@/data/hadith/dates"
-import { getHadith } from "@/data/hadith/hadith"
+import { Status } from "@/data/models/status/status"
 import clsx from "clsx"
-import Link from "next/link"
-import HadithEditor from "../editor/HadithEditor"
+import { notFound } from "next/navigation"
 import HadithUI, { HadithUIProps } from "../ui/HadithUI"
 
 export interface IHadithHoc {
   className?: string
   date?: Date
-  langs?: string[]
-  edit?: boolean
+  languages?: string[]
 }
 
-const HadithHoc = async ({ className, date, langs, edit }: IHadithHoc) => {
+const HadithHoc = async ({ className, date, languages }: IHadithHoc) => {
   /**
    * > Check if date is supplied else use latest date
    * > Check for languages else load locale default if available else default site language
    * > Load hadith for that day and languages from database
    * > Display all hadiths using hadith component.
    */
-  const admin = await isAdmin()
-  const lastDate = !admin ? await getLastDate() : new Date()
-  const selectedDate = date || lastDate
-  if (admin && edit) {
-    return <HadithEditor date={selectedDate as Date} />
-  }
-  let hadiths = new Array<HadithUIProps>()
-  if (selectedDate) {
-    hadiths = await getHadith(
-      selectedDate,
-      langs,
-      !admin ? "published" : undefined,
-    )
+  const prisma = await getEnhancedPrisma()
+  const selectedDate = date || (await getLastDate()) || new Date()
+
+  const hadith = await prisma.hadith.findUnique({
+    where: {
+      date: selectedDate,
+      status: Status.published,
+    },
+    select: {
+      id: true,
+      number: true,
+      date: true,
+      topic: true,
+      text: true,
+      color: true,
+      books: {
+        select: {
+          book: { select: { name: true } },
+          hadithRefNumber: true,
+        },
+      },
+      translations: {
+        where: {
+          languageCode: { in: languages },
+        },
+        select: {
+          topic: true,
+          text: true,
+        },
+      },
+    },
+  })
+  if (!hadith) {
+    notFound()
   }
   return (
-    <div
-      className={clsx("flex w-full flex-col items-center gap-4 p-4", className)}
-    >
-      {admin && !edit && (
-        <Button variant={"secondary"} asChild>
-          <Link href={"?edit=true"}>Edit</Link>
-        </Button>
-      )}
-      {hadiths.map((hadith, index) => (
-        <HadithUI
-          key={index}
-          num={hadith.num}
-          topic={hadith.topic}
-          date={selectedDate as Date}
-          lang={hadith.lang}
-          text={hadith.text}
-          books={hadith.books}
-        />
-      ))}
-    </div>
+    <HadithUI
+      number={hadith.number}
+      date={hadith.date}
+      color={hadith.color}
+      topic={hadith.topic}
+      text={hadith.text}
+      bookText={hadith.books
+        .map(
+          (book) =>
+            `${book.book.name}: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+        )
+        .join(",\n")}
+    />
   )
 }
 

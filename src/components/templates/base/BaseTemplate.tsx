@@ -1,9 +1,14 @@
-export interface BaseTemplateProps {
-  className?: string
-}
+import { forwardRef } from "react"
 
-const BaseTemplate = ({ className }: BaseTemplateProps) => {
-  return <div className={className}></div>
-}
+export interface BaseTemplateProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+const BaseTemplate = forwardRef<HTMLDivElement, BaseTemplateProps>(
+  ({ ...props }, ref) => {
+    return <div ref={ref} {...props}></div>
+  },
+)
+
+BaseTemplate.displayName = "BaseTemplate"
 
 export default BaseTemplate
