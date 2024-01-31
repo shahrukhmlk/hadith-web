@@ -16,11 +16,7 @@ export default function Home({
   const dateArray = params.date
   return (
     <main className="flex h-full w-full">
-      <HadithHoc
-        date={getDateFromPath(params.date)}
-        langs={langs}
-        edit={searchParams.edit === "true"}
-      />
+      <HadithHoc date={getDateFromPath(params.date)} languages={langs} />
     </main>
   )
 }

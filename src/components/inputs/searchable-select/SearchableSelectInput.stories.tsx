@@ -10,7 +10,7 @@ export default {
   argTypes: {},
 } as Meta<typeof SearchableSelectInput>
 
-const Template: StoryFn<typeof SearchableSelectInput<string>> = (args) => (
+const Template: StoryFn<typeof SearchableSelectInput> = (args) => (
   <SearchableSelectInput {...args} />
 )
 
@@ -18,4 +18,4 @@ export const Base = Template.bind({})
 
 Base.args = {
   ...mockSearchableSelectInputProps.base,
-} as SearchableSelectInputProps<string>
+} as SearchableSelectInputProps
