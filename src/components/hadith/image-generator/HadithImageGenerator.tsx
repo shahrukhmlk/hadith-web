@@ -66,7 +66,6 @@ const HadithImageGenerator = forwardRef<
       <Card className="aspect-square">
         <div
           ref={ref}
-          lang={languageCode}
           className={clsx(
             rumooz.variable,
             arabicNas.variable,
@@ -114,6 +113,7 @@ const HadithImageGenerator = forwardRef<
               {hadithParsed}
             </div>
             <div
+              lang={languageCode}
               className={clsx(styles.hadithTranslation)}
               style={{
                 fontSize: translationFontScale + 100 + "%",

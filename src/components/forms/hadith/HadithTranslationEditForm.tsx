@@ -1,6 +1,7 @@
 "use client"
 
 import HadithImageGenerator from "@/components/hadith/image-generator/HadithImageGenerator"
+import { Button } from "@/components/ui/button"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -124,7 +125,7 @@ export const HadithTranslationEditForm = forwardRef<
 
   const imageDivRef = useRef<HTMLDivElement>(null)
   const panzoomRef = useRef<PanzoomObject>()
-  const [imageData, setImageData] = useState("null")
+  const [imageData, setImageData] = useState("")
   const [generatingImage, setGeneratingImage] = useState(false)
   if (imageDivRef.current) {
     if (!panzoomRef.current) {
@@ -134,32 +135,25 @@ export const HadithTranslationEditForm = forwardRef<
         startScale: 1,
         canvas: true,
       })
-    }
-  }
-  useEffect(() => {
-    if (panzoomRef.current && imageDivRef.current) {
       imageDivRef.current.parentElement?.addEventListener(
         "wheel",
         panzoomRef.current.zoomWithWheel,
       )
     }
-    return () => {
-      panzoomRef.current?.destroy()
-      panzoomRef.current = undefined
-    }
-  }, [])
+  }
 
   const generateImage = () => {
-    setGeneratingImage(true)
     if (imageDivRef.current) {
+      setGeneratingImage(true)
+      panzoomRef.current?.reset()
       html2canvas(imageDivRef.current, {})
-        .then((canvas) => {
-          setImageData(canvas.toDataURL("png"))
-        })
+        .then((canvas) => setImageData(canvas.toDataURL("png")))
         .catch((err) => {
-          console.error(err)
+          console.log(err)
         })
         .finally(() => setGeneratingImage(false))
+      /* const canvas = await html2canvas(imageDivRef.current, {})
+      setImageData(canvas.toDataURL("png")) */
     }
   }
   return (
@@ -268,9 +262,23 @@ export const HadithTranslationEditForm = forwardRef<
               </FormItem>
             )}
           />
-          <ButtonLoading onClick={generateImage} isLoading={generatingImage}>
-            Generate
-          </ButtonLoading>
+          <div className="flex justify-end space-x-2">
+            <Button
+              type="button"
+              variant={"secondary"}
+              asChild
+              disabled={imageData === ""}
+            >
+              <a href={imageData}>Download</a>
+            </Button>
+            <ButtonLoading
+              type="button"
+              onClick={generateImage}
+              isLoading={generatingImage}
+            >
+              Generate
+            </ButtonLoading>
+          </div>
         </div>
       </form>
       {/*       <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
