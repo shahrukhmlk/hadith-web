@@ -9,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { ILanguage } from "@/data/models/language"
+import { ILanguage } from "@/data/models/language/language"
 import { CheckSquare2, Globe, Square } from "lucide-react"
 import { Route } from "next"
 import Link from "next/link"
