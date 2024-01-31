@@ -1,19 +1,6 @@
-import HadithHoc from "@/components/hadith/hoc/HadithHoc"
-import { getLangArrayFromURL } from "@/lib/utils"
+import { ROUTES } from "@/constants/routes"
+import { redirect } from "next/navigation"
 
-export default function Home({
-  searchParams,
-}: {
-  searchParams: {
-    [key: string]: string | undefined
-    languages: string | undefined
-    edit: string
-  }
-}) {
-  const langs = getLangArrayFromURL(searchParams.languages)
-  return (
-    <main className="h-full w-full">
-      <HadithHoc langs={langs} edit={searchParams.edit === "true"} />
-    </main>
-  )
+export default function Home() {
+  redirect(`${ROUTES.HADITH_BY_DATE}`)
 }
