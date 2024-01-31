@@ -19,15 +19,11 @@ export interface HadithUIProps extends React.HTMLAttributes<HTMLDivElement> {
   topic: string
   text: string
   color: string
-  languageCode: string
   bookText: string
 }
 
 const HadithUI = forwardRef<HTMLDivElement, HadithUIProps>(
-  (
-    { number, date, topic, text, color, languageCode, bookText, ...props },
-    ref,
-  ) => {
+  ({ number, date, topic, text, color, bookText, ...props }, ref) => {
     const html = text.replaceAll(
       /("|«|&laquo;).+?("|»|&raquo;)/g,
       "<hadith-nas>$&</hadith-nas>",
@@ -45,31 +41,27 @@ const HadithUI = forwardRef<HTMLDivElement, HadithUIProps>(
         ref={ref}
         className={clsx(
           styles.hadith,
-          getFont(languageCode)?.variable,
+          getFont("ar")?.variable,
           props.className,
           "flex flex-col",
         )}
-        lang={languageCode}
+        lang={"ar"}
       >
         <CardHeader>
           <CardTitle className="text-center">{topic}</CardTitle>
           <CardDescription className="flex">
             <span>
-              {number.toLocaleString(languageCode, { useGrouping: false })}
+              {number.toLocaleString("ar-eg", { useGrouping: false })}
             </span>
             <span className="flex-1"></span>
             <span>
-              {new Intl.DateTimeFormat(languageCode, {
+              {new Intl.DateTimeFormat("ar-eg", {
                 dateStyle: "full",
               }).format(date)}
             </span>
           </CardDescription>
         </CardHeader>
-        <CardContent
-          className={clsx(
-            "flex flex-1 flex-col justify-center text-center text-xl",
-          )}
-        >
+        <CardContent className={clsx("flex-1 text-center text-xl")}>
           {parsedHTML}
         </CardContent>
         <CardFooter className="justify-end">
