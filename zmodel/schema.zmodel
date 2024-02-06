@@ -45,15 +45,32 @@ model Hadith extends Base {
     color String @default("#000000")
     fontScale Int @default(0)
     status Status @default(draft)
-    topic String
     text String
+    topicID Int
+    topic Topic @relation(fields: [topicID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "topicID")
     userCreated User? @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserCreated")
     userUpdated User? @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserUpdated")
     books HadithBook[]
     translations HadithTranslation[]
 
+    @@index([topicID], map: "fki_HadithTopicID")
     @@index([userIDCreated], map: "fki_HadithUserCreated")
     @@index([userIDUpdated], map: "fki_HadithUserUpdated")
+
+    @@allow('all', auth().role == "admin")
+}
+
+model Topic  extends Base {
+    id Int @id
+    status Status @default(draft)
+    title String
+    userCreated User? @relation("Topic_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
+    userUpdated User? @relation("Topic_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
+    hadiths Hadith[]
+    translations TopicTranslation[]
+
+    @@index([userIDCreated], map: "fki_TopicUserCreated")
+    @@index([userIDUpdated], map: "fki_TopicUserUpdated")
 
     @@allow('all', auth().role == "admin")
 }
@@ -79,6 +96,7 @@ model Language {
     sort Int?
     bookTranslations BookTranslation[]
     hadithTranslations HadithTranslation[]
+    hadithTopicTranslations TopicTranslation[]
 
     @@allow('all', auth().role == "admin")
 }
@@ -86,7 +104,6 @@ model Language {
 model HadithTranslation extends Base {
     hadithID Int
     languageCode String
-    topic String
     text String
     fontScale Int @default(0)
     userCreated User? @relation("HadithTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
@@ -99,6 +116,24 @@ model HadithTranslation extends Base {
     @@index([userIDUpdated], map: "fki_HadithTranslationUserUpdated")
     @@index([languageCode], map: "fki_HadithTranslation_LanguageCode")
     @@index([hadithID], map: "fki_HadithTranslation_HadithID")
+
+    @@allow('all', auth().role == "admin")
+}
+
+model TopicTranslation extends Base {
+    hadithTopicID Int
+    languageCode String
+    title String
+    userCreated User? @relation("TopicTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserCreated")
+    userUpdated User? @relation("TopicTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserUpdated")
+    hadithTopic Topic @relation(fields: [hadithTopicID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_TopicID")
+    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_LanguageCode")
+
+    @@id([hadithTopicID, languageCode])
+    @@index([userIDCreated], map: "fki_TopicTranslationUserCreated")
+    @@index([userIDUpdated], map: "fki_TopicTranslationUserUpdated")
+    @@index([languageCode], map: "fki_TopicTranslation_LanguageCode")
+    @@index([hadithTopicID], map: "fki_TopicTranslation_HadithID")
 
     @@allow('all', auth().role == "admin")
 }
@@ -160,12 +195,16 @@ model User {
     sessions Session[]
     booksCreated Book[] @relation("Book_userIDCreatedToUser")
     booksUpdated Book[] @relation("Book_userIDUpdatedToUser")
+    hadithTopicsCreated Topic[] @relation("Topic_userIDCreatedToUser")
+    hadithTopicsUpdated Topic[] @relation("Topic_userIDUpdatedToUser")
     hadithsCreated Hadith[] @relation("Hadith_userIDCreatedToUser")
     hadithsUpdated Hadith[] @relation("Hadith_userIDUpdatedToUser")
     bookTranslationsCreated BookTranslation[] @relation("BookTranslation_userIDCreatedToUser")
     bookTranslationsUpdated BookTranslation[] @relation("BookTranslation_userIDUpdatedToUser")
     hadithTranslationsCreated HadithTranslation[] @relation("HadithTranslation_userIDCreatedToUser")
     hadithTranslationssUpdated HadithTranslation[] @relation("HadithTranslation_userIDUpdatedToUser")
+    hadithTopicTranslationsCreated TopicTranslation[] @relation("TopicTranslation_userIDCreatedToUser")
+    hadithTopicTranslationssUpdated TopicTranslation[] @relation("TopicTranslation_userIDUpdatedToUser")
 
     @@allow('all', auth().role == "admin")
 }

@@ -81,7 +81,7 @@ export const BookEditForm = ({ book, languages }: IBookEditForm) => {
   const upsertBook = useUpsertBook()
   const createBookTranslation = useCreateBookTranslation()
 
-  const form = useForm<IBook>({
+  const form = useForm({
     resolver: zodResolver(BookSchema.partial({ id: true })),
     values: findUniqueBook.data,
     defaultValues: { name: "", status: Status.draft },

@@ -50,7 +50,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           date: true,
           status: true,
           color: true,
-          topic: true,
+          topicID: true,
           text: true,
           fontScale: true,
         },
@@ -80,7 +80,6 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
         select: {
           hadithID: true,
           languageCode: true,
-          topic: true,
           text: true,
           fontScale: true,
         },
@@ -167,7 +166,6 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                       data: {
                         hadithID: findUniqueHadith.data.id,
                         languageCode: language.code,
-                        topic: "",
                         text: "",
                       },
                     })

@@ -27,17 +27,6 @@ export const columns: ColumnDef<IHadith>[] = [
     cell: ({ row }) => row.original.date.toDateString(),
   },
   {
-    accessorKey: "topic",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Topic" />
-    ),
-    cell: ({ row }) => (
-      <div dir="rtl" className="line-clamp-1">
-        {row.original.topic}
-      </div>
-    ),
-  },
-  {
     accessorKey: "text",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Text" />

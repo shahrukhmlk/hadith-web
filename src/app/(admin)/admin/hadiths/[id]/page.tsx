@@ -21,14 +21,14 @@ export default async function Home({ params }: { params: { id: string } }) {
       date: true,
       status: true,
       color: true,
-      topic: true,
       text: true,
       fontScale: true,
+      topicID:true,
+      topic: { select: { id: true, status: true, title: true } },
       translations: {
         select: {
           hadithID: true,
           languageCode: true,
-          topic: true,
           text: true,
           fontScale: true,
         },

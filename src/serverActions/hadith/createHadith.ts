@@ -9,13 +9,13 @@ export async function createNewHadith() {
   const { id } = await prisma.hadith.upsert({
     create: {
       date: new Date(),
-      topic: "",
+      topicID:1,
       number: 0,
       text: "",
     },
     update: {
       date: new Date(),
-      topic: "",
+      topicID:1,
       number: 0,
       text: "",
     },

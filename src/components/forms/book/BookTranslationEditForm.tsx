@@ -53,7 +53,7 @@ export const BookTranslationEditForm = forwardRef<
   const upsertBookTranslation = useUpsertBookTranslation()
   const deleteBookTranslation = useDeleteBookTranslation()
 
-  const form = useForm<IBookTranslation>({
+  const form = useForm({
     resolver: zodResolver(BookTranslationSchema),
     values: findUniqueBookTranslation.data,
     defaultValues: { bookID: -1, languageCode: "", name: "" },

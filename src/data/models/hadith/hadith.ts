@@ -1,8 +1,8 @@
 import { z } from "zod"
 import { IDNumberSchema, StatusSchema, TranslationSchema } from "../base/base"
+import { TopicSchema } from "../topic/topic"
 
 const HadithTranslatedFieldsSchema = z.object({
-  topic: z.string().trim().min(1),
   text: z.string().trim().min(1),
   fontScale: z.number().int().min(-99).max(100),
 })
@@ -13,6 +13,7 @@ export const HadithSchema = IDNumberSchema.merge(StatusSchema)
     number: z.coerce.number().int().min(1),
     date: z.date(),
     color: z.string(),
+    topicID: z.coerce.number().int().min(1)
   })
 type Hadith = z.infer<typeof HadithSchema>
 export interface IHadith extends Hadith {}
@@ -33,6 +34,7 @@ type HadithTranslation = z.infer<typeof HadithTranslationSchema>
 export interface IHadithTranslation extends HadithTranslation {}
 
 export const HadithWithDetailsSchema = HadithSchema.extend({
+  topic: TopicSchema,
   books: z.array(HadithBookSchema),
   translations: z.array(HadithTranslationSchema),
 })

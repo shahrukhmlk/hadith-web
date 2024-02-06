@@ -60,7 +60,6 @@ export const HadithTranslationEditForm = forwardRef<
       select: {
         hadithID: true,
         languageCode: true,
-        topic: true,
         text: true,
         fontScale: true,
       },
@@ -83,13 +82,12 @@ export const HadithTranslationEditForm = forwardRef<
   const upsertHadithTranslation = useUpsertHadithTranslation()
   const deleteHadithTranslation = useDeleteHadithTranslation()
 
-  const form = useForm<IHadithTranslation>({
+  const form = useForm({
     resolver: zodResolver(HadithTranslationSchema),
     values: findUniqueHadithTranslation.data,
     defaultValues: {
       hadithID: -1,
       languageCode: "",
-      topic: "",
       text: "",
       fontScale: 0,
     },
@@ -110,7 +108,6 @@ export const HadithTranslationEditForm = forwardRef<
         select: {
           hadithID: true,
           languageCode: true,
-          topic: true,
           text: true,
           fontScale: true,
         },
@@ -171,19 +168,6 @@ export const HadithTranslationEditForm = forwardRef<
         <div className="flex flex-1 basis-48 flex-col space-y-4">
           <FormField
             control={form.control}
-            name={"topic"}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Topic</FormLabel>
-                <FormControl>
-                  <Input dir="auto" placeholder="Topic" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name={"text"}
             render={({ field }) => (
               <FormItem className="flex flex-1 flex-col">
@@ -232,10 +216,10 @@ export const HadithTranslationEditForm = forwardRef<
             languageCode={hadithTranslation.languageCode}
             color={hadith.color}
             number={hadith.number}
-            topic={hadith.topic}
+            topic={"hadith.topic"}
             text={hadith.text}
             translationFontScale={watch().fontScale}
-            translationTopic={watch().topic}
+            translationTopic={"translationTopic"}
             translationText={watch().text}
             bookText={
               findManyHadithBook.data

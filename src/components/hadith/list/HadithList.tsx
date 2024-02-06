@@ -20,7 +20,6 @@ const HadithList = forwardRef<HTMLDivElement, HadithListProps>(
           date: true,
           status: true,
           color: true,
-          topic: true,
           text: true,
           fontScale: true,
         },

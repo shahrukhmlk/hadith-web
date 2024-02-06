@@ -73,7 +73,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
     const upsertHadithBook = useUpsertHadithBook()
     const deleteHadithBook = useDeleteHadithBook()
 
-    const form = useForm<IHadithBook>({
+    const form = useForm({
       resolver: zodResolver(HadithBookSchema),
       values: findUniqueHadithBook.data,
       // @ts-ignore

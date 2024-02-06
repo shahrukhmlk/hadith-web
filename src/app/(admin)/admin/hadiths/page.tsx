@@ -31,7 +31,7 @@ export default async function Home({
       date: true,
       status: true,
       color: true,
-      topic: true,
+      topicID:true,
       text: true,
       fontScale: true,
     },

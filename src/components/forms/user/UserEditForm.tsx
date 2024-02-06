@@ -43,7 +43,7 @@ export const UserEditForm = ({ user }: IUserEditFormProps) => {
 
   const upsertUser = useUpsertUser()
 
-  const form = useForm<User>({
+  const form = useForm({
     /*     resolver: zodResolver(UserSchem),
      */ values: findUniqueUser.data,
     defaultValues: { image: "", name: "", email: "", role: "" },

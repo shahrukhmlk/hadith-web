@@ -38,7 +38,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
           date: true,
           status: true,
           color: true,
-          topic: true,
+          topicID: true,
           text: true,
           fontScale: true,
         },
@@ -51,17 +51,18 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
       },
     })
 
-    const form = useForm<IHadith>({
-      resolver: zodResolver(HadithSchema.partial({ id: true })),
+    const form = useForm({
+      resolver: zodResolver(HadithSchema),
       values: findUniqueHadith.data,
       defaultValues: {
+        id: -1,
         // @ts-ignore
         number: "",
         status: Status.draft,
         // @ts-ignore
         date: "",
         color: "#000000",
-        topic: "",
+        topicID: -1,
         text: "",
         // @ts-ignore
         fontScale: "",
@@ -79,7 +80,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
           date: true,
           status: true,
           color: true,
-          topic: true,
           text: true,
           fontScale: true,
         },
@@ -150,19 +150,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               )}
             /> */}
 
-            <FormField
-              control={form.control}
-              name={"topic"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Topic</FormLabel>
-                  <FormControl>
-                    <Input dir="auto" placeholder="Topic" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name={"text"}
