@@ -143,18 +143,22 @@ export const HadithTranslationEditForm = forwardRef<
   }
 
   const generateImage = () => {
-    if (imageDivRef.current) {
-      setGeneratingImage(true)
-      panzoomRef.current?.reset()
-      html2canvas(imageDivRef.current, {})
-        .then((canvas) => setImageData(canvas.toDataURL("png")))
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(() => setGeneratingImage(false))
-      /* const canvas = await html2canvas(imageDivRef.current, {})
-      setImageData(canvas.toDataURL("png")) */
-    }
+    setGeneratingImage(true)
+    panzoomRef.current?.reset({ animate: false, startScale: 5 })
+
+    setTimeout(() => {
+      if (imageDivRef.current) {
+        html2canvas(imageDivRef.current, {})
+          .then((canvas) => setImageData(canvas.toDataURL("png", 1)))
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => {
+            setGeneratingImage(false)
+            handleSubmit(onSubmit)()
+          })
+      }
+    }, 1000)
   }
   return (
     <Form {...form}>
@@ -269,7 +273,9 @@ export const HadithTranslationEditForm = forwardRef<
               asChild
               disabled={imageData === ""}
             >
-              <a href={imageData}>Download</a>
+              <a href={imageData} target="_blank">
+                Download
+              </a>
             </Button>
             <ButtonLoading
               type="button"

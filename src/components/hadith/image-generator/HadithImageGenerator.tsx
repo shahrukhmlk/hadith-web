@@ -1,4 +1,5 @@
 import Series from "@/assets/svg/calligraphy-series.svg"
+import DomeInverted from "@/assets/svg/dome-inverted.svg"
 import Dome from "@/assets/svg/dome.svg"
 import Footer from "@/assets/svg/footer-social.svg"
 import Logo from "@/assets/svg/logo.svg"
@@ -14,8 +15,10 @@ import {
   cairo,
   rumooz,
   urduKasheeda,
+  urduNormal,
 } from "./fontsLoader"
 import styles from "./hadithImage.module.scss"
+import "./html2canvasfix.css"
 
 export interface HadithImageGeneratorProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -70,6 +73,7 @@ const HadithImageGenerator = forwardRef<
             rumooz.variable,
             arabicNas.variable,
             arabicNormal.variable,
+            urduNormal.variable,
             urduKasheeda.variable,
             aadil.variable,
             cairo.variable,
@@ -88,8 +92,8 @@ const HadithImageGenerator = forwardRef<
             </p>
             <Series className={"h-full w-auto"} fill={"#ffffff"} />
           </div>
-          <div className="absolute right-[5%] top-[5%] aspect-[44.09/30.78] h-auto w-[10%]">
-            <Dome
+          <div className="absolute right-[5%] top-[5%] mt-[-1px] aspect-[44.09/30.78] h-auto w-[10%]">
+            <DomeInverted
               className="absolute inset-0 h-full w-full object-contain text-transparent"
               fill={color}
             />
@@ -121,19 +125,18 @@ const HadithImageGenerator = forwardRef<
             >
               {translationParsed}
             </div>
-            <div>{bookText}</div>
+            <div style={{ fontFamily: "var(--font-cairo)", fontSize: "7px" }}>
+              {bookText}
+            </div>
           </div>
-          <div className="absolute bottom-[5%] left-[5%] aspect-[44.09/30.78] h-auto w-[10%]">
+          <div className="absolute bottom-[5%] left-[5%] mb-[-5px] flex h-auto w-[10%] justify-center">
             <Dome
-              className="absolute inset-0 h-full w-full rotate-180 object-contain text-transparent"
+              className="absolute inset-0 h-full w-full object-contain text-transparent"
               fill={color}
             />
-            <Logo
-              className={
-                "absolute bottom-[-12px] left-[5px] z-10 aspect-[31.59/40.65] h-auto w-[70%]"
-              }
-              fill={"#ffffff"}
-            />
+            <div className="relative bottom-[-8px] h-auto w-[21px]">
+              <Logo className={""} fill={"#ffffff"} />
+            </div>
           </div>
           <div
             className={clsx(

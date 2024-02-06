@@ -1,0 +1,4 @@
+/* Fix for html2canvas adding padding to texts  */
+body > div:last-child > span + img {
+  display: inline !important;
+}

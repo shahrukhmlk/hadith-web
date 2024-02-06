@@ -13,6 +13,10 @@ const rumooz = localFont({
   src: "./fonts/symbols.otf",
   variable: "--font-rumooz",
 })
+const urduNormal = localFont({
+  src: "./fonts/urdu-normal.ttf",
+  variable: "--font-urdu-normal",
+})
 const urduKasheeda = localFont({
   src: "./fonts/urdu-kasheeda.ttf",
   variable: "--font-urdu-kasheeda",
@@ -26,4 +30,12 @@ const cairo = Cairo({
   variable: "--font-cairo",
   subsets: ["latin", "arabic"],
 })
-export { arabicNas, arabicNormal, rumooz, urduKasheeda, aadil, cairo }
+export {
+  arabicNas,
+  arabicNormal,
+  rumooz,
+  urduKasheeda,
+  urduNormal,
+  aadil,
+  cairo,
+}

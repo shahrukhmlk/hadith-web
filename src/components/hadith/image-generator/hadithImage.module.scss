@@ -22,8 +22,9 @@
     }
   }
   &:lang(ur) {
-    font-family: var(--font-urdu-kasheeda);
+    font-family: var(--font-urdu-normal);
     hadith-nas {
+      font-family: var(--font-urdu-kasheeda);
     }
   }
 }
