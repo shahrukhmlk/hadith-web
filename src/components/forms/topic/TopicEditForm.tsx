@@ -18,6 +18,7 @@ import {
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
+import { omit } from "lodash"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
 
@@ -69,7 +70,7 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
     const onSubmit = (values: ITopic) => {
       upsertTopic.mutate(
         {
-          create: values,
+          create: omit(values, ["id"]),
           where: { id: values.id },
           update: values,
           select: {
@@ -127,7 +128,6 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
             </div>
           </form>
         </Form>
-        <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
       </>
     )
   },

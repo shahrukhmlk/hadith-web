@@ -33,7 +33,7 @@ export default async function Home({
     orderBy: { number: "desc" },
   })
   const topics = await prisma.topic.findMany({
-    select: { id: true, status: true, title: true },
+    select: { id: true, title: true },
   })
   return (
     <main className="flex flex-col items-start p-8">
