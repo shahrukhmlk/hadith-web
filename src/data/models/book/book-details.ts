@@ -1,13 +1,9 @@
 import { z } from "zod"
-import { TranslationSchema } from "../base/base"
-import { BookSchema, BookTranslatedFieldsSchema } from "./book"
+import { BookSchema } from "./book"
+import { BookTranslationSchema } from "./book-translation"
 
 export const BookDetails = BookSchema.extend({
-  translations: z.array(
-    TranslationSchema.merge(BookTranslatedFieldsSchema).extend({
-      bookID: z.number().int(),
-    }),
-  ),
+  translations: z.array(BookTranslationSchema),
 })
 export type BookDetails = z.infer<typeof BookDetails>
 export interface IBookDetails extends BookDetails {}

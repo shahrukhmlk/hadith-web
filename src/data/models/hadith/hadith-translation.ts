@@ -1,10 +1,11 @@
 import { z } from "zod"
-import { TranslationSchema } from "../base/base"
+import { IDNumberValidator, TranslationSchema } from "../base/base"
 import { HadithTranslatedFieldsSchema } from "./hadith"
 
-export const HadithTranslationSchema = TranslationSchema.extend({
-  hadithID: z.number().int(),
-  ...HadithTranslatedFieldsSchema.shape,
+export const HadithTranslationSchema = TranslationSchema.merge(
+  HadithTranslatedFieldsSchema,
+).extend({
+  hadithID: IDNumberValidator,
 })
 type HadithTranslation = z.infer<typeof HadithTranslationSchema>
 export interface IHadithTranslation extends HadithTranslation {}

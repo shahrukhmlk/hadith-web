@@ -1,8 +1,9 @@
 import { z } from "zod"
+import { IDNumberValidator } from "../base/base"
 
 export const HadithBookSchema = z.object({
-  hadithID: z.coerce.number().int().min(1),
-  bookID: z.coerce.number().int().min(1),
+  hadithID: IDNumberValidator,
+  bookID: IDNumberValidator,
   hadithRefNumber: z.coerce.number().int().min(1),
 })
 type HadithBook = z.infer<typeof HadithBookSchema>
