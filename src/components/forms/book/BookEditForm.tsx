@@ -10,12 +10,18 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { ROUTES } from "@/constants/routes"
 import { BookSchema, IBook } from "@/data/models/book/book"
 import { Status } from "@/data/models/status/status"
-import { useFindUniqueBook, useUpsertBook } from "@/lib/hooks/query"
+import {
+  useDeleteBook,
+  useFindUniqueBook,
+  useUpsertBook,
+} from "@/lib/hooks/query"
 import { deleteBook } from "@/serverActions/book/deleteBook"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
+import { useRouter } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -42,6 +48,9 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
     )
 
     const upsertBook = useUpsertBook()
+
+    const deleteBook = useDeleteBook()
+    const router = useRouter()
 
     const form = useForm({
       resolver: zodResolver(BookSchema.partial({ id: true })),
@@ -133,12 +142,25 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
               ? "Update"
               : "Publish"}
           </ButtonLoading>
-          <form
-            action={(e) => deleteBook(book.id)}
-            className="flex flex-1 justify-end"
-          >
-            <ButtonLoading variant={"destructive"}>Delete Book</ButtonLoading>
-          </form>
+          <div className="flex-1">
+            <ButtonLoading
+              type="button"
+              variant={"destructive"}
+              isLoading={deleteBook.isPending}
+              onClick={() => {
+                deleteBook.mutate(
+                  { where: { id: findUniqueBook.data.id } },
+                  {
+                    onSuccess(data, variables, context) {
+                      router.replace(ROUTES.ADMIN.BOOKS)
+                    },
+                  },
+                )
+              }}
+            >
+              Delete Book
+            </ButtonLoading>
+          </div>
         </div>
       </>
     )
