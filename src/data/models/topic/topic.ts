@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { IDNumberSchema, StatusSchema, TranslationSchema } from "../base/base"
 
-const TopicTranslatedFieldsSchema = z.object({
+export const TopicTranslatedFieldsSchema = z.object({
   title: z.string().trim().min(1),
 })
 
@@ -13,11 +13,12 @@ type Topic = z.infer<typeof TopicSchema>
 
 export interface ITopic extends Topic {}
 
-export const TopicTranslationSchema = TranslationSchema.extend({
-  topicID: z.number().int(),
-  ...TopicTranslatedFieldsSchema.shape,
+export const TopicWithTranslationsSchema = TopicSchema.extend({
+  translations: z.array(
+    TranslationSchema.merge(TopicTranslatedFieldsSchema).extend({
+      topicID: z.number().int(),
+    }),
+  ),
 })
-
-type TopicTranslation = z.infer<typeof TopicTranslationSchema>
-
-export interface ITopicTranslation extends TopicTranslation {}
+type TopicWithTranslations = z.infer<typeof TopicWithTranslationsSchema>
+export interface ITopicWithTranslations extends TopicWithTranslations {}

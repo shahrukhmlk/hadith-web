@@ -1,9 +1,8 @@
+import BookList from "@/components/book/list/BookList"
 import { Button } from "@/components/ui/button"
-import DataTable from "@/components/ui/data-table/DataTable"
 import { getBooks } from "@/data/book/getBooks"
 import { createNewBook } from "@/serverActions/book/createBook"
 import { Plus } from "lucide-react"
-import { columns } from "./columns"
 
 export default async function Home() {
   const books = await getBooks()
@@ -15,7 +14,7 @@ export default async function Home() {
           Add New Book
         </Button>
       </form>
-      <DataTable columns={columns} data={books} />
+      <BookList books={books} />
     </main>
   )
 }

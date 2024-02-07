@@ -10,12 +10,12 @@ export const BookSchema = IDNumberSchema.merge(StatusSchema).merge(
 type Book = z.infer<typeof BookSchema>
 export interface IBook extends Book {}
 
-export const BookWithTranslationsSchema = BookSchema.extend({
+export const BookDetails = BookSchema.extend({
   translations: z.array(
     TranslationSchema.merge(BookTranslatedFieldsSchema).extend({
       bookID: z.number().int(),
     }),
   ),
 })
-type BookWithTranslations = z.infer<typeof BookWithTranslationsSchema>
-export interface IBookWithTranslations extends BookWithTranslations {}
+type BookDetails = z.infer<typeof BookDetails>
+export interface IBookDetails extends BookDetails {}
