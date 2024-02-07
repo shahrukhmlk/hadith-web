@@ -68,6 +68,14 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
       {
         initialData: bookSearch?.length ? undefined : books,
         placeholderData: keepPreviousData,
+        select(data) {
+          return data.map((book) => {
+            return {
+              value: book.id.toString(),
+              label: book.name,
+            }
+          })
+        },
       },
     )
     const upsertHadithBook = useUpsertHadithBook()
@@ -106,16 +114,6 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
         },
       )
     }
-    const getSelectableBooks = () => {
-      return (
-        findManyBook.data?.map((book) => {
-          return {
-            label: book.name,
-            value: book.id.toString(),
-          }
-        }) ?? []
-      )
-    }
 
     return (
       <Form {...form}>
@@ -132,8 +130,8 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
               <FormItem>
                 <FormControl>
                   <SearchableSelectInput
-                    items={getSelectableBooks()}
-                    selectedItem={getSelectableBooks().find(
+                    items={findManyBook.data ?? []}
+                    selectedItem={findManyBook.data?.find(
                       (item) => parseInt(item.value) === field.value,
                     )}
                     isLoading={findManyBook.isFetching}

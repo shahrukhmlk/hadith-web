@@ -1,3 +1,4 @@
+import TopicCreateDialog from "@/components/dialogs/topic-create/BookCreateDialog"
 import TopicList from "@/components/topic/list/TopicList"
 import { Button } from "@/components/ui/button"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
@@ -15,12 +16,7 @@ export default async function Home() {
   })
   return (
     <main className="flex flex-col items-start p-8">
-      <form action={createNewTopic}>
-        <Button size={"sm"} className="h-8" variant={"secondary"}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add New Topic
-        </Button>
-      </form>
+      <TopicCreateDialog />
       <TopicList topics={topics} />
     </main>
   )

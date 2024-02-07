@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { ROUTES } from "@/constants/routes"
 import { Status } from "@/data/models/status/status"
 import { ITopic, TopicSchema } from "@/data/models/topic/topic"
 import {
@@ -20,23 +19,22 @@ import {
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
-import { Route } from "next"
-import { useRouter } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export interface TopicEditFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
-  topic: ITopic
+  topic?: ITopic
+  onSave?: (id: number) => void
+  onDelete?: () => void
 }
 
 export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
-  ({ topic, ...props }, ref) => {
+  ({ topic, onSave, onDelete, ...props }, ref) => {
     const findUniqueTopic = useFindUniqueTopic(
       {
         where: {
-          id: topic.id,
+          id: topic?.id,
         },
         select: {
           id: true,
@@ -44,17 +42,16 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
           status: true,
         },
       },
-      { initialData: topic },
+      { initialData: topic, enabled: !!topic },
     )
 
     const upsertTopic = useUpsertTopic()
     const deleteTopic = useDeleteTopic()
-    const router = useRouter()
 
     const form = useForm({
       resolver: zodResolver(TopicSchema.partial({ id: true })),
       values: findUniqueTopic.data,
-      defaultValues: { title: "", status: Status.draft },
+      defaultValues: { id: 0, title: "", status: Status.draft },
     })
 
     const { control } = form
@@ -81,14 +78,10 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
         },
         {
           onSuccess(data, variables, context) {
-            toast.success("Done!")
+            onSave && onSave(data?.id ?? 0)
           },
         },
       )
-    }
-
-    if (!findUniqueTopic.data) {
-      return null
     }
 
     return (
@@ -103,7 +96,7 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
               name={"title"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Topic</FormLabel>
                   <FormControl>
                     <Input placeholder="Topic" {...field} />
                   </FormControl>
@@ -137,28 +130,30 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
               form.handleSubmit(onSubmit)()
             }}
           >
-            {findUniqueTopic.data.status === Status.published
+            {findUniqueTopic.data?.status === Status.published
               ? "Update"
               : "Publish"}
           </ButtonLoading>
           <div className="flex-1"></div>
-          <ButtonLoading
-            type="button"
-            variant={"destructive"}
-            isLoading={deleteTopic.isPending}
-            onClick={() => {
-              deleteTopic.mutate(
-                { where: { id: findUniqueTopic.data.id } },
-                {
-                  onSuccess(data, variables, context) {
-                    router.replace(ROUTES.ADMIN.TOPICS as Route)
+          {findUniqueTopic.data && (
+            <ButtonLoading
+              type="button"
+              variant={"destructive"}
+              isLoading={deleteTopic.isPending}
+              onClick={() => {
+                deleteTopic.mutate(
+                  { where: { id: findUniqueTopic.data.id } },
+                  {
+                    onSuccess(data, variables, context) {
+                      onDelete && onDelete()
+                    },
                   },
-                },
-              )
-            }}
-          >
-            Delete Topic
-          </ButtonLoading>
+                )
+              }}
+            >
+              Delete Topic
+            </ButtonLoading>
+          )}
         </div>
       </>
     )

@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { ROUTES } from "@/constants/routes"
 import { BookSchema, IBook } from "@/data/models/book/book"
 import { Status } from "@/data/models/status/status"
 import {
@@ -21,8 +20,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
 import { omit } from "lodash"
-import { Route } from "next"
-import { useRouter } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
 
@@ -30,10 +27,11 @@ export interface BookEditFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
   book?: IBook
   onSave?: (id: number) => void
+  onDelete?: () => void
 }
 
 export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
-  ({ book, onSave, ...props }, ref) => {
+  ({ book, onSave, onDelete, ...props }, ref) => {
     const findUniqueBook = useFindUniqueBook(
       {
         where: {
@@ -51,8 +49,6 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
     const upsertBook = useUpsertBook()
 
     const deleteBook = useDeleteBook()
-
-    const router = useRouter()
 
     const form = useForm({
       resolver: zodResolver(BookSchema.partial({ id: true })),
@@ -151,7 +147,7 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
                   { where: { id: findUniqueBook.data.id } },
                   {
                     onSuccess(data, variables, context) {
-                      router.replace(ROUTES.ADMIN.BOOKS as Route)
+                      onDelete && onDelete()
                     },
                   },
                 )

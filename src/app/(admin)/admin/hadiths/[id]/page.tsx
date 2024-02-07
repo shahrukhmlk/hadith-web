@@ -23,7 +23,7 @@ export default async function Home({ params }: { params: { id: string } }) {
       color: true,
       text: true,
       fontScale: true,
-      topicID:true,
+      topicID: true,
       topic: { select: { id: true, status: true, title: true } },
       translations: {
         select: {
@@ -47,11 +47,22 @@ export default async function Home({ params }: { params: { id: string } }) {
     notFound()
   }
 
+  const topics = await prisma.topic.findMany({
+    select: { id: true, status: true, title: true },
+  })
+
   const languages = await getLanguages()
   const books = await getBooks()
   return (
     <main className="space-y-4 p-4">
-      {<HadithEditPage hadith={hadith} books={books} languages={languages} />}
+      {
+        <HadithEditPage
+          hadith={hadith}
+          topics={topics}
+          books={books}
+          languages={languages}
+        />
+      }
     </main>
   )
 }

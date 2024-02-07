@@ -1,3 +1,4 @@
+import HadithCreateDialog from "@/components/dialogs/hadith-create/HadithCreateDialog"
 import HadithList from "@/components/hadith/list/HadithList"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/constants/routes"
@@ -31,20 +32,18 @@ export default async function Home({
       date: true,
       status: true,
       color: true,
-      topicID:true,
+      topicID: true,
       text: true,
       fontScale: true,
     },
     orderBy: { number: "desc" },
   })
+  const topics = await prisma.topic.findMany({
+    select: { id: true, status: true, title: true },
+  })
   return (
     <main className="flex flex-col items-start p-8">
-      <form action={createNewHadith}>
-        <Button size={"sm"} className="h-8" variant={"secondary"}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add New Hadith
-        </Button>
-      </form>
+      <HadithCreateDialog topics={topics} />
       <HadithList hadiths={hadiths} />
     </main>
   )

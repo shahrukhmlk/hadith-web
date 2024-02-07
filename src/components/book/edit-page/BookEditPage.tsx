@@ -12,22 +12,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
-import { BookSchema } from "@/data/models/book/book"
+import { ROUTES } from "@/constants/routes"
 import { IBookDetails } from "@/data/models/book/book-details"
-import { IBookTranslation } from "@/data/models/book/book-translation"
 import { ILanguage } from "@/data/models/language/language"
-import { Status } from "@/data/models/status/status"
 import {
   useCreateBookTranslation,
   useFindManyBookTranslation,
   useFindUniqueBook,
-  useUpsertBook,
 } from "@/lib/hooks/query"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "lucide-react"
+import { Route } from "next"
+import { useRouter } from "next/navigation"
 import { forwardRef, useRef } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export interface BookEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -37,6 +33,7 @@ export interface BookEditPageProps
 
 export const BookEditPage = forwardRef<HTMLDivElement, BookEditPageProps>(
   ({ book, languages, ...props }, ref) => {
+    const router = useRouter()
     const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
     const bookEditFormRef = useRef<HTMLFormElement | null>(null)
 
@@ -68,16 +65,7 @@ export const BookEditPage = forwardRef<HTMLDivElement, BookEditPageProps>(
       },
       { initialData: book.translations },
     )
-    const upsertBook = useUpsertBook()
     const createBookTranslation = useCreateBookTranslation()
-
-    const form = useForm({
-      resolver: zodResolver(BookSchema.partial({ id: true })),
-      values: findUniqueBook.data,
-      defaultValues: { name: "", status: Status.draft },
-    })
-
-    const { control } = form
 
     /***
      * If book is available from props and the query returns no data it means the data has changed on the server after
@@ -85,27 +73,6 @@ export const BookEditPage = forwardRef<HTMLDivElement, BookEditPageProps>(
      */
     if (book && !findUniqueBook.data) {
       return null
-    }
-
-    const addBookTranslation = (translation: IBookTranslation) => {
-      createBookTranslation.mutate(
-        {
-          data: translation,
-          select: {
-            bookID: true,
-            languageCode: true,
-            name: true,
-          },
-        },
-        {
-          onSuccess(data, variables, context) {
-            toast.success("Done!")
-          },
-          onError(error, variables, context) {
-            toast.error(`An error occured`)
-          },
-        },
-      )
     }
 
     const notTranlsatedLanguages = () => {
@@ -123,7 +90,14 @@ export const BookEditPage = forwardRef<HTMLDivElement, BookEditPageProps>(
 
     return (
       <div className="space-y-4" ref={ref} {...props}>
-        <BookEditForm book={findUniqueBook.data} ref={bookEditFormRef} />
+        <BookEditForm
+          ref={bookEditFormRef}
+          book={findUniqueBook.data}
+          onSave={(id) => {}}
+          onDelete={() => {
+            router.replace(ROUTES.ADMIN.BOOKS as Route)
+          }}
+        />
         <div className="flex items-center gap-2">
           Translations
           <DropdownMenu>
