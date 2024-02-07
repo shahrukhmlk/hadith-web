@@ -65,7 +65,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
             contains: topicSearch?.length ? topicSearch : undefined,
           },
         },
-        select: { id: true, status: true, title: true },
+        select: { id: true, title: true },
       },
       {
         initialData: topicSearch?.length ? undefined : topics,

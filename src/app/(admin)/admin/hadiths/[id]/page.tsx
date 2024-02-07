@@ -24,7 +24,7 @@ export default async function Home({ params }: { params: { id: string } }) {
       text: true,
       fontScale: true,
       topicID: true,
-      topic: { select: { id: true, status: true, title: true } },
+      topic: { select: { id: true, title: true } },
       translations: {
         select: {
           hadithID: true,
@@ -48,7 +48,7 @@ export default async function Home({ params }: { params: { id: string } }) {
   }
 
   const topics = await prisma.topic.findMany({
-    select: { id: true, status: true, title: true },
+    select: { id: true, title: true },
   })
 
   const languages = await getLanguages()

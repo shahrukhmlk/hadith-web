@@ -22,7 +22,6 @@ import {
   useCreateHadithTranslation,
   useFindManyHadithBook,
   useFindManyHadithTranslation,
-  useFindManyTopic,
   useFindUniqueHadith,
 } from "@/lib/hooks/query"
 import { Plus } from "lucide-react"
