@@ -105,26 +105,29 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
                 </FormItem>
               )}
             />
+            <div className="flex space-x-2">
+              <ButtonLoading type="submit" isLoading={upsertTopic.isPending}>
+                Save
+              </ButtonLoading>
+              <div className="flex-1"></div>
+              {findUniqueTopic.data && (
+                <ButtonLoading
+                  type="button"
+                  variant={"destructive"}
+                  isLoading={deleteTopic.isPending}
+                  onClick={() => {
+                    deleteTopic.mutate({
+                      where: { id: findUniqueTopic.data.id },
+                    })
+                  }}
+                >
+                  Delete Topic
+                </ButtonLoading>
+              )}
+            </div>
           </form>
         </Form>
-        <div className="flex space-x-2">
-          <ButtonLoading type="submit" isLoading={upsertTopic.isPending}>
-            Save
-          </ButtonLoading>
-          <div className="flex-1"></div>
-          {findUniqueTopic.data && (
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteTopic.isPending}
-              onClick={() => {
-                deleteTopic.mutate({ where: { id: findUniqueTopic.data.id } })
-              }}
-            >
-              Delete Topic
-            </ButtonLoading>
-          )}
-        </div>
+        <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
       </>
     )
   },
