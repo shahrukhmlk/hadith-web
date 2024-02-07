@@ -121,19 +121,19 @@ model HadithTranslation extends Base {
 }
 
 model TopicTranslation extends Base {
-    hadithTopicID Int
+    topicID Int
     languageCode String
     title String
     userCreated User? @relation("TopicTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserCreated")
     userUpdated User? @relation("TopicTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserUpdated")
-    hadithTopic Topic @relation(fields: [hadithTopicID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_TopicID")
+    topic Topic @relation(fields: [topicID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_TopicID")
     language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_LanguageCode")
 
-    @@id([hadithTopicID, languageCode])
+    @@id([topicID, languageCode])
     @@index([userIDCreated], map: "fki_TopicTranslationUserCreated")
     @@index([userIDUpdated], map: "fki_TopicTranslationUserUpdated")
     @@index([languageCode], map: "fki_TopicTranslation_LanguageCode")
-    @@index([hadithTopicID], map: "fki_TopicTranslation_HadithID")
+    @@index([topicID], map: "fki_TopicTranslation_TopicID")
 
     @@allow('all', auth().role == "admin")
 }
