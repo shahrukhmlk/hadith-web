@@ -142,25 +142,24 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
               ? "Update"
               : "Publish"}
           </ButtonLoading>
-          <div className="flex-1">
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteBook.isPending}
-              onClick={() => {
-                deleteBook.mutate(
-                  { where: { id: findUniqueBook.data.id } },
-                  {
-                    onSuccess(data, variables, context) {
-                      router.replace(ROUTES.ADMIN.BOOKS as Route)
-                    },
+          <div className="flex-1"></div>
+          <ButtonLoading
+            type="button"
+            variant={"destructive"}
+            isLoading={deleteBook.isPending}
+            onClick={() => {
+              deleteBook.mutate(
+                { where: { id: findUniqueBook.data.id } },
+                {
+                  onSuccess(data, variables, context) {
+                    router.replace(ROUTES.ADMIN.BOOKS as Route)
                   },
-                )
-              }}
-            >
-              Delete Book
-            </ButtonLoading>
-          </div>
+                },
+              )
+            }}
+          >
+            Delete Book
+          </ButtonLoading>
         </div>
       </>
     )

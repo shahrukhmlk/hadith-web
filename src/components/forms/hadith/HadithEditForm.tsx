@@ -208,25 +208,24 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               ? "Update"
               : "Publish"}
           </ButtonLoading>
-          <div className="flex-1">
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteHadith.isPending}
-              onClick={() => {
-                deleteHadith.mutate(
-                  { where: { id: findUniqueHadith.data.id } },
-                  {
-                    onSuccess(data, variables, context) {
-                      router.replace(ROUTES.ADMIN.HADITHS as Route)
-                    },
+          <div className="flex-1"></div>
+          <ButtonLoading
+            type="button"
+            variant={"destructive"}
+            isLoading={deleteHadith.isPending}
+            onClick={() => {
+              deleteHadith.mutate(
+                { where: { id: findUniqueHadith.data.id } },
+                {
+                  onSuccess(data, variables, context) {
+                    router.replace(ROUTES.ADMIN.HADITHS as Route)
                   },
-                )
-              }}
-            >
-              Delete Topic
-            </ButtonLoading>
-          </div>
+                },
+              )
+            }}
+          >
+            Delete Topic
+          </ButtonLoading>
         </div>
       </>
     )
