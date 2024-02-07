@@ -129,3 +129,5 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
     )
   },
 )
+
+TopicEditForm.displayName = "TopicEditForm"

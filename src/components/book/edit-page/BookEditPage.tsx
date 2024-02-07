@@ -156,3 +156,5 @@ export const BookEditPage = forwardRef<HTMLDivElement, BookEditPageProps>(
     )
   },
 )
+
+BookEditPage.displayName = "BookEditPages"

@@ -1,4 +1,5 @@
 import { UserEditForm } from "@/components/forms/user/UserEditForm"
+import { UserEditPage } from "@/components/user/edit-page/UserEditPage"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
 import { notFound } from "next/navigation"
 
@@ -20,5 +21,5 @@ export default async function Home({ params }: { params: { id: string } }) {
   if (!user) {
     notFound()
   }
-  return <main className="space-y-4 p-4">{<UserEditForm user={user} />}</main>
+  return <main className="space-y-4 p-4">{<UserEditPage user={user} />}</main>
 }

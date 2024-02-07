@@ -155,3 +155,5 @@ export const TopicEditPage = forwardRef<HTMLDivElement, TopicEditPageProps>(
     )
   },
 )
+
+TopicEditPage.displayName = "TopicEditPage"

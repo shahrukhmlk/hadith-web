@@ -48,7 +48,11 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
 
     const upsertUser = useUpsertUser()
 
-    const deleteUser = useDeleteUser()
+    const deleteUser = useDeleteUser({
+      onSuccess(data, variables, context) {
+        onDelete && onDelete()
+      },
+    })
 
     const form = useForm({
       /*     resolver: zodResolver(UserSchem),
@@ -117,7 +121,7 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
               name={"email"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     {/* @ts-ignore */}
                     <Input disabled placeholder="email" {...field} />
@@ -131,7 +135,7 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
               name={"role"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Role</FormLabel>
                   <FormControl>
                     {/* @ts-ignore */}
                     <Input placeholder="Role" {...field} />
@@ -160,14 +164,7 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
               variant={"destructive"}
               isLoading={deleteUser.isPending}
               onClick={() => {
-                deleteUser.mutate(
-                  { where: { id: findUniqueUser.data.id } },
-                  {
-                    onSuccess(data, variables, context) {
-                      onDelete && onDelete()
-                    },
-                  },
-                )
+                deleteUser.mutate({ where: { id: findUniqueUser.data.id } })
               }}
             >
               Delete User
@@ -178,3 +175,5 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
     )
   },
 )
+
+UserEditForm.displayName = "UserEditForm"

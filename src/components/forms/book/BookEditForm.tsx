@@ -158,3 +158,5 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
     )
   },
 )
+
+BookEditForm.displayName = "BookEditForm"
