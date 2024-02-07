@@ -62,7 +62,6 @@ model Hadith extends Base {
 
 model Topic extends Base {
     id Int @id @default(autoincrement())
-    status Status @default(draft)
     title String
     userCreated User? @relation("Topic_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
     userUpdated User? @relation("Topic_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")

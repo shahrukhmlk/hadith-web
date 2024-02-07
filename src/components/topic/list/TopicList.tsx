@@ -17,7 +17,6 @@ const TopicList = forwardRef<HTMLDivElement, TopicListProps>(
         select: {
           id: true,
           title: true,
-          status: true,
         },
       },
       {

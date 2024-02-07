@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Status } from "@/data/models/status/status"
 import { ITopic, TopicSchema } from "@/data/models/topic/topic"
 import {
   useDeleteTopic,
@@ -39,7 +38,6 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
         select: {
           id: true,
           title: true,
-          status: true,
         },
       },
       { initialData: topic, enabled: !!topic },
@@ -55,7 +53,7 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
     const form = useForm({
       resolver: zodResolver(TopicSchema.partial({ id: true })),
       values: findUniqueTopic.data,
-      defaultValues: { id: 0, title: "", status: Status.draft },
+      defaultValues: { id: 0, title: "" },
     })
 
     const { control } = form
@@ -77,7 +75,6 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
           select: {
             id: true,
             title: true,
-            status: true,
           },
         },
         {
@@ -111,32 +108,8 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
           </form>
         </Form>
         <div className="flex space-x-2">
-          <ButtonLoading
-            type="button"
-            variant={"secondary"}
-            isLoading={
-              upsertTopic.isPending && form.getValues("status") === Status.draft
-            }
-            onClick={() => {
-              form.setValue("status", Status.draft)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            Save Draft
-          </ButtonLoading>
-          <ButtonLoading
-            isLoading={
-              upsertTopic.isPending &&
-              form.getValues("status") === Status.published
-            }
-            onClick={() => {
-              form.setValue("status", Status.published)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            {findUniqueTopic.data?.status === Status.published
-              ? "Update"
-              : "Publish"}
+          <ButtonLoading type="submit" isLoading={upsertTopic.isPending}>
+            Save
           </ButtonLoading>
           <div className="flex-1"></div>
           {findUniqueTopic.data && (

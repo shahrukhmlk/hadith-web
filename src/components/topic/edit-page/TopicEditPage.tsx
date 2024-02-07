@@ -14,23 +14,16 @@ import {
 import { Label } from "@/components/ui/label"
 import { ROUTES } from "@/constants/routes"
 import { ILanguage } from "@/data/models/language/language"
-import { Status } from "@/data/models/status/status"
-import { TopicSchema } from "@/data/models/topic/topic"
 import { ITopicDetails } from "@/data/models/topic/topic-details"
-import { ITopicTranslation } from "@/data/models/topic/topic-translation"
 import {
   useCreateTopicTranslation,
   useFindManyTopicTranslation,
   useFindUniqueTopic,
-  useUpsertTopic,
 } from "@/lib/hooks/query"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "lucide-react"
 import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef, useRef } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export interface TopicEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -52,7 +45,6 @@ export const TopicEditPage = forwardRef<HTMLDivElement, TopicEditPageProps>(
         select: {
           id: true,
           title: true,
-          status: true,
         },
       },
       { initialData: topic },

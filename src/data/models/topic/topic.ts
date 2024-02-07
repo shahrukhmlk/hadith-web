@@ -1,12 +1,10 @@
 import { z } from "zod"
-import { IDNumberValidator, StatusSchema } from "../base/base"
+import { IDNumberValidator } from "../base/base"
 
 export const TopicTranslatedFieldsSchema = z.object({
   title: z.coerce.string().min(1),
 })
-export const TopicSchema = StatusSchema.merge(
-  TopicTranslatedFieldsSchema,
-).extend({
+export const TopicSchema = TopicTranslatedFieldsSchema.extend({
   id: IDNumberValidator,
 })
 type Topic = z.infer<typeof TopicSchema>

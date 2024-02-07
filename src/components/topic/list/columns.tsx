@@ -4,7 +4,6 @@ import StatusBadge from "@/components/badges/status/StatusBadge"
 import { Button } from "@/components/ui/button"
 import { DataTableColumnHeader } from "@/components/ui/data-table/DataTableColumnHeader"
 import { ROUTES } from "@/constants/routes"
-import { ILanguage } from "@/data/models/language/language"
 import { ITopic } from "@/data/models/topic/topic"
 import { ColumnDef } from "@tanstack/react-table"
 import { Route } from "next"
@@ -19,13 +18,6 @@ export const columns: ColumnDef<ITopic>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Topic" />
     ),
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
-    cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
   {
     id: "actions",
