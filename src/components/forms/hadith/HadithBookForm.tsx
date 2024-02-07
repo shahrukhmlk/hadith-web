@@ -35,7 +35,7 @@ export interface HadithBookFormProps
 
 const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
   ({ hadithID, hadithBook, books, ...props }, ref) => {
-    const [bookSearch, setBookSearch] = useState<string>()
+    const [bookSearch, setBookSearch] = useState<string>("")
     const findUniqueHadithBook = useFindUniqueHadithBook(
       {
         where: {
@@ -139,6 +139,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
                     onItemSelect={(item) =>
                       field.onChange(parseInt(item.value))
                     }
+                    filterValue={bookSearch}
                     onFilterChange={setBookSearch}
                   />
                 </FormControl>

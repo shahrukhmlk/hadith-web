@@ -15,6 +15,7 @@ import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
 import { ITopic } from "@/data/models/topic/topic"
 import {
+  useCreateTopic,
   useDeleteHadith,
   useFindManyTopic,
   useFindUniqueHadith,
@@ -37,7 +38,7 @@ export interface HadithEditFormProps
 
 const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
   ({ hadith, topics, onSave, onDelete, ...props }, ref) => {
-    const [topicSearch, setTopicSearch] = useState<string>()
+    const [topicSearch, setTopicSearch] = useState<string>("")
     const findUniqueHadith = useFindUniqueHadith(
       {
         where: {
@@ -79,6 +80,9 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
         },
       },
     )
+
+    const createTopic = useCreateTopic()
+
     const upsertHadith = useUpsertHadith()
 
     const deleteHadith = useDeleteHadith()
@@ -96,8 +100,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
         color: "#000000",
         topicID: 0,
         text: "",
-        // @ts-ignore
-        fontScale: "",
+        fontScale: 0,
       },
     })
 
@@ -189,20 +192,29 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               control={form.control}
               name={"topicID"}
               render={({ field }) => (
-                <FormItem className="flex flex-col space-y-2">
+                <FormItem className="flex flex-col">
                   <FormLabel>Topic</FormLabel>
                   <FormControl>
                     <SearchableSelectInput
                       items={findManyTopic.data ?? []}
                       selectedItem={findManyTopic.data?.find(
                         (item) => parseInt(item.value) === field.value,
-                      )}
-                      isLoading={findManyTopic.isFetching}
+                      ) /*  ?? createTopic.data */}
+                      isLoading={
+                        findManyTopic.isFetching || createTopic.isPending
+                      }
                       selectText="Select Topic"
                       onItemSelect={(item) =>
                         field.onChange(parseInt(item.value))
                       }
+                      filterValue={topicSearch}
                       onFilterChange={setTopicSearch}
+                      onClickCreateNew={(text) => {
+                        createTopic.mutate({
+                          data: { title: text },
+                          select: { id: true, title: true },
+                        })
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -275,10 +287,11 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 )
               }}
             >
-              Delete Topic
+              Delete Hadith
             </ButtonLoading>
           )}
         </div>
+        <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
       </>
     )
   },

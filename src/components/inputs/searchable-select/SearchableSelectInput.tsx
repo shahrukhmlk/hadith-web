@@ -22,6 +22,7 @@ import {
 import { PopoverTriggerProps } from "@radix-ui/react-popover"
 import clsx from "clsx"
 import { CommandInput } from "cmdk"
+import { Plus } from "lucide-react"
 import { useState } from "react"
 
 export interface SelectItem {
@@ -37,8 +38,10 @@ export interface SearchableSelectInputProps extends PopoverTriggerProps {
   emptyText?: string
   name?: string
   isLoading?: boolean
+  filterValue: string
   onItemSelect?: (item: SelectItem) => void
   onFilterChange?: (search: string) => void
+  onClickCreateNew?: (text: string) => void
 }
 
 export default function SearchableSelectInput({
@@ -49,12 +52,13 @@ export default function SearchableSelectInput({
   emptyText = "No item found.",
   isLoading = false,
   name = "search",
+  filterValue,
   onItemSelect,
   onFilterChange,
+  onClickCreateNew,
   ...props
 }: SearchableSelectInputProps) {
   const [open, setOpen] = useState(false)
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild {...props}>
@@ -80,25 +84,36 @@ export default function SearchableSelectInput({
             <MagnifyingGlassIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
             <CommandInput
               placeholder={placeHolder}
+              value={filterValue}
               onValueChange={onFilterChange}
               name={name}
               className={cn(
                 "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
               )}
             />
-            <ReloadIcon
-              className={clsx(
-                "ml-2 h-4 w-4 shrink-0 animate-spin opacity-0",
-                isLoading && "opacity-50",
-              )}
-            />
+            <div className="ml-2 h-4 w-4 shrink-0">
+              {isLoading ? (
+                <ReloadIcon
+                  className={clsx("h-4 w-4 animate-spin opacity-50")}
+                />
+              ) : onClickCreateNew ? (
+                <Button
+                  size={"icon"}
+                  variant={"ghost"}
+                  className="h-5 w-5"
+                  onClick={() => onClickCreateNew(filterValue)}
+                >
+                  <Plus className="h-4 w-4 opacity-50" />
+                </Button>
+              ) : null}
+            </div>
           </div>
           <CommandList>
             <CommandEmpty>{emptyText}</CommandEmpty>
             {items.map((item) => (
               <CommandItem
                 value={item.value}
-                key={item.label}
+                key={item.value}
                 onSelect={() => {
                   if (onItemSelect) {
                     onItemSelect(item)
