@@ -20,6 +20,7 @@ import {
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
+import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
@@ -151,7 +152,7 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
                   { where: { id: findUniqueBook.data.id } },
                   {
                     onSuccess(data, variables, context) {
-                      router.replace(ROUTES.ADMIN.BOOKS)
+                      router.replace(ROUTES.ADMIN.BOOKS as Route)
                     },
                   },
                 )

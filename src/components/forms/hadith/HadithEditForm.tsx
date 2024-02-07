@@ -10,12 +10,18 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { ROUTES } from "@/constants/routes"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
-import { useFindUniqueHadith, useUpsertHadith } from "@/lib/hooks/query"
-import { deleteHadith } from "@/serverActions/hadith/deleteHadith"
+import {
+  useDeleteHadith,
+  useFindUniqueHadith,
+  useUpsertHadith,
+} from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
+import { Route } from "next"
+import { useRouter } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -50,6 +56,9 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
         toast.success("Done!")
       },
     })
+
+    const deleteHadith = useDeleteHadith()
+    const router = useRouter()
 
     const form = useForm({
       resolver: zodResolver(HadithSchema),
@@ -199,12 +208,25 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               ? "Update"
               : "Publish"}
           </ButtonLoading>
-          <form
-            action={(e) => deleteHadith(hadith.id)}
-            className="flex flex-1 justify-end"
-          >
-            <ButtonLoading variant={"destructive"}>Delete Hadith</ButtonLoading>
-          </form>
+          <div className="flex-1">
+            <ButtonLoading
+              type="button"
+              variant={"destructive"}
+              isLoading={deleteHadith.isPending}
+              onClick={() => {
+                deleteHadith.mutate(
+                  { where: { id: findUniqueHadith.data.id } },
+                  {
+                    onSuccess(data, variables, context) {
+                      router.replace(ROUTES.ADMIN.HADITHS as Route)
+                    },
+                  },
+                )
+              }}
+            >
+              Delete Topic
+            </ButtonLoading>
+          </div>
         </div>
       </>
     )
