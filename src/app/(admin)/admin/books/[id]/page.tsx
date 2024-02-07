@@ -1,5 +1,4 @@
 import { BookEditPage } from "@/components/book/edit-page/BookEditPage"
-import { BookEditForm } from "@/components/forms/book/BookEditForm"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
 import { getLanguages } from "@/data/language/getLanguages"
 import { notFound } from "next/navigation"
