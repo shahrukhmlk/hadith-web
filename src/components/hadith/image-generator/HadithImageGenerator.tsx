@@ -27,7 +27,6 @@ export interface HadithImageGeneratorProps
   text: string
   color: string
   languageCode: string
-  translationTopic: string
   translationText: string
   translationFontScale: number
   bookText: string
@@ -44,7 +43,6 @@ const HadithImageGenerator = forwardRef<
       text,
       color,
       languageCode,
-      translationTopic,
       translationText,
       translationFontScale,
       bookText,

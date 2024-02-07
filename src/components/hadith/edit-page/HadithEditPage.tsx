@@ -19,7 +19,6 @@ import { IHadithDetails } from "@/data/models/hadith/hadith-details"
 import { ILanguage } from "@/data/models/language/language"
 import { ITopic } from "@/data/models/topic/topic"
 import {
-  useCreateHadithBook,
   useCreateHadithTranslation,
   useFindManyHadithBook,
   useFindManyHadithTranslation,
@@ -29,7 +28,7 @@ import {
 import { Plus } from "lucide-react"
 import { Route } from "next"
 import { useRouter } from "next/navigation"
-import { forwardRef, HTMLAttributes, useRef } from "react"
+import { forwardRef, useRef } from "react"
 
 export interface HadithEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -187,6 +186,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
               key={index}
               hadith={findUniqueHadith.data}
               hadithTranslation={translation}
+              hadithTopic={hadith.topic}
             />
           </div>
         ))}

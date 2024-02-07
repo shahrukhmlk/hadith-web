@@ -19,6 +19,7 @@ import {
   HadithTranslationSchema,
   IHadithTranslation,
 } from "@/data/models/hadith/hadith-translation"
+import { ITopic } from "@/data/models/topic/topic"
 import {
   useDeleteHadithTranslation,
   useFindManyHadithBook,
@@ -43,12 +44,13 @@ export interface IHadithTranslationEditFormProps
   extends FormHTMLAttributes<HTMLFormElement> {
   hadith: IHadith
   hadithTranslation: IHadithTranslation
+  hadithTopic: ITopic
 }
 
 export const HadithTranslationEditForm = forwardRef<
   HTMLFormElement,
   IHadithTranslationEditFormProps
->(({ hadith, hadithTranslation, ...props }, ref) => {
+>(({ hadith, hadithTranslation, hadithTopic, ...props }, ref) => {
   const findUniqueHadithTranslation = useFindUniqueHadithTranslation(
     {
       where: {
@@ -216,10 +218,9 @@ export const HadithTranslationEditForm = forwardRef<
             languageCode={hadithTranslation.languageCode}
             color={hadith.color}
             number={hadith.number}
-            topic={"hadith.topic"}
+            topic={hadithTopic.title}
             text={hadith.text}
             translationFontScale={watch().fontScale}
-            translationTopic={"translationTopic"}
             translationText={watch().text}
             bookText={
               findManyHadithBook.data
