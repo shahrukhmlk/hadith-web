@@ -1,12 +1,6 @@
 import HadithCreateDialog from "@/components/dialogs/hadith-create/HadithCreateDialog"
 import HadithList from "@/components/hadith/list/HadithList"
-import { Button } from "@/components/ui/button"
-import { ROUTES } from "@/constants/routes"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
-import { createNewHadith } from "@/serverActions/hadith/createHadith"
-import { Plus } from "lucide-react"
-import { Route } from "next"
-import Link from "next/link"
 
 /**
  * Fetch allowed params from URL, parse them into a prisma filter/react query filter, pass the data
