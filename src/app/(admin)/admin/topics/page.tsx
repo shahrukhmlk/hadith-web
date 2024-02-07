@@ -7,7 +7,6 @@ export default async function Home() {
   const topics = await prisma.topic.findMany({
     select: {
       id: true,
-      status: true,
       title: true,
     },
   })

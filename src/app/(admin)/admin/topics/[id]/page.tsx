@@ -16,7 +16,6 @@ export default async function Home({ params }: { params: { id: string } }) {
     select: {
       id: true,
       title: true,
-      status: true,
       translations: {
         select: {
           topicID: true,
