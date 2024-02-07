@@ -20,23 +20,24 @@ import {
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import clsx from "clsx"
+import { omit } from "lodash"
 import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export interface BookEditFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
-  book: IBook
+  book?: IBook
+  onSave?: (id: number) => void
 }
 
 export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
-  ({ book, ...props }, ref) => {
+  ({ book, onSave, ...props }, ref) => {
     const findUniqueBook = useFindUniqueBook(
       {
         where: {
-          id: book.id,
+          id: book?.id,
         },
         select: {
           id: true,
@@ -44,18 +45,19 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
           status: true,
         },
       },
-      { initialData: book },
+      { initialData: book, enabled: !!book },
     )
 
     const upsertBook = useUpsertBook()
 
     const deleteBook = useDeleteBook()
+
     const router = useRouter()
 
     const form = useForm({
       resolver: zodResolver(BookSchema.partial({ id: true })),
       values: findUniqueBook.data,
-      defaultValues: { name: "", status: Status.draft },
+      defaultValues: { id: 0, name: "", status: Status.draft },
     })
 
     const { control } = form
@@ -71,7 +73,7 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
     const onSubmit = (values: IBook) => {
       upsertBook.mutate(
         {
-          create: values,
+          create: omit(values, ["id"]),
           where: { id: values.id },
           update: values,
           select: {
@@ -82,22 +84,18 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
         },
         {
           onSuccess(data, variables, context) {
-            toast.success("Done!")
+            onSave && onSave(data?.id ?? 0)
           },
         },
       )
     }
-
-    if (!findUniqueBook.data) {
-      return null
-    }
-
     return (
       <>
         <Form {...form}>
           <form
             className={clsx("space-y-4")}
             onSubmit={form.handleSubmit(onSubmit)}
+            {...props}
           >
             <FormField
               control={control}
@@ -138,28 +136,30 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
               form.handleSubmit(onSubmit)()
             }}
           >
-            {findUniqueBook.data.status === Status.published
+            {findUniqueBook.data?.status === Status.published
               ? "Update"
               : "Publish"}
           </ButtonLoading>
           <div className="flex-1"></div>
-          <ButtonLoading
-            type="button"
-            variant={"destructive"}
-            isLoading={deleteBook.isPending}
-            onClick={() => {
-              deleteBook.mutate(
-                { where: { id: findUniqueBook.data.id } },
-                {
-                  onSuccess(data, variables, context) {
-                    router.replace(ROUTES.ADMIN.BOOKS as Route)
+          {findUniqueBook.data && (
+            <ButtonLoading
+              type="button"
+              variant={"destructive"}
+              isLoading={deleteBook.isPending}
+              onClick={() => {
+                deleteBook.mutate(
+                  { where: { id: findUniqueBook.data.id } },
+                  {
+                    onSuccess(data, variables, context) {
+                      router.replace(ROUTES.ADMIN.BOOKS as Route)
+                    },
                   },
-                },
-              )
-            }}
-          >
-            Delete Book
-          </ButtonLoading>
+                )
+              }}
+            >
+              Delete Book
+            </ButtonLoading>
+          )}
         </div>
       </>
     )
