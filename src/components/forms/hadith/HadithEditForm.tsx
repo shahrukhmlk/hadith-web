@@ -291,7 +291,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
             </ButtonLoading>
           )}
         </div>
-        <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
       </>
     )
   },
