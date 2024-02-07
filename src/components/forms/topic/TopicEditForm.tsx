@@ -46,7 +46,11 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
     )
 
     const upsertTopic = useUpsertTopic()
-    const deleteTopic = useDeleteTopic()
+    const deleteTopic = useDeleteTopic({
+      onSuccess(data, variables, context) {
+        onDelete && onDelete()
+      },
+    })
 
     const form = useForm({
       resolver: zodResolver(TopicSchema.partial({ id: true })),
@@ -141,14 +145,7 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
               variant={"destructive"}
               isLoading={deleteTopic.isPending}
               onClick={() => {
-                deleteTopic.mutate(
-                  { where: { id: findUniqueTopic.data.id } },
-                  {
-                    onSuccess(data, variables, context) {
-                      onDelete && onDelete()
-                    },
-                  },
-                )
+                deleteTopic.mutate({ where: { id: findUniqueTopic.data.id } })
               }}
             >
               Delete Topic

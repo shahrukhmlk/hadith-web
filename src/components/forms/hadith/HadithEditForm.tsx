@@ -85,7 +85,11 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
 
     const upsertHadith = useUpsertHadith()
 
-    const deleteHadith = useDeleteHadith()
+    const deleteHadith = useDeleteHadith({
+      onSuccess(data, variables, context) {
+        onDelete && onDelete()
+      },
+    })
 
     const form = useForm({
       resolver: zodResolver(HadithSchema.partial({ id: true })),
@@ -277,14 +281,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               variant={"destructive"}
               isLoading={deleteHadith.isPending}
               onClick={() => {
-                deleteHadith.mutate(
-                  { where: { id: findUniqueHadith.data.id } },
-                  {
-                    onSuccess(data, variables, context) {
-                      onDelete && onDelete()
-                    },
-                  },
-                )
+                deleteHadith.mutate({ where: { id: findUniqueHadith.data.id } })
               }}
             >
               Delete Hadith

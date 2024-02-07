@@ -48,7 +48,11 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
 
     const upsertBook = useUpsertBook()
 
-    const deleteBook = useDeleteBook()
+    const deleteBook = useDeleteBook({
+      onSuccess(data, variables, context) {
+        onDelete && onDelete()
+      },
+    })
 
     const form = useForm({
       resolver: zodResolver(BookSchema.partial({ id: true })),
@@ -143,14 +147,7 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
               variant={"destructive"}
               isLoading={deleteBook.isPending}
               onClick={() => {
-                deleteBook.mutate(
-                  { where: { id: findUniqueBook.data.id } },
-                  {
-                    onSuccess(data, variables, context) {
-                      onDelete && onDelete()
-                    },
-                  },
-                )
+                deleteBook.mutate({ where: { id: findUniqueBook.data.id } })
               }}
             >
               Delete Book
