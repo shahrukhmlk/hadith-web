@@ -14,11 +14,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
+import { IHadith } from "@/data/models/hadith/hadith"
 import {
   HadithTranslationSchema,
-  IHadith,
   IHadithTranslation,
-} from "@/data/models/hadith/hadith"
+} from "@/data/models/hadith/hadith-translation"
 import {
   useDeleteHadithTranslation,
   useFindManyHadithBook,

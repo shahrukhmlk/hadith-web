@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { IBook } from "@/data/models/book/book"
-import { HadithBookSchema, IHadithBook } from "@/data/models/hadith/hadith"
+import { HadithBookSchema, IHadithBook } from "@/data/models/hadith/hadith-book"
 import {
   useDeleteHadithBook,
   useFindManyBook,

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import { IBook } from "@/data/models/book/book"
-import { IHadithDetails } from "@/data/models/hadith/hadith"
+import { IHadithDetails } from "@/data/models/hadith/hadith-details"
 import { ILanguage } from "@/data/models/language/language"
 import {
   useCreateHadithBook,
