@@ -10,9 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { ROUTES } from "@/constants/routes"
 import { Plus } from "lucide-react"
-import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef, useState } from "react"
 
@@ -21,10 +19,11 @@ export interface BookCreateDialogProps
 
 const BookCreateDialog = forwardRef<HTMLDivElement, BookCreateDialogProps>(
   ({ ...props }, ref) => {
+    const [open, setOpen] = useState(false)
     const router = useRouter()
     return (
       <div ref={ref} {...props}>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size={"sm"} className="h-8" variant={"secondary"}>
               <Plus className="mr-2 h-4 w-4" />
@@ -38,7 +37,7 @@ const BookCreateDialog = forwardRef<HTMLDivElement, BookCreateDialogProps>(
             </DialogHeader>
             <BookEditForm
               onSave={(id) => {
-                router.push(`${ROUTES.ADMIN.BOOKS}/${id}` as Route)
+                setOpen(false)
               }}
             />
           </DialogContent>

@@ -10,10 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { ROUTES } from "@/constants/routes"
 import { Plus } from "lucide-react"
-import { Route } from "next"
-import { useRouter } from "next/navigation"
 import { forwardRef, useState } from "react"
 
 export interface TopicCreateDialogProps
@@ -21,10 +18,10 @@ export interface TopicCreateDialogProps
 
 const TopicCreateDialog = forwardRef<HTMLDivElement, TopicCreateDialogProps>(
   ({ ...props }, ref) => {
-    const router = useRouter()
+    const [open, setOpen] = useState(false)
     return (
       <div ref={ref} {...props}>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size={"sm"} className="h-8" variant={"secondary"}>
               <Plus className="mr-2 h-4 w-4" />
@@ -38,7 +35,7 @@ const TopicCreateDialog = forwardRef<HTMLDivElement, TopicCreateDialogProps>(
             </DialogHeader>
             <TopicEditForm
               onSave={(id) => {
-                router.push(`${ROUTES.ADMIN.TOPICS}/${id}` as Route)
+                setOpen(false)
               }}
             />
           </DialogContent>

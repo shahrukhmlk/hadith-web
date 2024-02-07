@@ -10,10 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { ROUTES } from "@/constants/routes"
 import { ITopic } from "@/data/models/topic/topic"
 import { Plus } from "lucide-react"
-import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef, useState } from "react"
 
@@ -24,10 +22,12 @@ export interface HadithCreateDialogProps
 
 const HadithCreateDialog = forwardRef<HTMLDivElement, HadithCreateDialogProps>(
   ({ topics, ...props }, ref) => {
+    const [open, setOpen] = useState(false)
+
     const router = useRouter()
     return (
       <div ref={ref} {...props}>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size={"sm"} className="h-8" variant={"secondary"}>
               <Plus className="mr-2 h-4 w-4" />
@@ -42,7 +42,7 @@ const HadithCreateDialog = forwardRef<HTMLDivElement, HadithCreateDialogProps>(
             <HadithEditForm
               topics={topics}
               onSave={(id) => {
-                router.push(`${ROUTES.ADMIN.HADITHS}/${id}` as Route)
+                setOpen(false)
               }}
             />
           </DialogContent>

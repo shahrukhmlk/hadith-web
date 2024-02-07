@@ -1,9 +1,6 @@
-import TopicCreateDialog from "@/components/dialogs/topic-create/BookCreateDialog"
+import TopicCreateDialog from "@/components/dialogs/topic-create/TopicCreateDialog"
 import TopicList from "@/components/topic/list/TopicList"
-import { Button } from "@/components/ui/button"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
-import { createNewTopic } from "@/serverActions/topic/createTopic"
-import { Plus } from "lucide-react"
 
 export default async function Home() {
   const prisma = await getEnhancedPrisma()
