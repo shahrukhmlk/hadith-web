@@ -60,8 +60,8 @@ model Hadith extends Base {
     @@allow('all', auth().role == "admin")
 }
 
-model Topic  extends Base {
-    id Int @id
+model Topic extends Base {
+    id Int @id @default(autoincrement())
     status Status @default(draft)
     title String
     userCreated User? @relation("Topic_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
