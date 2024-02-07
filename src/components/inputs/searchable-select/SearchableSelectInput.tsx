@@ -36,7 +36,6 @@ export interface SearchableSelectInputProps extends PopoverTriggerProps {
   placeHolder?: string
   selectText?: string
   emptyText?: string
-  name?: string
   isLoading?: boolean
   filterValue: string
   onItemSelect?: (item: SelectItem) => void
@@ -51,7 +50,6 @@ export default function SearchableSelectInput({
   selectText = "Select item",
   emptyText = "No item found.",
   isLoading = false,
-  name = "search",
   filterValue,
   onItemSelect,
   onFilterChange,
@@ -76,7 +74,7 @@ export default function SearchableSelectInput({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command shouldFilter={false} label={name}>
+        <Command shouldFilter={false}>
           <div
             className="flex items-center border-b px-3"
             cmdk-input-wrapper=""
@@ -86,7 +84,6 @@ export default function SearchableSelectInput({
               placeholder={placeHolder}
               value={filterValue}
               onValueChange={onFilterChange}
-              name={name}
               className={cn(
                 "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
               )}
