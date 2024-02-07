@@ -13,7 +13,7 @@ export const HadithSchema = IDNumberSchema.merge(StatusSchema)
     number: z.coerce.number().int().min(1),
     date: z.date(),
     color: z.string(),
-    topicID: z.coerce.number().int().min(1)
+    topicID: z.coerce.number().int().min(1),
   })
 type Hadith = z.infer<typeof HadithSchema>
 export interface IHadith extends Hadith {}
@@ -33,10 +33,10 @@ export const HadithTranslationSchema = TranslationSchema.extend({
 type HadithTranslation = z.infer<typeof HadithTranslationSchema>
 export interface IHadithTranslation extends HadithTranslation {}
 
-export const HadithWithDetailsSchema = HadithSchema.extend({
+export const HadithDetailsSchema = HadithSchema.extend({
   topic: TopicSchema,
   books: z.array(HadithBookSchema),
   translations: z.array(HadithTranslationSchema),
 })
-type HadithWithDetails = z.infer<typeof HadithWithDetailsSchema>
-export interface IHadithWithDetails extends HadithWithDetails {}
+type HadithDetails = z.infer<typeof HadithDetailsSchema>
+export interface IHadithDetails extends HadithDetails {}

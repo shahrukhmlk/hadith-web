@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import { IBook } from "@/data/models/book/book"
-import { IHadithWithDetails } from "@/data/models/hadith/hadith"
+import { IHadithDetails } from "@/data/models/hadith/hadith"
 import { ILanguage } from "@/data/models/language/language"
 import {
   useCreateHadithBook,
@@ -28,7 +28,7 @@ import { forwardRef, useRef } from "react"
 
 export interface HadithEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  hadith: IHadithWithDetails
+  hadith: IHadithDetails
   books: IBook[]
   languages: ILanguage[]
 }
