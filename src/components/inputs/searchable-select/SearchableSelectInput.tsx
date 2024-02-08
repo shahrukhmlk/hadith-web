@@ -65,11 +65,16 @@ export default function SearchableSelectInput({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-[200px] justify-between",
+            "justify-between",
             !selectedItem && "text-muted-foreground",
           )}
         >
-          {selectedItem ? selectedItem.label : selectText}
+          <span
+            className="flex-1 overflow-hidden overflow-ellipsis text-start"
+            dir="auto"
+          >
+            {selectedItem ? selectedItem.label : selectText}
+          </span>
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
