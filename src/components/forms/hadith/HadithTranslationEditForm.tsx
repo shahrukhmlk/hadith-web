@@ -164,7 +164,7 @@ export const HadithTranslationEditForm = forwardRef<
       <Form {...form}>
         <form
           ref={ref}
-          className={clsx("flex flex-wrap space-x-4")}
+          className={clsx("flex flex-wrap gap-4")}
           onSubmit={handleSubmit(onSubmit)}
           {...props}
         >
