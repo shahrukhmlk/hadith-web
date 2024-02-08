@@ -256,6 +256,7 @@ export const HadithTranslationEditForm = forwardRef<
               languageCode={hadithTranslation.languageCode}
               color={hadith.color}
               number={hadith.number}
+              fontScale={hadith.fontScale}
               topic={hadithTopic.title}
               text={hadith.text}
               translationFontScale={watch().fontScale}

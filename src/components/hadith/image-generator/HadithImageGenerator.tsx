@@ -26,6 +26,7 @@ export interface HadithImageGeneratorProps
   number: number
   text: string
   color: string
+  fontScale: number
   languageCode: string
   translationText: string
   translationFontScale: number
@@ -42,6 +43,7 @@ const HadithImageGenerator = forwardRef<
       number,
       text,
       color,
+      fontScale,
       languageCode,
       translationText,
       translationFontScale,
@@ -85,7 +87,10 @@ const HadithImageGenerator = forwardRef<
             )}
             style={{ backgroundColor: color }}
           >
-            <p style={{ marginTop: "-1px", fontFamily: "var(--font-aadil)" }}>
+            <p
+              className="text-[8px]"
+              style={{ fontFamily: "var(--font-aadil)" }}
+            >
               {topic}
             </p>
             <Series className={"h-full w-auto"} fill={"#ffffff"} />
@@ -111,7 +116,13 @@ const HadithImageGenerator = forwardRef<
               textAlignLast: "center",
             }}
           >
-            <div dir="rtl" className={clsx(styles.hadithArabic)}>
+            <div
+              dir="rtl"
+              className={clsx(styles.hadithArabic)}
+              style={{
+                fontSize: fontScale + 100 + "%",
+              }}
+            >
               {hadithParsed}
             </div>
             <div
@@ -123,7 +134,10 @@ const HadithImageGenerator = forwardRef<
             >
               {translationParsed}
             </div>
-            <div style={{ fontFamily: "var(--font-cairo)", fontSize: "7px" }}>
+            <div
+              className="text-[7px] font-normal"
+              style={{ fontFamily: "var(--font-cairo)" }}
+            >
               {bookText}
             </div>
           </div>
