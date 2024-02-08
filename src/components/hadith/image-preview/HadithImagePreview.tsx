@@ -22,7 +22,7 @@ import {
 import styles from "./hadithImage.module.scss"
 import "./html2canvasfix.css"
 
-export interface HadithImageGeneratorProps
+export interface HadithImagePreviewProps
   extends HTMLAttributes<HTMLDivElement> {
   topic: string
   number: number
@@ -35,10 +35,7 @@ export interface HadithImageGeneratorProps
   bookText: string
 }
 
-const HadithImageGenerator = forwardRef<
-  HTMLDivElement,
-  HadithImageGeneratorProps
->(
+const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
   (
     {
       topic,
@@ -166,6 +163,6 @@ const HadithImageGenerator = forwardRef<
   },
 )
 
-HadithImageGenerator.displayName = "HadithImageGenerator"
+HadithImagePreview.displayName = "HadithImageGenerator"
 
-export default HadithImageGenerator
+export default HadithImagePreview

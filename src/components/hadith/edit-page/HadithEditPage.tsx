@@ -183,9 +183,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                 }
               }}
               key={index}
-              hadith={findUniqueHadith.data}
               hadithTranslation={translation}
-              hadithTopic={hadith.topic}
             />
           </div>
         ))}

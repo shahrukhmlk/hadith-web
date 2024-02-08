@@ -1,3 +1,4 @@
+import { IHadithBook } from "@/data/models/hadith/hadith-book"
 import { clsx, type ClassValue } from "clsx"
 import { parse } from "date-fns"
 import { twMerge } from "tailwind-merge"
@@ -13,4 +14,8 @@ export function getDateFromPath(pathname: string) {
 
 export const getLangArrayFromURL = (param: string | string[] | undefined) => {
   return param ? (Array.isArray(param) ? param : param.split(",")) : undefined
+}
+
+export const hadithBooksToText = (hadithBooks: IHadithBook[]): string => {
+  return ""
 }

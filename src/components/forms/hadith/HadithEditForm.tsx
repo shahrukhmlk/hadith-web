@@ -181,18 +181,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name={"fontScale"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="fontScale" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name={"topicID"}
@@ -238,25 +226,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                       placeholder="Text..."
                       {...field}
                       className="resize-none text-base"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"fontScale"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Font Scale</FormLabel>
-                  <FormControl>
-                    <Slider
-                      value={[field.value]}
-                      onValueChange={(value) => field.onChange(value[0])}
-                      min={-99}
-                      max={100}
-                      step={1}
                     />
                   </FormControl>
                   <FormMessage />
