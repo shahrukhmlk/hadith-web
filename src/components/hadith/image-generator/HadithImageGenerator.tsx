@@ -3,6 +3,8 @@ import DomeInverted from "@/assets/svg/dome-inverted.svg"
 import Dome from "@/assets/svg/dome.svg"
 import Footer from "@/assets/svg/footer-social.svg"
 import Logo from "@/assets/svg/logo.svg"
+// @ts-ignore
+import Net from "@/assets/svg/net.svg?url"
 import { Card } from "@/components/ui/card"
 import clsx from "clsx"
 import parse from "html-react-parser"
@@ -64,6 +66,7 @@ const HadithImageGenerator = forwardRef<
         `<hadith-nas>$&</hadith-nas>`,
       ),
     )
+    console.log(Net)
 
     return (
       <Card className="aspect-square">
@@ -112,7 +115,7 @@ const HadithImageGenerator = forwardRef<
               "flex flex-1 flex-col items-center justify-around overflow-clip whitespace-pre-line p-[5%] text-justify align-baseline text-[1em]",
             )}
             style={{
-              background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}40 100%)`,
+              background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}40 100%), url("${Net.src}")`,
               textAlignLast: "center",
             }}
           >
@@ -135,7 +138,7 @@ const HadithImageGenerator = forwardRef<
               {translationParsed}
             </div>
             <div
-              className="text-[7px] font-normal"
+              className="text-[7px] font-medium"
               style={{ fontFamily: "var(--font-cairo)" }}
             >
               {bookText}
