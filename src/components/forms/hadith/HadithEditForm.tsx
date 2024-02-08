@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
@@ -237,6 +238,25 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                       placeholder="Text..."
                       {...field}
                       className="resize-none text-base"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={"fontScale"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Font Scale</FormLabel>
+                  <FormControl>
+                    <Slider
+                      value={[field.value]}
+                      onValueChange={(value) => field.onChange(value[0])}
+                      min={-99}
+                      max={100}
+                      step={1}
                     />
                   </FormControl>
                   <FormMessage />
