@@ -63,7 +63,6 @@ export const HadithTranslationEditForm = forwardRef<
           hadithID: true,
           languageCode: true,
           text: true,
-          fontScale: true,
         },
       },
       { initialData: hadithTranslation },
@@ -95,7 +94,6 @@ export const HadithTranslationEditForm = forwardRef<
         hadithID: -1,
         languageCode: "",
         text: "",
-        fontScale: 0,
       },
     })
     const { watch, control, handleSubmit, formState } = form
@@ -115,7 +113,6 @@ export const HadithTranslationEditForm = forwardRef<
             hadithID: true,
             languageCode: true,
             text: true,
-            fontScale: true,
           },
         },
         {
@@ -188,7 +185,7 @@ export const HadithTranslationEditForm = forwardRef<
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name={"fontScale"}
               render={({ field }) => (
@@ -206,7 +203,7 @@ export const HadithTranslationEditForm = forwardRef<
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <div className="flex space-x-2">
               <ButtonLoading
                 isLoading={upsertHadithTranslation.isPending}
@@ -255,12 +252,12 @@ export const HadithTranslationEditForm = forwardRef<
             <HadithImagePreview
               ref={imageDivRef}
               languageCode={hadithTranslation.languageCode}
-              color={hadith.color}
+              color={"#000000"}
               number={hadith.number}
-              fontScale={hadith.fontScale}
+              fontScale={0}
               topic={hadithTopic.title}
               text={hadith.text}
-              translationFontScale={watch().fontScale}
+              translationFontScale={0}
               translationText={watch().text}
               bookText={
                 findManyHadithBook.data

@@ -50,10 +50,8 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
           number: true,
           date: true,
           status: true,
-          color: true,
           topicID: true,
           text: true,
-          fontScale: true,
         },
       },
       { initialData: hadith, enabled: !!hadith },
@@ -102,10 +100,8 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
         status: Status.draft,
         // @ts-ignore
         date: "",
-        color: "#000000",
         topicID: 0,
         text: "",
-        fontScale: 0,
       },
     })
 
@@ -120,9 +116,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
             number: true,
             date: true,
             status: true,
-            color: true,
             text: true,
-            fontScale: true,
           },
         },
         {
@@ -164,18 +158,6 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormControl>
                     <Input placeholder="Number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"color"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="color" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

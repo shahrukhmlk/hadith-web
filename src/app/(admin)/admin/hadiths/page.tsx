@@ -25,10 +25,8 @@ export default async function Home({
       number: true,
       date: true,
       status: true,
-      color: true,
       topicID: true,
       text: true,
-      fontScale: true,
     },
     orderBy: { number: "desc" },
   })

@@ -49,7 +49,6 @@ export const HadithTranslationEditForm = forwardRef<
         hadithID: true,
         languageCode: true,
         text: true,
-        fontScale: true,
       },
     },
     { initialData: hadithTranslation },
@@ -68,7 +67,6 @@ export const HadithTranslationEditForm = forwardRef<
       hadithID: -1,
       languageCode: "",
       text: "",
-      fontScale: 0,
     },
   })
   const { handleSubmit, formState } = form
@@ -88,7 +86,6 @@ export const HadithTranslationEditForm = forwardRef<
           hadithID: true,
           languageCode: true,
           text: true,
-          fontScale: true,
         },
       },
       {

@@ -38,12 +38,6 @@ export const columns: ColumnDef<IHadith>[] = [
     ),
   },
   {
-    accessorKey: "fontScale",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Font Scale" />
-    ),
-  },
-  {
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />

@@ -20,9 +20,7 @@ export default async function Home({ params }: { params: { id: string } }) {
       number: true,
       date: true,
       status: true,
-      color: true,
       text: true,
-      fontScale: true,
       topicID: true,
       topic: { select: { id: true, title: true } },
       translations: {
@@ -30,7 +28,6 @@ export default async function Home({ params }: { params: { id: string } }) {
           hadithID: true,
           languageCode: true,
           text: true,
-          fontScale: true,
         },
         orderBy: { language: { sort: "asc" } },
       },
