@@ -66,7 +66,6 @@ const HadithImageGenerator = forwardRef<
         `<hadith-nas>$&</hadith-nas>`,
       ),
     )
-    console.log(Net)
 
     return (
       <Card className="aspect-square">
