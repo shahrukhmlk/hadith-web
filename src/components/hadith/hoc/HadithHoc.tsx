@@ -19,7 +19,7 @@ const HadithHoc = async ({ className, date, languages }: IHadithHoc) => {
    * > Load hadith for that day and languages from database
    * > Display all hadiths using hadith component.
    */
-  const prisma = await getEnhancedPrisma()
+  /* const prisma = await getEnhancedPrisma()
   const selectedDate = date || (await getLastDate()) || new Date()
 
   const hadith = await prisma.hadith.findUnique({
@@ -67,7 +67,9 @@ const HadithHoc = async ({ className, date, languages }: IHadithHoc) => {
         )
         .join(",\n")}
     />
-  )
+  ) */
+  notFound()
+  return null
 }
 
 export default HadithHoc
