@@ -3,6 +3,7 @@
 import HadithBookForm from "@/components/forms/hadith/HadithBookForm"
 import HadithEditForm from "@/components/forms/hadith/HadithEditForm"
 import { HadithTranslationEditForm } from "@/components/forms/hadith/HadithTranslationEditForm"
+import { HadithTranslationImageEditForm } from "@/components/forms/hadith/HadithTranslationImageEditForm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   DropdownMenu,
@@ -41,6 +42,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
   ({ hadith, topics, books, languages, ...props }, ref) => {
     const hadithEditFormRef = useRef<HTMLFormElement | null>(null)
     const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
+    const imagesRef = useRef<Map<string, HTMLFormElement>>(new Map())
     const booksRef = useRef<Map<number, HTMLFormElement>>(new Map())
 
     const router = useRouter()
@@ -156,6 +158,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                         hadithID: findUniqueHadith.data.id,
                         languageCode: language.code,
                         text: "",
+                        image: { create: {} },
                       },
                     })
                   }}
@@ -167,7 +170,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           </DropdownMenu>
         </div>
         {findManyHadithTranslation.data?.map((translation, index) => (
-          <div className="space-y-2" key={index}>
+          <div className="space-y-4" key={index}>
             <Label>
               {languages.find((l) => l.code === translation.languageCode)?.name}
             </Label>
@@ -181,6 +184,19 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
               }}
               key={index}
               hadithTranslation={translation}
+            />
+
+            <HadithTranslationImageEditForm
+              ref={(el) => {
+                if (el) {
+                  imagesRef.current.set(translation.languageCode, el)
+                } else {
+                  imagesRef.current.delete(translation.languageCode)
+                }
+              }}
+              key={index}
+              hadithID={translation.hadithID}
+              languageCode={translation.languageCode}
             />
           </div>
         ))}
