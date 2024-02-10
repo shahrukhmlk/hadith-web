@@ -170,34 +170,35 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           </DropdownMenu>
         </div>
         {findManyHadithTranslation.data?.map((translation, index) => (
-          <div className="space-y-4" key={index}>
+          <div className="space-y-2" key={index}>
             <Label>
               {languages.find((l) => l.code === translation.languageCode)?.name}
             </Label>
-            <HadithTranslationEditForm
-              ref={(el) => {
-                if (el) {
-                  translationsRef.current.set(translation.languageCode, el)
-                } else {
-                  translationsRef.current.delete(translation.languageCode)
-                }
-              }}
-              key={index}
-              hadithTranslation={translation}
-            />
-
-            <HadithTranslationImageEditForm
-              ref={(el) => {
-                if (el) {
-                  imagesRef.current.set(translation.languageCode, el)
-                } else {
-                  imagesRef.current.delete(translation.languageCode)
-                }
-              }}
-              key={index}
-              hadithID={translation.hadithID}
-              languageCode={translation.languageCode}
-            />
+            <div className="flex flex-wrap justify-stretch gap-4">
+              <HadithTranslationEditForm
+                ref={(el) => {
+                  if (el) {
+                    translationsRef.current.set(translation.languageCode, el)
+                  } else {
+                    translationsRef.current.delete(translation.languageCode)
+                  }
+                }}
+                className="flex-1"
+                hadithTranslation={translation}
+              />
+              <HadithTranslationImageEditForm
+                ref={(el) => {
+                  if (el) {
+                    imagesRef.current.set(translation.languageCode, el)
+                  } else {
+                    imagesRef.current.delete(translation.languageCode)
+                  }
+                }}
+                className="flex-1"
+                hadithID={translation.hadithID}
+                languageCode={translation.languageCode}
+              />
+            </div>
           </div>
         ))}
       </div>
