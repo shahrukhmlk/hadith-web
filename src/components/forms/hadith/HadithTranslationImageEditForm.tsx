@@ -204,7 +204,7 @@ export const HadithTranslationImageEditForm = forwardRef<
               (book) =>
                 `${book.book.name}: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
             )
-            .join(", ")}
+            .join("\n و")}
         />
         <FormField
           control={form.control}

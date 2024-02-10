@@ -116,6 +116,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             }}
           >
             <div
+              lang="ar"
               dir="rtl"
               className={clsx(styles.hadithArabic)}
               style={{
@@ -134,6 +135,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
               {translationParsed}
             </div>
             <div
+              dir="rtl"
               className="text-[7px] font-medium"
               style={{ fontFamily: "var(--font-cairo)" }}
             >
