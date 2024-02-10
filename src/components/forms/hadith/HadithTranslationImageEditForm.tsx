@@ -26,7 +26,7 @@ import Panzoom, { PanzoomObject } from "@panzoom/panzoom"
 import clsx from "clsx"
 import html2canvas from "html2canvas"
 import { FormHTMLAttributes, forwardRef, useRef, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import HadithImagePreview from "../../hadith/image-preview/HadithImagePreview"
 
 export interface IHadithTranslationImageEditFormProps
@@ -101,6 +101,15 @@ export const HadithTranslationImageEditForm = forwardRef<
     },
   })
   const { handleSubmit, formState } = form
+  const colorWatch = useWatch({ control: form.control, name: "color" })
+  const hadithFontScaleWatch = useWatch({
+    control: form.control,
+    name: "hadithFontScale",
+  })
+  const translationFontScaleWatch = useWatch({
+    control: form.control,
+    name: "translationFontScale",
+  })
 
   const onSubmit = (values: IHadithTranslationImage) => {
     upsertHadithTranslationImage.mutate(
@@ -183,12 +192,12 @@ export const HadithTranslationImageEditForm = forwardRef<
         <HadithImagePreview
           ref={imageDivRef}
           languageCode={languageCode}
-          color={data.color}
+          color={colorWatch}
           number={data.hadithTranslation.hadith.number}
-          fontScale={data.hadithFontScale}
+          fontScale={hadithFontScaleWatch}
           topic={data.hadithTranslation.hadith.topic.title}
           text={data.hadithTranslation.hadith.text}
-          translationFontScale={data.translationFontScale}
+          translationFontScale={translationFontScaleWatch}
           translationText={data.hadithTranslation.text}
           bookText={data.hadithTranslation.hadith.books
             .map(
