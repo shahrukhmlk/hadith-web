@@ -166,27 +166,26 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
             >
               {!!hadithBook ? "Save" : "Add"}
             </ButtonLoading>
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteHadithBook.isPending}
-              disabled={!findUniqueHadithBook.data}
-              onClick={() => {
-                if (!findUniqueHadithBook.data) {
-                  return
-                }
-                deleteHadithBook.mutate({
-                  where: {
-                    hadithID_bookID: {
-                      bookID: findUniqueHadithBook.data.bookID,
-                      hadithID: findUniqueHadithBook.data.hadithID,
+            {findUniqueHadithBook.data && (
+              <ButtonLoading
+                type="button"
+                variant={"destructive"}
+                isLoading={deleteHadithBook.isPending}
+                disabled={!findUniqueHadithBook.data}
+                onClick={() => {
+                  deleteHadithBook.mutate({
+                    where: {
+                      hadithID_bookID: {
+                        bookID: findUniqueHadithBook.data.bookID,
+                        hadithID: findUniqueHadithBook.data.hadithID,
+                      },
                     },
-                  },
-                })
-              }}
-            >
-              Delete
-            </ButtonLoading>
+                  })
+                }}
+              >
+                Delete
+              </ButtonLoading>
+            )}
           </div>
         </form>
         {/*       <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
