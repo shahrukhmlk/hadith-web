@@ -34,7 +34,7 @@ export interface IHadithTranslationEditFormProps
 export const HadithTranslationEditForm = forwardRef<
   HTMLFormElement,
   IHadithTranslationEditFormProps
->(({ hadithTranslation, onSave, onDelete, ...props }, ref) => {
+>(({ hadithTranslation, onSave, onDelete, className, ...props }, ref) => {
   const findUniqueHadithTranslation = useFindUniqueHadithTranslation(
     {
       where: {
@@ -96,7 +96,7 @@ export const HadithTranslationEditForm = forwardRef<
     <Form {...form}>
       <form
         ref={ref}
-        className={clsx("space-y-4")}
+        className={clsx("space-y-4", className)}
         onSubmit={handleSubmit(onSubmit)}
         {...props}
       >
