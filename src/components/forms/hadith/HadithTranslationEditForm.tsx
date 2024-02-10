@@ -9,9 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
-import { IHadith } from "@/data/models/hadith/hadith"
 import {
   HadithTranslationSchema,
   IHadithTranslation,
