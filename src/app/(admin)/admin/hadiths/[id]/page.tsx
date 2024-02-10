@@ -20,17 +20,14 @@ export default async function Home({ params }: { params: { id: string } }) {
       number: true,
       date: true,
       status: true,
-      color: true,
-      topic: true,
       text: true,
-      fontScale: true,
+      topicID: true,
+      topic: { select: { id: true, title: true } },
       translations: {
         select: {
           hadithID: true,
           languageCode: true,
-          topic: true,
           text: true,
-          fontScale: true,
         },
         orderBy: { language: { sort: "asc" } },
       },
@@ -47,11 +44,22 @@ export default async function Home({ params }: { params: { id: string } }) {
     notFound()
   }
 
+  const topics = await prisma.topic.findMany({
+    select: { id: true, title: true },
+  })
+
   const languages = await getLanguages()
   const books = await getBooks()
   return (
     <main className="space-y-4 p-4">
-      {<HadithEditPage hadith={hadith} books={books} languages={languages} />}
+      {
+        <HadithEditPage
+          hadith={hadith}
+          topics={topics}
+          books={books}
+          languages={languages}
+        />
+      }
     </main>
   )
 }

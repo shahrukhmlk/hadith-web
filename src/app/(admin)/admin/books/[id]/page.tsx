@@ -1,4 +1,4 @@
-import { BookEditForm } from "@/components/forms/book/BookEditForm"
+import { BookEditPage } from "@/components/book/edit-page/BookEditPage"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
 import { getLanguages } from "@/data/language/getLanguages"
 import { notFound } from "next/navigation"
@@ -33,7 +33,7 @@ export default async function Home({ params }: { params: { id: string } }) {
   const languages = await getLanguages()
   return (
     <main className="space-y-4 p-4">
-      <BookEditForm book={book} languages={languages} />
+      <BookEditPage book={book} languages={languages} />
     </main>
   )
 }

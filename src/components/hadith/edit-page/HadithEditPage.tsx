@@ -3,6 +3,7 @@
 import HadithBookForm from "@/components/forms/hadith/HadithBookForm"
 import HadithEditForm from "@/components/forms/hadith/HadithEditForm"
 import { HadithTranslationEditForm } from "@/components/forms/hadith/HadithTranslationEditForm"
+import { HadithTranslationImageEditForm } from "@/components/forms/hadith/HadithTranslationImageEditForm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   DropdownMenu,
@@ -13,31 +14,38 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
+import { ROUTES } from "@/constants/routes"
 import { IBook } from "@/data/models/book/book"
-import { IHadithWithDetails } from "@/data/models/hadith/hadith"
+import { IHadithDetails } from "@/data/models/hadith/hadith-details"
 import { ILanguage } from "@/data/models/language/language"
+import { ITopic } from "@/data/models/topic/topic"
 import {
-  useCreateHadithBook,
   useCreateHadithTranslation,
   useFindManyHadithBook,
   useFindManyHadithTranslation,
   useFindUniqueHadith,
 } from "@/lib/hooks/query"
 import { Plus } from "lucide-react"
+import { Route } from "next"
+import { useRouter } from "next/navigation"
 import { forwardRef, useRef } from "react"
 
 export interface HadithEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  hadith: IHadithWithDetails
+  hadith: IHadithDetails
+  topics: ITopic[]
   books: IBook[]
   languages: ILanguage[]
 }
 
 const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
-  ({ hadith, books, languages, ...props }, ref) => {
+  ({ hadith, topics, books, languages, ...props }, ref) => {
     const hadithEditFormRef = useRef<HTMLFormElement | null>(null)
     const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
+    const imagesRef = useRef<Map<string, HTMLFormElement>>(new Map())
     const booksRef = useRef<Map<number, HTMLFormElement>>(new Map())
+
+    const router = useRouter()
 
     const findUniqueHadith = useFindUniqueHadith(
       {
@@ -49,10 +57,8 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           number: true,
           date: true,
           status: true,
-          color: true,
-          topic: true,
+          topicID: true,
           text: true,
-          fontScale: true,
         },
       },
       { initialData: hadith },
@@ -80,9 +86,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
         select: {
           hadithID: true,
           languageCode: true,
-          topic: true,
           text: true,
-          fontScale: true,
         },
       },
       { initialData: hadith.translations },
@@ -101,31 +105,17 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
     }
 
     return (
-      <div className="space-y-4" ref={ref} {...props}>
+      <div ref={ref} className="space-y-4" {...props}>
         <HadithEditForm
-          hadith={findUniqueHadith.data}
           ref={hadithEditFormRef}
+          hadith={findUniqueHadith.data}
+          topics={topics}
+          onSave={(id) => {}}
+          onDelete={() => {
+            router.replace(ROUTES.ADMIN.HADITHS as Route)
+          }}
         />
-        <div className="flex items-center gap-2">
-          Books
-          {/* <ButtonLoading
-            variant={"outline"}
-            size={"icon"}
-            isLoading={createHadithBook.isPending}
-            type="button"
-            onClick={() =>
-              createHadithBook.mutate({
-                data: {
-                  hadithID: findUniqueHadith.data.id,
-                  bookID: 0,
-                  hadithRefNumber: 0,
-                },
-              })
-            }
-          >
-            <Plus className="h-4 w-4" />
-          </ButtonLoading> */}
-        </div>
+        <div className="flex items-center gap-2">Books</div>
         {findManyHadithBook.data?.map((book, index) => (
           <HadithBookForm
             key={index}
@@ -167,8 +157,8 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                       data: {
                         hadithID: findUniqueHadith.data.id,
                         languageCode: language.code,
-                        topic: "",
                         text: "",
+                        image: { create: {} },
                       },
                     })
                   }}
@@ -184,18 +174,31 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
             <Label>
               {languages.find((l) => l.code === translation.languageCode)?.name}
             </Label>
-            <HadithTranslationEditForm
-              ref={(el) => {
-                if (el) {
-                  translationsRef.current.set(translation.languageCode, el)
-                } else {
-                  translationsRef.current.delete(translation.languageCode)
-                }
-              }}
-              key={index}
-              hadith={findUniqueHadith.data}
-              hadithTranslation={translation}
-            />
+            <div className="flex flex-wrap justify-stretch gap-4">
+              <HadithTranslationEditForm
+                ref={(el) => {
+                  if (el) {
+                    translationsRef.current.set(translation.languageCode, el)
+                  } else {
+                    translationsRef.current.delete(translation.languageCode)
+                  }
+                }}
+                className="flex-1"
+                hadithTranslation={translation}
+              />
+              <HadithTranslationImageEditForm
+                ref={(el) => {
+                  if (el) {
+                    imagesRef.current.set(translation.languageCode, el)
+                  } else {
+                    imagesRef.current.delete(translation.languageCode)
+                  }
+                }}
+                className="flex-1"
+                hadithID={translation.hadithID}
+                languageCode={translation.languageCode}
+              />
+            </div>
           </div>
         ))}
       </div>

@@ -45,7 +45,6 @@ const HadithHoc = async ({ className, date, languages }: IHadithHoc) => {
           languageCode: { in: languages },
         },
         select: {
-          topic: true,
           text: true,
         },
       },
@@ -59,7 +58,7 @@ const HadithHoc = async ({ className, date, languages }: IHadithHoc) => {
       number={hadith.number}
       date={hadith.date}
       color={hadith.color}
-      topic={hadith.topic}
+      topic={"hadith.topic"}
       text={hadith.text}
       bookText={hadith.books
         .map(

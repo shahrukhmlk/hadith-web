@@ -38,20 +38,34 @@ model Book extends Base {
     @@allow('all', auth().role == "admin")
 }
 
+model Topic extends Base {
+    id Int @id @default(autoincrement())
+    title String
+    userCreated User? @relation("Topic_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
+    userUpdated User? @relation("Topic_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
+    hadiths Hadith[]
+    translations TopicTranslation[]
+
+    @@index([userIDCreated], map: "fki_TopicUserCreated")
+    @@index([userIDUpdated], map: "fki_TopicUserUpdated")
+
+    @@allow('all', auth().role == "admin")
+}
+
 model Hadith extends Base {
     id Int @id @default(autoincrement())
     number Int @unique
     date DateTime @unique @db.Date
-    color String @default("#000000")
-    fontScale Int @default(0)
     status Status @default(draft)
-    topic String
     text String
+    topicID Int
+    topic Topic @relation(fields: [topicID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "topicID")
     userCreated User? @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserCreated")
     userUpdated User? @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserUpdated")
     books HadithBook[]
     translations HadithTranslation[]
 
+    @@index([topicID], map: "fki_HadithTopicID")
     @@index([userIDCreated], map: "fki_HadithUserCreated")
     @@index([userIDUpdated], map: "fki_HadithUserUpdated")
 
@@ -63,7 +77,7 @@ model HadithBook {
     bookID Int
     hadithRefNumber Int
     book Book @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Book_id")
-    hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithBook_Hadith_id")
+    hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "HadithBook_Hadith_id")
 
     @@id([hadithID, bookID])
     @@index([hadithID], map: "fki_HadithBook_Hadith_id")
@@ -79,6 +93,7 @@ model Language {
     sort Int?
     bookTranslations BookTranslation[]
     hadithTranslations HadithTranslation[]
+    hadithTopicTranslations TopicTranslation[]
 
     @@allow('all', auth().role == "admin")
 }
@@ -86,13 +101,12 @@ model Language {
 model HadithTranslation extends Base {
     hadithID Int
     languageCode String
-    topic String
     text String
-    fontScale Int @default(0)
     userCreated User? @relation("HadithTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
     userUpdated User? @relation("HadithTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
-    hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_HadithID")
+    hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "HadithTranslation_HadithID")
     language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
+    image HadithTranslationImage?
 
     @@id([hadithID, languageCode])
     @@index([userIDCreated], map: "fki_HadithTranslationUserCreated")
@@ -103,13 +117,46 @@ model HadithTranslation extends Base {
     @@allow('all', auth().role == "admin")
 }
 
+model HadithTranslationImage {
+    hadithID Int
+    languageCode String
+    hadithFontScale Int @default(0)
+    translationFontScale Int @default(0)    
+    color String @default("#000000")
+    hadithTranslation HadithTranslation @relation(fields: [hadithID, languageCode], references: [hadithID, languageCode], onDelete: Cascade, onUpdate: NoAction)
+    
+    @@id([hadithID, languageCode])
+    @@index([languageCode], map: "fki_HadithImage_LanguageCode")
+    @@index([hadithID], map: "fki_HadithImage_HadithID")
+
+    @@allow('all', auth().role == "admin")
+}
+
+model TopicTranslation extends Base {
+    topicID Int
+    languageCode String
+    title String
+    userCreated User? @relation("TopicTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserCreated")
+    userUpdated User? @relation("TopicTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserUpdated")
+    topic Topic @relation(fields: [topicID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TopicTranslation_TopicID")
+    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_LanguageCode")
+
+    @@id([topicID, languageCode])
+    @@index([userIDCreated], map: "fki_TopicTranslationUserCreated")
+    @@index([userIDUpdated], map: "fki_TopicTranslationUserUpdated")
+    @@index([languageCode], map: "fki_TopicTranslation_LanguageCode")
+    @@index([topicID], map: "fki_TopicTranslation_TopicID")
+
+    @@allow('all', auth().role == "admin")
+}
+
 model BookTranslation extends Base {
     bookID Int
     languageCode String
     name String
     userCreated User? @relation("BookTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserCreated")
     userUpdated User? @relation("BookTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserUpdated")
-    book Book @relation(fields: [bookID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_BookID")
+    book Book @relation(fields: [bookID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "BookTranslation_BookID")
     language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
 
     @@id([bookID, languageCode])
@@ -160,12 +207,16 @@ model User {
     sessions Session[]
     booksCreated Book[] @relation("Book_userIDCreatedToUser")
     booksUpdated Book[] @relation("Book_userIDUpdatedToUser")
+    hadithTopicsCreated Topic[] @relation("Topic_userIDCreatedToUser")
+    hadithTopicsUpdated Topic[] @relation("Topic_userIDUpdatedToUser")
     hadithsCreated Hadith[] @relation("Hadith_userIDCreatedToUser")
     hadithsUpdated Hadith[] @relation("Hadith_userIDUpdatedToUser")
     bookTranslationsCreated BookTranslation[] @relation("BookTranslation_userIDCreatedToUser")
     bookTranslationsUpdated BookTranslation[] @relation("BookTranslation_userIDUpdatedToUser")
     hadithTranslationsCreated HadithTranslation[] @relation("HadithTranslation_userIDCreatedToUser")
     hadithTranslationssUpdated HadithTranslation[] @relation("HadithTranslation_userIDUpdatedToUser")
+    hadithTopicTranslationsCreated TopicTranslation[] @relation("TopicTranslation_userIDCreatedToUser")
+    hadithTopicTranslationssUpdated TopicTranslation[] @relation("TopicTranslation_userIDUpdatedToUser")
 
     @@allow('all', auth().role == "admin")
 }

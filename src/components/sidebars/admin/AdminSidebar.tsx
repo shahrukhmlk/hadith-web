@@ -3,15 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/constants/routes"
 import clsx from "clsx"
-import {
-  Languages,
-  Library,
-  LibrarySquare,
-  MessageSquareQuote,
-  Quote,
-  Users,
-  UserSquare,
-} from "lucide-react"
+import { Languages, Library, Quote, Tags, Users } from "lucide-react"
 import { Route } from "next"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -28,6 +20,11 @@ const AdminSidebar = ({ className, ...props }: AdminSidebarProps) => {
       path: ROUTES.ADMIN.HADITHS,
       text: "Hadiths",
       icon: <Quote className={iconClassName} />,
+    },
+    {
+      path: ROUTES.ADMIN.TOPICS,
+      text: "Topics",
+      icon: <Tags className={iconClassName} />,
     },
     {
       path: ROUTES.ADMIN.BOOKS,

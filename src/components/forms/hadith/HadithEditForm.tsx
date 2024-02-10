@@ -1,4 +1,5 @@
 import DatePickerField from "@/components/inputs/date-picker/DatePickerField"
+import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -9,86 +10,123 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
-import { useFindUniqueHadith, useUpsertHadith } from "@/lib/hooks/query"
-import { deleteHadith } from "@/serverActions/hadith/deleteHadith"
+import { ITopic } from "@/data/models/topic/topic"
+import {
+  useCreateTopic,
+  useDeleteHadith,
+  useFindManyTopic,
+  useFindUniqueHadith,
+  useUpsertHadith,
+} from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { keepPreviousData } from "@tanstack/react-query"
 import clsx from "clsx"
-import { forwardRef } from "react"
+import { omit } from "lodash"
+import { forwardRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
 export interface HadithEditFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
-  hadith: IHadith
+  hadith?: IHadith
+  topics: ITopic[]
+  onSave?: (id: number) => void
+  onDelete?: () => void
 }
 
 const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
-  ({ hadith, ...props }, ref) => {
+  ({ hadith, topics, onSave, onDelete, ...props }, ref) => {
+    const [topicSearch, setTopicSearch] = useState<string>("")
     const findUniqueHadith = useFindUniqueHadith(
       {
         where: {
-          id: hadith.id,
+          id: hadith?.id,
         },
         select: {
           id: true,
           number: true,
           date: true,
           status: true,
-          color: true,
-          topic: true,
+          topicID: true,
           text: true,
-          fontScale: true,
         },
       },
-      { initialData: hadith },
+      { initialData: hadith, enabled: !!hadith },
     )
-    const upsertHadith = useUpsertHadith({
+
+    const findManyTopic = useFindManyTopic(
+      {
+        where: {
+          title: {
+            contains: topicSearch?.length ? topicSearch : undefined,
+          },
+        },
+        select: { id: true, title: true },
+      },
+      {
+        initialData: topicSearch?.length ? undefined : topics,
+        placeholderData: keepPreviousData,
+        select(data) {
+          return data.map((topic) => {
+            return {
+              value: topic.id.toString(),
+              label: topic.title,
+            }
+          })
+        },
+      },
+    )
+
+    const createTopic = useCreateTopic()
+
+    const upsertHadith = useUpsertHadith()
+
+    const deleteHadith = useDeleteHadith({
       onSuccess(data, variables, context) {
-        toast.success("Done!")
+        onDelete && onDelete()
       },
     })
 
-    const form = useForm<IHadith>({
+    const form = useForm({
       resolver: zodResolver(HadithSchema.partial({ id: true })),
       values: findUniqueHadith.data,
       defaultValues: {
+        id: 0,
         // @ts-ignore
         number: "",
         status: Status.draft,
         // @ts-ignore
         date: "",
-        color: "#000000",
-        topic: "",
+        topicID: 0,
         text: "",
-        // @ts-ignore
-        fontScale: "",
       },
     })
 
     const onSubmit = (values: IHadith) => {
-      upsertHadith.mutate({
-        create: values,
-        where: { id: values.id },
-        update: values,
-        select: {
-          id: true,
-          number: true,
-          date: true,
-          status: true,
-          color: true,
-          topic: true,
-          text: true,
-          fontScale: true,
+      upsertHadith.mutate(
+        {
+          create: omit(values, ["id"]),
+          where: { id: values.id },
+          update: values,
+          select: {
+            id: true,
+            number: true,
+            date: true,
+            status: true,
+            text: true,
+          },
         },
-      })
-      //translationsRef.current.forEach((el) => el.requestSubmit())
+        {
+          onSuccess(data, variables, context) {
+            onSave && onSave(data?.id ?? 0)
+          },
+        },
+      )
     }
-    if (!findUniqueHadith.data) {
-      return null
-    }
+
     return (
       <>
         <Form {...form}>
@@ -127,37 +165,32 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
             />
             <FormField
               control={form.control}
-              name={"color"}
+              name={"topicID"}
               render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="color" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* <FormField
-              control={form.control}
-              name={"fontScale"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="fontScale" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
-            <FormField
-              control={form.control}
-              name={"topic"}
-              render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col">
                   <FormLabel>Topic</FormLabel>
                   <FormControl>
-                    <Input dir="auto" placeholder="Topic" {...field} />
+                    <SearchableSelectInput
+                      items={findManyTopic.data ?? []}
+                      selectedItem={findManyTopic.data?.find(
+                        (item) => parseInt(item.value) === field.value,
+                      ) /*  ?? createTopic.data */}
+                      isLoading={
+                        findManyTopic.isFetching || createTopic.isPending
+                      }
+                      selectText="Select Topic"
+                      onItemSelect={(item) =>
+                        field.onChange(parseInt(item.value))
+                      }
+                      filterValue={topicSearch}
+                      onFilterChange={setTopicSearch}
+                      onClickCreateNew={(text) => {
+                        createTopic.mutate({
+                          data: { title: text },
+                          select: { id: true, title: true },
+                        })
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -212,12 +245,19 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               ? "Update"
               : "Publish"}
           </ButtonLoading>
-          <form
-            action={(e) => deleteHadith(hadith.id)}
-            className="flex flex-1 justify-end"
-          >
-            <ButtonLoading variant={"destructive"}>Delete Hadith</ButtonLoading>
-          </form>
+          <div className="flex-1"></div>
+          {findUniqueHadith.data && (
+            <ButtonLoading
+              type="button"
+              variant={"destructive"}
+              isLoading={deleteHadith.isPending}
+              onClick={() => {
+                deleteHadith.mutate({ where: { id: findUniqueHadith.data.id } })
+              }}
+            >
+              Delete Hadith
+            </ButtonLoading>
+          )}
         </div>
       </>
     )

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { IBook } from "@/data/models/book/book"
-import { HadithBookSchema, IHadithBook } from "@/data/models/hadith/hadith"
+import { HadithBookSchema, IHadithBook } from "@/data/models/hadith/hadith-book"
 import {
   useDeleteHadithBook,
   useFindManyBook,
@@ -35,7 +35,7 @@ export interface HadithBookFormProps
 
 const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
   ({ hadithID, hadithBook, books, ...props }, ref) => {
-    const [bookSearch, setBookSearch] = useState<string>()
+    const [bookSearch, setBookSearch] = useState<string>("")
     const findUniqueHadithBook = useFindUniqueHadithBook(
       {
         where: {
@@ -68,12 +68,20 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
       {
         initialData: bookSearch?.length ? undefined : books,
         placeholderData: keepPreviousData,
+        select(data) {
+          return data.map((book) => {
+            return {
+              value: book.id.toString(),
+              label: book.name,
+            }
+          })
+        },
       },
     )
     const upsertHadithBook = useUpsertHadithBook()
     const deleteHadithBook = useDeleteHadithBook()
 
-    const form = useForm<IHadithBook>({
+    const form = useForm({
       resolver: zodResolver(HadithBookSchema),
       values: findUniqueHadithBook.data,
       // @ts-ignore
@@ -106,16 +114,6 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
         },
       )
     }
-    const getSelectableBooks = () => {
-      return (
-        findManyBook.data?.map((book) => {
-          return {
-            label: book.name,
-            value: book.id.toString(),
-          }
-        }) ?? []
-      )
-    }
 
     return (
       <Form {...form}>
@@ -132,8 +130,8 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
               <FormItem>
                 <FormControl>
                   <SearchableSelectInput
-                    items={getSelectableBooks()}
-                    selectedItem={getSelectableBooks().find(
+                    items={findManyBook.data ?? []}
+                    selectedItem={findManyBook.data?.find(
                       (item) => parseInt(item.value) === field.value,
                     )}
                     isLoading={findManyBook.isFetching}
@@ -141,6 +139,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
                     onItemSelect={(item) =>
                       field.onChange(parseInt(item.value))
                     }
+                    filterValue={bookSearch}
                     onFilterChange={setBookSearch}
                   />
                 </FormControl>
@@ -167,27 +166,26 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
             >
               {!!hadithBook ? "Save" : "Add"}
             </ButtonLoading>
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteHadithBook.isPending}
-              disabled={!findUniqueHadithBook.data}
-              onClick={() => {
-                if (!findUniqueHadithBook.data) {
-                  return
-                }
-                deleteHadithBook.mutate({
-                  where: {
-                    hadithID_bookID: {
-                      bookID: findUniqueHadithBook.data.bookID,
-                      hadithID: findUniqueHadithBook.data.hadithID,
+            {findUniqueHadithBook.data && (
+              <ButtonLoading
+                type="button"
+                variant={"destructive"}
+                isLoading={deleteHadithBook.isPending}
+                disabled={!findUniqueHadithBook.data}
+                onClick={() => {
+                  deleteHadithBook.mutate({
+                    where: {
+                      hadithID_bookID: {
+                        bookID: findUniqueHadithBook.data.bookID,
+                        hadithID: findUniqueHadithBook.data.hadithID,
+                      },
                     },
-                  },
-                })
-              }}
-            >
-              Delete
-            </ButtonLoading>
+                  })
+                }}
+              >
+                Delete
+              </ButtonLoading>
+            )}
           </div>
         </form>
         {/*       <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>

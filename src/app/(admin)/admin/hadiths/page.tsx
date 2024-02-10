@@ -1,11 +1,6 @@
+import HadithCreateDialog from "@/components/dialogs/hadith-create/HadithCreateDialog"
 import HadithList from "@/components/hadith/list/HadithList"
-import { Button } from "@/components/ui/button"
-import { ROUTES } from "@/constants/routes"
 import getEnhancedPrisma from "@/data/enhanced-prisma"
-import { createNewHadith } from "@/serverActions/hadith/createHadith"
-import { Plus } from "lucide-react"
-import { Route } from "next"
-import Link from "next/link"
 
 /**
  * Fetch allowed params from URL, parse them into a prisma filter/react query filter, pass the data
@@ -30,21 +25,17 @@ export default async function Home({
       number: true,
       date: true,
       status: true,
-      color: true,
-      topic: true,
+      topicID: true,
       text: true,
-      fontScale: true,
     },
     orderBy: { number: "desc" },
   })
+  const topics = await prisma.topic.findMany({
+    select: { id: true, title: true },
+  })
   return (
     <main className="flex flex-col items-start p-8">
-      <form action={createNewHadith}>
-        <Button size={"sm"} className="h-8" variant={"secondary"}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add New Hadith
-        </Button>
-      </form>
+      <HadithCreateDialog topics={topics} />
       <HadithList hadiths={hadiths} />
     </main>
   )
