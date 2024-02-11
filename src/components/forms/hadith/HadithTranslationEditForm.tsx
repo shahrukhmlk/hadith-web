@@ -110,6 +110,7 @@ export const HadithTranslationEditForm = forwardRef<
                 <Textarea
                   dir="auto"
                   placeholder="Text..."
+                  rows={5}
                   {...field}
                   className="flex-1 resize-none text-base"
                 />

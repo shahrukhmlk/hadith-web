@@ -206,57 +206,62 @@ export const HadithTranslationImageEditForm = forwardRef<
             )
             .join("\n و")}
         />
-        <FormField
-          control={form.control}
-          name={"hadithFontScale"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Font Scale</FormLabel>
-              <FormControl>
-                <Slider
-                  value={[field.value]}
-                  onValueChange={(value) => field.onChange(value[0])}
-                  min={-99}
-                  max={100}
-                  step={1}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={"translationFontScale"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Translation Font Scale</FormLabel>
-              <FormControl>
-                <Slider
-                  value={[field.value]}
-                  onValueChange={(value) => field.onChange(value[0])}
-                  min={-99}
-                  max={100}
-                  step={1}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name={"color"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Name" type="color" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-wrap gap-4">
+          <FormField
+            control={form.control}
+            name={"hadithFontScale"}
+            render={({ field }) => (
+              <FormItem className="basis-52">
+                <FormLabel>Font Scale</FormLabel>
+                <FormControl>
+                  <Slider
+                    className="h-9"
+                    value={[field.value]}
+                    onValueChange={(value) => field.onChange(value[0])}
+                    min={-99}
+                    max={100}
+                    step={1}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"translationFontScale"}
+            render={({ field }) => (
+              <FormItem className="basis-52">
+                <FormLabel>Translation Font Scale</FormLabel>
+                <FormControl>
+                  <Slider
+                    className="h-9"
+                    value={[field.value]}
+                    onValueChange={(value) => field.onChange(value[0])}
+                    min={-99}
+                    max={100}
+                    step={1}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"color"}
+            render={({ field }) => (
+              <FormItem className="basis-20">
+                <FormLabel>Color</FormLabel>
+                <FormControl>
+                  <Input placeholder="Color" type="color" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <div className="flex space-x-2">
           <ButtonLoading
             isLoading={upsertHadithTranslationImage.isPending}

@@ -25,12 +25,14 @@ function DatePickerField({ selected, onSelect }: DatePickerFieldProps) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-full min-w-52 pl-3 text-left font-normal",
+            "w-full min-w-52 text-start font-normal",
             !selected && "text-muted-foreground",
           )}
         >
-          {selected ? format(selected, "PPP") : <span>Pick a date</span>}
-          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          <span className="flex-1">
+            {selected ? format(selected, "PPP") : "Pick a date"}
+          </span>
+          <CalendarIcon className="h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

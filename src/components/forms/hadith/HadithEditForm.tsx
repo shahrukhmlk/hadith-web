@@ -38,7 +38,7 @@ export interface HadithEditFormProps
 }
 
 const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
-  ({ hadith, topics, onSave, onDelete, ...props }, ref) => {
+  ({ hadith, topics, onSave, onDelete, className, ...props }, ref) => {
     const [topicSearch, setTopicSearch] = useState<string>("")
     const findUniqueHadith = useFindUniqueHadith(
       {
@@ -132,70 +132,71 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
         <Form {...form}>
           <form
             ref={ref}
-            className={clsx("space-y-4")}
+            className={clsx("space-y-4", className)}
             onSubmit={form.handleSubmit(onSubmit)}
             {...props}
           >
-            <FormField
-              control={form.control}
-              name={"date"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <DatePickerField
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"number"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"topicID"}
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Topic</FormLabel>
-                  <FormControl>
-                    <SearchableSelectInput
-                      items={findManyTopic.data ?? []}
-                      selectedItem={findManyTopic.data?.find(
-                        (item) => parseInt(item.value) === field.value,
-                      ) /*  ?? createTopic.data */}
-                      isLoading={
-                        findManyTopic.isFetching || createTopic.isPending
-                      }
-                      selectText="Select Topic"
-                      onItemSelect={(item) =>
-                        field.onChange(parseInt(item.value))
-                      }
-                      filterValue={topicSearch}
-                      onFilterChange={setTopicSearch}
-                      onClickCreateNew={(text) => {
-                        createTopic.mutate({
-                          data: { title: text },
-                          select: { id: true, title: true },
-                        })
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-wrap gap-4">
+              <FormField
+                control={form.control}
+                name={"date"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <DatePickerField
+                        selected={field.value}
+                        onSelect={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"number"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"topicID"}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <SearchableSelectInput
+                        items={findManyTopic.data ?? []}
+                        selectedItem={findManyTopic.data?.find(
+                          (item) => parseInt(item.value) === field.value,
+                        ) /*  ?? createTopic.data */}
+                        isLoading={
+                          findManyTopic.isFetching || createTopic.isPending
+                        }
+                        selectText="Select Topic"
+                        onItemSelect={(item) =>
+                          field.onChange(parseInt(item.value))
+                        }
+                        filterValue={topicSearch}
+                        onFilterChange={setTopicSearch}
+                        onClickCreateNew={(text) => {
+                          createTopic.mutate({
+                            data: { title: text },
+                            select: { id: true, title: true },
+                          })
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name={"text"}
@@ -206,6 +207,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                     <Textarea
                       dir="auto"
                       placeholder="Text..."
+                      rows={5}
                       {...field}
                       className="resize-none text-base"
                     />
@@ -216,7 +218,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
             />
           </form>
         </Form>
-        <div className="flex justify-end space-x-2">
+        <div className="flex justify-end gap-2">
           <ButtonLoading
             type="button"
             variant={"secondary"}

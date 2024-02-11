@@ -65,7 +65,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
     )
 
     return (
-      <Card className="aspect-square">
+      <Card className="p-6">
         <div
           ref={ref}
           className={clsx(

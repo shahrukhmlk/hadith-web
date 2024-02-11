@@ -34,7 +34,7 @@ export interface HadithBookFormProps
 }
 
 const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
-  ({ hadithID, hadithBook, books, ...props }, ref) => {
+  ({ hadithID, hadithBook, books, className, ...props }, ref) => {
     const [bookSearch, setBookSearch] = useState<string>("")
     const findUniqueHadithBook = useFindUniqueHadithBook(
       {
@@ -119,7 +119,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
       <Form {...form}>
         <form
           ref={ref}
-          className={clsx("flex flex-wrap gap-2")}
+          className={clsx("flex flex-wrap gap-2", className)}
           onSubmit={handleSubmit(onSubmit)}
           {...props}
         >
@@ -159,7 +159,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
               </FormItem>
             )}
           />
-          <div className="flex justify-end space-x-2">
+          <div className="flex justify-end gap-2">
             <ButtonLoading
               isLoading={upsertHadithBook.isPending}
               disabled={!formState.isDirty}
