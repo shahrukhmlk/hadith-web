@@ -27,7 +27,7 @@ const HadithCreateDialog = forwardRef<HTMLDivElement, HadithCreateDialogProps>(
     const router = useRouter()
     return (
       <div ref={ref} {...props}>
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={setOpen} modal={false}>
           <DialogTrigger asChild>
             <Button size={"sm"} className="h-8" variant={"secondary"}>
               <Plus className="mr-2 h-4 w-4" />
