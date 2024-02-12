@@ -1,6 +1,7 @@
 "use client"
 
 import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -167,7 +168,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
               {!!hadithBook ? "Save" : "Add"}
             </ButtonLoading>
             {findUniqueHadithBook.data && (
-              <ButtonLoading
+              <ButtonConfirm
                 type="button"
                 variant={"destructive"}
                 isLoading={deleteHadithBook.isPending}
@@ -184,7 +185,7 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
                 }}
               >
                 Delete
-              </ButtonLoading>
+              </ButtonConfirm>
             )}
           </div>
         </form>

@@ -1,5 +1,6 @@
 "use client"
 
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -113,7 +114,7 @@ export const TopicTranslationEditForm = forwardRef<
           >
             Save
           </ButtonLoading>
-          <ButtonLoading
+          <ButtonConfirm
             type="button"
             variant={"destructive"}
             isLoading={deleteTopicTranslation.isPending}
@@ -129,7 +130,7 @@ export const TopicTranslationEditForm = forwardRef<
             }}
           >
             Delete
-          </ButtonLoading>
+          </ButtonConfirm>
         </div>
       </form>
     </Form>

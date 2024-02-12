@@ -1,5 +1,6 @@
 "use client"
 
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -156,7 +157,7 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
             </ButtonLoading>
             <div className="flex-1"></div>
             {findUniqueUser.data && (
-              <ButtonLoading
+              <ButtonConfirm
                 type="button"
                 variant={"destructive"}
                 isLoading={deleteUser.isPending}
@@ -165,7 +166,7 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
                 }}
               >
                 Delete User
-              </ButtonLoading>
+              </ButtonConfirm>
             )}
           </div>
         </form>

@@ -1,5 +1,6 @@
 import DatePickerField from "@/components/inputs/date-picker/DatePickerField"
 import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -247,7 +248,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
               </ButtonLoading>
               <div className="flex-1"></div>
               {findUniqueHadith.data && (
-                <ButtonLoading
+                <ButtonConfirm
                   type="button"
                   variant={"destructive"}
                   isLoading={deleteHadith.isPending}
@@ -258,7 +259,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                   }}
                 >
                   Delete Hadith
-                </ButtonLoading>
+                </ButtonConfirm>
               )}
             </div>
           </form>
