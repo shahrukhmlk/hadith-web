@@ -30,7 +30,7 @@ export interface TopicEditFormProps
 }
 
 export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
-  ({ topic, onSave, onDelete, ...props }, ref) => {
+  ({ topic, onSave, onDelete, className, ...props }, ref) => {
     const findUniqueTopic = useFindUniqueTopic(
       {
         where: {
@@ -87,48 +87,47 @@ export const TopicEditForm = forwardRef<HTMLFormElement, TopicEditFormProps>(
     }
 
     return (
-      <>
-        <Form {...form}>
-          <form
-            className={clsx("space-y-4")}
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={control}
-              name={"title"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Topic</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Topic" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex space-x-2">
-              <ButtonLoading type="submit" isLoading={upsertTopic.isPending}>
-                Save
+      <Form {...form}>
+        <form
+          className={clsx("space-y-4", className)}
+          onSubmit={form.handleSubmit(onSubmit)}
+          {...props}
+        >
+          <FormField
+            control={control}
+            name={"title"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Topic</FormLabel>
+                <FormControl>
+                  <Input placeholder="Topic" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex space-x-2">
+            <ButtonLoading type="submit" isLoading={upsertTopic.isPending}>
+              Save
+            </ButtonLoading>
+            <div className="flex-1"></div>
+            {findUniqueTopic.data && (
+              <ButtonLoading
+                type="button"
+                variant={"destructive"}
+                isLoading={deleteTopic.isPending}
+                onClick={() => {
+                  deleteTopic.mutate({
+                    where: { id: findUniqueTopic.data.id },
+                  })
+                }}
+              >
+                Delete Topic
               </ButtonLoading>
-              <div className="flex-1"></div>
-              {findUniqueTopic.data && (
-                <ButtonLoading
-                  type="button"
-                  variant={"destructive"}
-                  isLoading={deleteTopic.isPending}
-                  onClick={() => {
-                    deleteTopic.mutate({
-                      where: { id: findUniqueTopic.data.id },
-                    })
-                  }}
-                >
-                  Delete Topic
-                </ButtonLoading>
-              )}
-            </div>
-          </form>
-        </Form>
-      </>
+            )}
+          </div>
+        </form>
+      </Form>
     )
   },
 )

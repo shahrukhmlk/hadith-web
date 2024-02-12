@@ -216,51 +216,53 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 </FormItem>
               )}
             />
+            <div className="flex justify-end gap-2">
+              <ButtonLoading
+                type="button"
+                variant={"secondary"}
+                isLoading={
+                  upsertHadith.isPending &&
+                  form.getValues("status") === Status.draft
+                }
+                onClick={() => {
+                  form.setValue("status", Status.draft)
+                  form.handleSubmit(onSubmit)()
+                }}
+              >
+                Save Draft
+              </ButtonLoading>
+              <ButtonLoading
+                isLoading={
+                  upsertHadith.isPending &&
+                  form.getValues("status") === Status.published
+                }
+                onClick={() => {
+                  form.setValue("status", Status.published)
+                  form.handleSubmit(onSubmit)()
+                }}
+              >
+                {upsertHadith.data?.status === Status.published
+                  ? "Update"
+                  : "Publish"}
+              </ButtonLoading>
+              <div className="flex-1"></div>
+              {findUniqueHadith.data && (
+                <ButtonLoading
+                  type="button"
+                  variant={"destructive"}
+                  isLoading={deleteHadith.isPending}
+                  onClick={() => {
+                    deleteHadith.mutate({
+                      where: { id: findUniqueHadith.data.id },
+                    })
+                  }}
+                >
+                  Delete Hadith
+                </ButtonLoading>
+              )}
+            </div>
           </form>
         </Form>
-        <div className="flex justify-end gap-2">
-          <ButtonLoading
-            type="button"
-            variant={"secondary"}
-            isLoading={
-              upsertHadith.isPending &&
-              form.getValues("status") === Status.draft
-            }
-            onClick={() => {
-              form.setValue("status", Status.draft)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            Save Draft
-          </ButtonLoading>
-          <ButtonLoading
-            isLoading={
-              upsertHadith.isPending &&
-              form.getValues("status") === Status.published
-            }
-            onClick={() => {
-              form.setValue("status", Status.published)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            {upsertHadith.data?.status === Status.published
-              ? "Update"
-              : "Publish"}
-          </ButtonLoading>
-          <div className="flex-1"></div>
-          {findUniqueHadith.data && (
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteHadith.isPending}
-              onClick={() => {
-                deleteHadith.mutate({ where: { id: findUniqueHadith.data.id } })
-              }}
-            >
-              Delete Hadith
-            </ButtonLoading>
-          )}
-        </div>
       </>
     )
   },
