@@ -24,6 +24,8 @@ function DatePickerField({ selected, onSelect }: DatePickerFieldProps) {
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
+          role="combobox"
+          aria-expanded={datePickerOpen}
           className={cn(
             "w-full min-w-52 text-start font-normal",
             !selected && "text-muted-foreground",
@@ -44,7 +46,7 @@ function DatePickerField({ selected, onSelect }: DatePickerFieldProps) {
           /* disabled={(date) =>
               date > new Date() || date < new Date("1900-01-01")
             } */
-          initialFocus
+          /* initialFocus */
         />
       </PopoverContent>
     </Popover>
