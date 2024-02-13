@@ -1,5 +1,5 @@
 import prisma from "@/data/prisma"
-import Google from "@auth/core/providers/google"
+import Google, { GoogleProfile } from "@auth/core/providers/google"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import NextAuth from "next-auth"
 
@@ -10,15 +10,20 @@ export const {
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
-      /* profile(profile) {
+      /**
+       *
+       * @param {import("@auth/core/providers/google").GoogleProfile} profile
+       * @returns
+       */
+      profile(profile: GoogleProfile) {
         return {
-          role: profile.role ?? "user",
-          id: profile.id,
+          id: profile.sub,
           email: profile.email,
-          image: profile.image,
           name: profile.name,
+          image: profile.picture,
+          role: profile.email === "shahrukhmlk@gmail.com" ? "admin" : "user",
         }
-      }, */
+      },
     }),
   ],
   callbacks: {
