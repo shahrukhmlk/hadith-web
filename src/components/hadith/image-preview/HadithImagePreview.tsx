@@ -15,12 +15,13 @@ import {
   arabicNas,
   arabicNormal,
   cairo,
-  rumooz,
+  rumoozAr,
   urduKasheeda,
   urduNormal,
 } from "./fontsLoader"
 import styles from "./hadithImage.module.scss"
 import "./html2canvasfix.css"
+import { addRamzToText, arabicRumooz, rumoozConfigs } from "@/lib/rumooz"
 
 export interface HadithImagePreviewProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -51,17 +52,24 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
     },
     ref,
   ) => {
-    const hadithParsed = parse(
-      sanitizeHtml(text).replaceAll(
+    const replaceQuotes = (text: string) => {
+      return text.replaceAll(
         /("|«|&laquo;).+?("|»|&raquo;)/g,
-        `<hadith-nas>$&</hadith-nas>`,
-      ),
-    )
-    const translationParsed = parse(
-      sanitizeHtml(translationText).replaceAll(
-        /("|«|&laquo;).+?("|»|&raquo;)/g,
-        `<hadith-nas>$&</hadith-nas>`,
-      ),
+        `<span class="${styles["hadith-nas"]}">$&</span>`,
+      )
+    }
+    const formattedText = addRamzToText(replaceQuotes(text), arabicRumooz, {
+      start: `<span lang="ar" class="${styles["ramz"]}">`,
+      end: `</span>`,
+    })
+
+    const formattedTranslation = addRamzToText(
+      replaceQuotes(translationText),
+      rumoozConfigs[languageCode],
+      {
+        start: `<span lang="${languageCode}" class="${styles["ramz"]}">`,
+        end: `</span>`,
+      },
     )
 
     return (
@@ -69,7 +77,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
         <div
           ref={ref}
           className={clsx(
-            rumooz.variable,
+            rumoozAr.variable,
             arabicNas.variable,
             arabicNormal.variable,
             urduNormal.variable,
@@ -111,7 +119,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
               "flex flex-1 flex-col items-center justify-around overflow-clip whitespace-pre-line p-[5%] text-justify align-baseline text-[1em]",
             )}
             style={{
-              background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}40 100%), url("${Net.src}")`,
+              background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}30 100%), url("${Net.src}")`,
               textAlignLast: "center",
             }}
           >
@@ -123,7 +131,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
                 fontSize: fontScale + 100 + "%",
               }}
             >
-              {hadithParsed}
+              {parse(formattedText)}
             </div>
             <div
               lang={languageCode}
@@ -132,7 +140,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
                 fontSize: translationFontScale + 100 + "%",
               }}
             >
-              {translationParsed}
+              {parse(formattedTranslation)}
             </div>
             <div
               dir="rtl"
