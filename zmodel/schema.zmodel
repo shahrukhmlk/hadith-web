@@ -27,8 +27,8 @@ model Book extends Base {
     status Status @default(draft)
     sort Int?
     name String
-    userCreated User? @relation("Book_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookUserCreated")
-    userUpdated User? @relation("Book_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookUserUpdated")
+    userCreated User? @relation("Book_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "BookUserCreated")
+    userUpdated User? @relation("Book_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "BookUserUpdated")
     translations BookTranslation[]
     hadiths HadithBook[]
 
@@ -41,8 +41,8 @@ model Book extends Base {
 model Topic extends Base {
     id Int @id @default(autoincrement())
     title String
-    userCreated User? @relation("Topic_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
-    userUpdated User? @relation("Topic_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
+    userCreated User? @relation("Topic_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithTranslationUserCreated")
+    userUpdated User? @relation("Topic_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
     hadiths Hadith[]
     translations TopicTranslation[]
 
@@ -60,8 +60,8 @@ model Hadith extends Base {
     text String
     topicID Int
     topic Topic @relation(fields: [topicID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "topicID")
-    userCreated User? @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserCreated")
-    userUpdated User? @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithUserUpdated")
+    userCreated User? @relation("Hadith_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithUserCreated")
+    userUpdated User? @relation("Hadith_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithUserUpdated")
     books HadithBook[]
     translations HadithTranslation[]
 
@@ -102,8 +102,8 @@ model HadithTranslation extends Base {
     hadithID Int
     languageCode String
     text String
-    userCreated User? @relation("HadithTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserCreated")
-    userUpdated User? @relation("HadithTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
+    userCreated User? @relation("HadithTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithTranslationUserCreated")
+    userUpdated User? @relation("HadithTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
     hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "HadithTranslation_HadithID")
     language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
     image HadithTranslationImage?
@@ -136,8 +136,8 @@ model TopicTranslation extends Base {
     topicID Int
     languageCode String
     title String
-    userCreated User? @relation("TopicTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserCreated")
-    userUpdated User? @relation("TopicTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslationUserUpdated")
+    userCreated User? @relation("TopicTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "TopicTranslationUserCreated")
+    userUpdated User? @relation("TopicTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "TopicTranslationUserUpdated")
     topic Topic @relation(fields: [topicID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TopicTranslation_TopicID")
     language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_LanguageCode")
 
@@ -154,8 +154,8 @@ model BookTranslation extends Base {
     bookID Int
     languageCode String
     name String
-    userCreated User? @relation("BookTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserCreated")
-    userUpdated User? @relation("BookTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslationUserUpdated")
+    userCreated User? @relation("BookTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "BookTranslationUserCreated")
+    userUpdated User? @relation("BookTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "BookTranslationUserUpdated")
     book Book @relation(fields: [bookID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "BookTranslation_BookID")
     language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
 
