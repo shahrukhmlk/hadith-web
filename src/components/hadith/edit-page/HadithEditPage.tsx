@@ -105,7 +105,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
     }
 
     return (
-      <div ref={ref} className="space-y-4" dir="rtl" {...props}>
+      <div ref={ref} className="space-y-4" {...props}>
         <HadithEditForm
           ref={hadithEditFormRef}
           hadith={findUniqueHadith.data}
