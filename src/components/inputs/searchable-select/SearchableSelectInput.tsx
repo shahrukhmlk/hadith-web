@@ -65,7 +65,7 @@ export default function SearchableSelectInput({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "justify-between",
+            "w-full min-w-52 justify-between gap-2",
             !selectedItem && "text-muted-foreground",
           )}
         >
@@ -75,10 +75,10 @@ export default function SearchableSelectInput({
           >
             {selectedItem ? selectedItem.label : selectText}
           </span>
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-auto p-0" align="start">
         <Command shouldFilter={false}>
           <div
             className="flex items-center border-b px-3"
@@ -86,6 +86,7 @@ export default function SearchableSelectInput({
           >
             <MagnifyingGlassIcon className="mr-2 h-4 w-4 shrink-0 opacity-50" />
             <CommandInput
+              dir="auto"
               placeholder={placeHolder}
               value={filterValue}
               onValueChange={onFilterChange}

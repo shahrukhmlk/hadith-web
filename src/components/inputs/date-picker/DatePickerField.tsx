@@ -24,13 +24,17 @@ function DatePickerField({ selected, onSelect }: DatePickerFieldProps) {
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
+          role="combobox"
+          aria-expanded={datePickerOpen}
           className={cn(
-            "w-full min-w-52 pl-3 text-left font-normal",
+            "w-full min-w-52 text-start font-normal",
             !selected && "text-muted-foreground",
           )}
         >
-          {selected ? format(selected, "PPP") : <span>Pick a date</span>}
-          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          <span className="flex-1">
+            {selected ? format(selected, "PPP") : "Pick a date"}
+          </span>
+          <CalendarIcon className="h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
@@ -42,7 +46,7 @@ function DatePickerField({ selected, onSelect }: DatePickerFieldProps) {
           /* disabled={(date) =>
               date > new Date() || date < new Date("1900-01-01")
             } */
-          initialFocus
+          /* initialFocus */
         />
       </PopoverContent>
     </Popover>

@@ -53,7 +53,9 @@ export default async function RootLayout({
           className="hidden h-auto sm:block"
           orientation={"vertical"}
         />
-        <div className="min-w-[50%] flex-grow-[999] basis-0">{children}</div>
+        <div className="mx-auto min-w-[50%] max-w-5xl flex-grow-[999] basis-0">
+          {children}
+        </div>
       </div>
     </>
   )

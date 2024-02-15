@@ -1,5 +1,6 @@
 "use client"
 
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -10,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { auth } from "@/config/auth"
 import {
   useDeleteUser,
   useFindUniqueUser,
@@ -96,82 +98,79 @@ export const UserEditForm = forwardRef<HTMLFormElement, UserEditFormProps>(
     }
 
     return (
-      <>
-        <Form {...form}>
-          <form
-            className={clsx("space-y-4")}
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name={"name"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    {/* @ts-ignore */}
-                    <Input placeholder="Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"email"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    {/* @ts-ignore */}
-                    <Input disabled placeholder="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"role"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <FormControl>
-                    {/* @ts-ignore */}
-                    <Input placeholder="Role" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-
-        <div className="flex space-x-2">
-          <ButtonLoading
-            type="button"
-            isLoading={upsertUser.isPending}
-            onClick={() => {
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            Save
-          </ButtonLoading>
-          <div className="flex-1"></div>
-          {findUniqueUser.data && (
+      <Form {...form}>
+        <form
+          className={clsx("space-y-4")}
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name={"name"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  {/* @ts-ignore */}
+                  <Input placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"email"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  {/* @ts-ignore */}
+                  <Input disabled placeholder="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name={"role"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role</FormLabel>
+                <FormControl>
+                  {/* @ts-ignore */}
+                  <Input placeholder="Role" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex space-x-2">
             <ButtonLoading
               type="button"
-              variant={"destructive"}
-              isLoading={deleteUser.isPending}
+              isLoading={upsertUser.isPending}
               onClick={() => {
-                deleteUser.mutate({ where: { id: findUniqueUser.data.id } })
+                form.handleSubmit(onSubmit)()
               }}
             >
-              Delete User
+              Save
             </ButtonLoading>
-          )}
-        </div>
-      </>
+            <div className="flex-1"></div>
+            {findUniqueUser.data && (
+              <ButtonConfirm
+                type="button"
+                variant={"destructive"}
+                isLoading={deleteUser.isPending}
+                onClick={() => {
+                  deleteUser.mutate({ where: { id: findUniqueUser.data.id } })
+                }}
+              >
+                Delete User
+              </ButtonConfirm>
+            )}
+          </div>
+        </form>
+      </Form>
     )
   },
 )

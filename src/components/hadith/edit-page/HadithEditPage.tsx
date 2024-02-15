@@ -183,7 +183,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                     translationsRef.current.delete(translation.languageCode)
                   }
                 }}
-                className="flex-1"
+                className="flex-1 basis-96"
                 hadithTranslation={translation}
               />
               <HadithTranslationImageEditForm
@@ -194,7 +194,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                     imagesRef.current.delete(translation.languageCode)
                   }
                 }}
-                className="flex-1"
+                className="flex-1 basis-1/2"
                 hadithID={translation.hadithID}
                 languageCode={translation.languageCode}
               />

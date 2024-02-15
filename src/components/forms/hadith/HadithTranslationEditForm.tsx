@@ -1,5 +1,6 @@
 "use client"
 
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -110,6 +111,7 @@ export const HadithTranslationEditForm = forwardRef<
                 <Textarea
                   dir="auto"
                   placeholder="Text..."
+                  rows={5}
                   {...field}
                   className="flex-1 resize-none text-base"
                 />
@@ -126,7 +128,7 @@ export const HadithTranslationEditForm = forwardRef<
             Save
           </ButtonLoading>
           <div className="flex-1"></div>
-          <ButtonLoading
+          <ButtonConfirm
             type="button"
             variant={"destructive"}
             isLoading={deleteHadithTranslation.isPending}
@@ -142,7 +144,7 @@ export const HadithTranslationEditForm = forwardRef<
             }}
           >
             Delete
-          </ButtonLoading>
+          </ButtonConfirm>
         </div>
       </form>
     </Form>

@@ -1,5 +1,6 @@
 import DatePickerField from "@/components/inputs/date-picker/DatePickerField"
 import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -38,7 +39,7 @@ export interface HadithEditFormProps
 }
 
 const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
-  ({ hadith, topics, onSave, onDelete, ...props }, ref) => {
+  ({ hadith, topics, onSave, onDelete, className, ...props }, ref) => {
     const [topicSearch, setTopicSearch] = useState<string>("")
     const findUniqueHadith = useFindUniqueHadith(
       {
@@ -132,70 +133,71 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
         <Form {...form}>
           <form
             ref={ref}
-            className={clsx("space-y-4")}
+            className={clsx("space-y-4", className)}
             onSubmit={form.handleSubmit(onSubmit)}
             {...props}
           >
-            <FormField
-              control={form.control}
-              name={"date"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <DatePickerField
-                      selected={field.value}
-                      onSelect={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"number"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"topicID"}
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Topic</FormLabel>
-                  <FormControl>
-                    <SearchableSelectInput
-                      items={findManyTopic.data ?? []}
-                      selectedItem={findManyTopic.data?.find(
-                        (item) => parseInt(item.value) === field.value,
-                      ) /*  ?? createTopic.data */}
-                      isLoading={
-                        findManyTopic.isFetching || createTopic.isPending
-                      }
-                      selectText="Select Topic"
-                      onItemSelect={(item) =>
-                        field.onChange(parseInt(item.value))
-                      }
-                      filterValue={topicSearch}
-                      onFilterChange={setTopicSearch}
-                      onClickCreateNew={(text) => {
-                        createTopic.mutate({
-                          data: { title: text },
-                          select: { id: true, title: true },
-                        })
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-wrap gap-4">
+              <FormField
+                control={form.control}
+                name={"date"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <DatePickerField
+                        selected={field.value}
+                        onSelect={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"number"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"topicID"}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <SearchableSelectInput
+                        items={findManyTopic.data ?? []}
+                        selectedItem={findManyTopic.data?.find(
+                          (item) => parseInt(item.value) === field.value,
+                        ) /*  ?? createTopic.data */}
+                        isLoading={
+                          findManyTopic.isFetching || createTopic.isPending
+                        }
+                        selectText="Select Topic"
+                        onItemSelect={(item) =>
+                          field.onChange(parseInt(item.value))
+                        }
+                        filterValue={topicSearch}
+                        onFilterChange={setTopicSearch}
+                        onClickCreateNew={(text) => {
+                          createTopic.mutate({
+                            data: { title: text },
+                            select: { id: true, title: true },
+                          })
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name={"text"}
@@ -206,6 +208,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                     <Textarea
                       dir="auto"
                       placeholder="Text..."
+                      rows={5}
                       {...field}
                       className="resize-none text-base"
                     />
@@ -214,51 +217,53 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 </FormItem>
               )}
             />
+            <div className="flex justify-end gap-2">
+              <ButtonLoading
+                type="button"
+                variant={"secondary"}
+                isLoading={
+                  upsertHadith.isPending &&
+                  form.getValues("status") === Status.draft
+                }
+                onClick={() => {
+                  form.setValue("status", Status.draft)
+                  form.handleSubmit(onSubmit)()
+                }}
+              >
+                Save Draft
+              </ButtonLoading>
+              <ButtonLoading
+                isLoading={
+                  upsertHadith.isPending &&
+                  form.getValues("status") === Status.published
+                }
+                onClick={() => {
+                  form.setValue("status", Status.published)
+                  form.handleSubmit(onSubmit)()
+                }}
+              >
+                {upsertHadith.data?.status === Status.published
+                  ? "Update"
+                  : "Publish"}
+              </ButtonLoading>
+              <div className="flex-1"></div>
+              {findUniqueHadith.data && (
+                <ButtonConfirm
+                  type="button"
+                  variant={"destructive"}
+                  isLoading={deleteHadith.isPending}
+                  onClick={() => {
+                    deleteHadith.mutate({
+                      where: { id: findUniqueHadith.data.id },
+                    })
+                  }}
+                >
+                  Delete Hadith
+                </ButtonConfirm>
+              )}
+            </div>
           </form>
         </Form>
-        <div className="flex justify-end space-x-2">
-          <ButtonLoading
-            type="button"
-            variant={"secondary"}
-            isLoading={
-              upsertHadith.isPending &&
-              form.getValues("status") === Status.draft
-            }
-            onClick={() => {
-              form.setValue("status", Status.draft)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            Save Draft
-          </ButtonLoading>
-          <ButtonLoading
-            isLoading={
-              upsertHadith.isPending &&
-              form.getValues("status") === Status.published
-            }
-            onClick={() => {
-              form.setValue("status", Status.published)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            {upsertHadith.data?.status === Status.published
-              ? "Update"
-              : "Publish"}
-          </ButtonLoading>
-          <div className="flex-1"></div>
-          {findUniqueHadith.data && (
-            <ButtonLoading
-              type="button"
-              variant={"destructive"}
-              isLoading={deleteHadith.isPending}
-              onClick={() => {
-                deleteHadith.mutate({ where: { id: findUniqueHadith.data.id } })
-              }}
-            >
-              Delete Hadith
-            </ButtonLoading>
-          )}
-        </div>
       </>
     )
   },

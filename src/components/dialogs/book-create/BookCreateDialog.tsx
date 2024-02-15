@@ -3,13 +3,13 @@
 import { BookEditForm } from "@/components/forms/book/BookEditForm"
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import { Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { forwardRef, useState } from "react"
@@ -23,25 +23,28 @@ const BookCreateDialog = forwardRef<HTMLDivElement, BookCreateDialogProps>(
     const router = useRouter()
     return (
       <div ref={ref} {...props}>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
             <Button size={"sm"} className="h-8" variant={"secondary"}>
               <Plus className="mr-2 h-4 w-4" />
-              Add New Book
+              Create New Book
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Book</DialogTitle>
-              <DialogDescription></DialogDescription>
-            </DialogHeader>
-            <BookEditForm
-              onSave={(id) => {
-                setOpen(false)
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-lg">
+              <DrawerHeader>
+                <DrawerTitle>Create New Book</DrawerTitle>
+                <DrawerDescription></DrawerDescription>
+              </DrawerHeader>
+              <BookEditForm
+                className="p-4 pt-0"
+                onSave={(id) => {
+                  setOpen(false)
+                }}
+              />
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
     )
   },

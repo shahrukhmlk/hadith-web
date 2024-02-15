@@ -2,6 +2,7 @@
 
 import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
 import { Button } from "@/components/ui/button"
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -186,7 +187,7 @@ const HadithBooksForm = forwardRef<HTMLFormElement, HadithBooksFormProps>(
                   </FormItem>
                 )}
               />
-              <ButtonLoading
+              <ButtonConfirm
                 isLoading={deleteHadithBook.isPending}
                 type="button"
                 size={"icon"}
@@ -210,7 +211,7 @@ const HadithBooksForm = forwardRef<HTMLFormElement, HadithBooksFormProps>(
                 }}
               >
                 <Minus />
-              </ButtonLoading>
+              </ButtonConfirm>
             </div>
           ))}
           <div className="flex justify-end space-x-2">

@@ -3,13 +3,13 @@
 import { TopicEditForm } from "@/components/forms/topic/TopicEditForm"
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import { Plus } from "lucide-react"
 import { forwardRef, useState } from "react"
 
@@ -21,25 +21,28 @@ const TopicCreateDialog = forwardRef<HTMLDivElement, TopicCreateDialogProps>(
     const [open, setOpen] = useState(false)
     return (
       <div ref={ref} {...props}>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
             <Button size={"sm"} className="h-8" variant={"secondary"}>
               <Plus className="mr-2 h-4 w-4" />
-              Add New Topic
+              Create New Topic
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Topic</DialogTitle>
-              <DialogDescription></DialogDescription>
-            </DialogHeader>
-            <TopicEditForm
-              onSave={(id) => {
-                setOpen(false)
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-lg">
+              <DrawerHeader>
+                <DrawerTitle>Create New Topic</DrawerTitle>
+                <DrawerDescription></DrawerDescription>
+              </DrawerHeader>
+              <TopicEditForm
+                className="p-4 pt-0"
+                onSave={(id) => {
+                  setOpen(false)
+                }}
+              />
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
     )
   },

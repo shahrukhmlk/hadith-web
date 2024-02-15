@@ -1,5 +1,6 @@
 "use client"
 
+import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Form,
@@ -31,7 +32,7 @@ export interface BookEditFormProps
 }
 
 export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
-  ({ book, onSave, onDelete, ...props }, ref) => {
+  ({ book, onSave, onDelete, className, ...props }, ref) => {
     const findUniqueBook = useFindUniqueBook(
       {
         where: {
@@ -90,71 +91,70 @@ export const BookEditForm = forwardRef<HTMLFormElement, BookEditFormProps>(
       )
     }
     return (
-      <>
-        <Form {...form}>
-          <form
-            className={clsx("space-y-4")}
-            onSubmit={form.handleSubmit(onSubmit)}
-            {...props}
-          >
-            <FormField
-              control={control}
-              name={"name"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-        <div className="flex space-x-2">
-          <ButtonLoading
-            type="button"
-            variant={"secondary"}
-            isLoading={
-              upsertBook.isPending && form.getValues("status") === Status.draft
-            }
-            onClick={() => {
-              form.setValue("status", Status.draft)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            Save Draft
-          </ButtonLoading>
-          <ButtonLoading
-            isLoading={
-              upsertBook.isPending &&
-              form.getValues("status") === Status.published
-            }
-            onClick={() => {
-              form.setValue("status", Status.published)
-              form.handleSubmit(onSubmit)()
-            }}
-          >
-            {findUniqueBook.data?.status === Status.published
-              ? "Update"
-              : "Publish"}
-          </ButtonLoading>
-          <div className="flex-1"></div>
-          {findUniqueBook.data && (
+      <Form {...form}>
+        <form
+          className={clsx("space-y-4", className)}
+          onSubmit={form.handleSubmit(onSubmit)}
+          {...props}
+        >
+          <FormField
+            control={control}
+            name={"name"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex space-x-2">
             <ButtonLoading
               type="button"
-              variant={"destructive"}
-              isLoading={deleteBook.isPending}
+              variant={"secondary"}
+              isLoading={
+                upsertBook.isPending &&
+                form.getValues("status") === Status.draft
+              }
               onClick={() => {
-                deleteBook.mutate({ where: { id: findUniqueBook.data.id } })
+                form.setValue("status", Status.draft)
+                form.handleSubmit(onSubmit)()
               }}
             >
-              Delete Book
+              Save Draft
             </ButtonLoading>
-          )}
-        </div>
-      </>
+            <ButtonLoading
+              isLoading={
+                upsertBook.isPending &&
+                form.getValues("status") === Status.published
+              }
+              onClick={() => {
+                form.setValue("status", Status.published)
+                form.handleSubmit(onSubmit)()
+              }}
+            >
+              {findUniqueBook.data?.status === Status.published
+                ? "Update"
+                : "Publish"}
+            </ButtonLoading>
+            <div className="flex-1"></div>
+            {findUniqueBook.data && (
+              <ButtonConfirm
+                type="button"
+                variant={"destructive"}
+                isLoading={deleteBook.isPending}
+                onClick={() => {
+                  deleteBook.mutate({ where: { id: findUniqueBook.data.id } })
+                }}
+              >
+                Delete Book
+              </ButtonConfirm>
+            )}
+          </div>
+        </form>
+      </Form>
     )
   },
 )
