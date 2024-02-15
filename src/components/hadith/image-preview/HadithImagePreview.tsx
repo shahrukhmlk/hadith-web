@@ -15,7 +15,7 @@ import {
   arabicNas,
   arabicNormal,
   cairo,
-  rumooz,
+  rumoozAr,
   urduKasheeda,
   urduNormal,
 } from "./fontsLoader"
@@ -51,17 +51,15 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
     },
     ref,
   ) => {
-    const hadithParsed = parse(
-      sanitizeHtml(text).replaceAll(
+    const replaceQuotes = (text: string) => {
+      return text.replaceAll(
         /("|«|&laquo;).+?("|»|&raquo;)/g,
-        `<hadith-nas>$&</hadith-nas>`,
-      ),
-    )
+        `<span class="${styles["hadith-nas"]}">$&</span>`,
+      )
+    }
+    const hadithParsed = parse(replaceQuotes(sanitizeHtml(text)))
     const translationParsed = parse(
-      sanitizeHtml(translationText).replaceAll(
-        /("|«|&laquo;).+?("|»|&raquo;)/g,
-        `<hadith-nas>$&</hadith-nas>`,
-      ),
+      replaceQuotes(sanitizeHtml(translationText)),
     )
 
     return (
@@ -69,7 +67,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
         <div
           ref={ref}
           className={clsx(
-            rumooz.variable,
+            rumoozAr.variable,
             arabicNas.variable,
             arabicNormal.variable,
             urduNormal.variable,

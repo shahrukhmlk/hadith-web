@@ -9,7 +9,7 @@ const arabicNormal = localFont({
   src: "./fonts/razawi.ttf",
   variable: "--font-arabic-normal",
 })
-const rumooz = localFont({
+const rumoozAr = localFont({
   src: "./fonts/symbols.otf",
   variable: "--font-rumooz",
 })
@@ -33,7 +33,7 @@ const cairo = Cairo({
 export {
   arabicNas,
   arabicNormal,
-  rumooz,
+  rumoozAr,
   urduKasheeda,
   urduNormal,
   aadil,

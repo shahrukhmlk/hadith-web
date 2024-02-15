@@ -1,5 +1,5 @@
 .hadithTranslation {
-  hadith-nas {
+  .hadith-nas {
     font-size: 1.2em;
     color: var(--color-hadith);
   }
@@ -7,7 +7,7 @@
     direction: ltr;
     line-height: 1;
     font-family: var(--font-cairo);
-    hadith-nas {
+    .hadith-nas {
       @apply font-semibold;
     }
   }
@@ -17,13 +17,13 @@
   }
   &:lang(ar) {
     font-family: var(--font-arabic-normal);
-    hadith-nas {
+    .hadith-nas {
       font-family: var(--font-arabic-nas);
     }
   }
   &:lang(ur) {
     font-family: var(--font-urdu-normal);
-    hadith-nas {
+    .hadith-nas {
       font-family: var(--font-urdu-kasheeda);
     }
   }
@@ -31,7 +31,7 @@
 
 .hadithArabic {
   font-family: var(--font-arabic-normal);
-  hadith-nas {
+  .hadith-nas {
     font-family: var(--font-arabic-nas);
     font-size: 1.2em;
     color: var(--color-hadith);
