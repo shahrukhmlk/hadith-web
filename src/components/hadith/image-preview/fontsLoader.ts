@@ -11,7 +11,7 @@ const arabicNormal = localFont({
 })
 const rumoozAr = localFont({
   src: "./fonts/symbols.otf",
-  variable: "--font-rumooz",
+  variable: "--font-arabic-ramz",
 })
 const urduNormal = localFont({
   src: "./fonts/urdu-normal.ttf",

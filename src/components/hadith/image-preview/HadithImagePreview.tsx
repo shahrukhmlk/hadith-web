@@ -21,6 +21,7 @@ import {
 } from "./fontsLoader"
 import styles from "./hadithImage.module.scss"
 import "./html2canvasfix.css"
+import { addRamzToText, arabicRumooz, rumoozConfigs } from "@/lib/rumooz"
 
 export interface HadithImagePreviewProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -57,9 +58,18 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
         `<span class="${styles["hadith-nas"]}">$&</span>`,
       )
     }
-    const hadithParsed = parse(replaceQuotes(sanitizeHtml(text)))
-    const translationParsed = parse(
-      replaceQuotes(sanitizeHtml(translationText)),
+    const formattedText = addRamzToText(replaceQuotes(text), arabicRumooz, {
+      start: `<span lang="ar" class="${styles["ramz"]}">`,
+      end: `</span>`,
+    })
+
+    const formattedTranslation = addRamzToText(
+      replaceQuotes(translationText),
+      rumoozConfigs[languageCode],
+      {
+        start: `<span lang="${languageCode}" class="${styles["ramz"]}">`,
+        end: `</span>`,
+      },
     )
 
     return (
@@ -109,7 +119,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
               "flex flex-1 flex-col items-center justify-around overflow-clip whitespace-pre-line p-[5%] text-justify align-baseline text-[1em]",
             )}
             style={{
-              background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}40 100%), url("${Net.src}")`,
+              background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}30 100%), url("${Net.src}")`,
               textAlignLast: "center",
             }}
           >
@@ -121,7 +131,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
                 fontSize: fontScale + 100 + "%",
               }}
             >
-              {hadithParsed}
+              {parse(formattedText)}
             </div>
             <div
               lang={languageCode}
@@ -130,7 +140,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
                 fontSize: translationFontScale + 100 + "%",
               }}
             >
-              {translationParsed}
+              {parse(formattedTranslation)}
             </div>
             <div
               dir="rtl"

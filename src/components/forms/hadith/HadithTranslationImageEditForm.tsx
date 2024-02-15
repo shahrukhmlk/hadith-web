@@ -19,6 +19,7 @@ import {
 import {
   useDeleteHadithTranslationImage,
   useFindUniqueHadithTranslationImage,
+  useUpdateManyHadithTranslationImage,
   useUpsertHadithTranslationImage,
 } from "@/lib/hooks/query"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -83,6 +84,8 @@ export const HadithTranslationImageEditForm = forwardRef<
     },
   })
   const upsertHadithTranslationImage = useUpsertHadithTranslationImage()
+  const updateManyHadithTranslationImage = useUpdateManyHadithTranslationImage()
+
   const deleteHadithTranslationImage = useDeleteHadithTranslationImage({
     onSuccess(data, variables, context) {
       onDelete && onDelete()
@@ -132,6 +135,14 @@ export const HadithTranslationImageEditForm = forwardRef<
       },
       {
         onSuccess(data, variables, context) {
+          updateManyHadithTranslationImage.mutate({
+            where: {
+              hadithID: hadithID,
+            },
+            data: {
+              color: values.color,
+            },
+          })
           onSave && data && onSave(data.hadithID, data.languageCode)
         },
       },
