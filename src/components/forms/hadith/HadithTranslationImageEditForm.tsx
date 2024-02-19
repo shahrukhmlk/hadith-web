@@ -178,10 +178,9 @@ export const HadithTranslationImageEditForm = forwardRef<
     setTimeout(() => {
       if (imageDivRef.current && data) {
         html2canvas(imageDivRef.current)
-          .then((canvas) => {
-            canvas.toBlob((blob) => {
-              setImageBlob(blob)
-            })
+          .then(async (canvas) => {
+            const blob = await (await fetch(canvas.toDataURL())).blob()
+            setImageBlob(blob)
           })
           .catch((error) => {
             console.error(error)
