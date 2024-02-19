@@ -39,14 +39,7 @@ next-env.d.ts
 certificates
 
 # Data directory
-/data/*
-!/data/database
-/data/database/*
-!/data/database/.gitkeep
-!/data/uploads
-/data/uploads/*
-!/data/uploads/.gitkeep
-!/data/directus-snapshots
+/data
 
 # Secrets
 /directus_password
