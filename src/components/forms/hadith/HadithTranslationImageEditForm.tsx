@@ -28,6 +28,7 @@ import clsx from "clsx"
 import html2canvas from "html2canvas"
 import { FormHTMLAttributes, forwardRef, useRef, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
+import { toast } from "sonner"
 import HadithImagePreview from "../../hadith/image-preview/HadithImagePreview"
 
 export interface IHadithTranslationImageEditFormProps
@@ -83,6 +84,9 @@ export const HadithTranslationImageEditForm = forwardRef<
       },
     },
   })
+
+  const { data } = findUniqueHadithTranslationImage
+
   const upsertHadithTranslationImage = useUpsertHadithTranslationImage()
   const updateManyHadithTranslationImage = useUpdateManyHadithTranslationImage()
 
@@ -151,7 +155,7 @@ export const HadithTranslationImageEditForm = forwardRef<
 
   const imageDivRef = useRef<HTMLDivElement>(null)
   const panzoomRef = useRef<PanzoomObject>()
-  const [imageData, setImageData] = useState<string>()
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null)
   const [generatingImage, setGeneratingImage] = useState(false)
   if (imageDivRef.current) {
     if (!panzoomRef.current) {
@@ -171,27 +175,54 @@ export const HadithTranslationImageEditForm = forwardRef<
   const generateImage = () => {
     setGeneratingImage(true)
     panzoomRef.current?.reset({ animate: false, startScale: 5 })
-
-    setTimeout(() => {
-      if (imageDivRef.current) {
-        html2canvas(imageDivRef.current, {})
-          .then((canvas) => setImageData(canvas.toDataURL("png", 1)))
-          .catch((err) => {
-            console.log(err)
-          })
-          .finally(() => {
-            setGeneratingImage(false)
-            handleSubmit(onSubmit)()
-          })
+    setTimeout(async () => {
+      try {
+        if (imageDivRef.current && data) {
+          const canvas = await html2canvas(imageDivRef.current)
+          const blob = await new Promise<Blob | null>((resolve) =>
+            canvas.toBlob(resolve),
+          )
+          setImageBlob(blob)
+        }
+      } catch (error) {
+        toast.error(JSON.stringify(error))
+      } finally {
+        setGeneratingImage(false)
       }
     }, 1000)
   }
 
-  if (!findUniqueHadithTranslationImage.data) {
+  const shareImageWithText = async () => {
+    if (!imageBlob || !data) {
+      toast.error("Error with image or data")
+      return
+    }
+    const files = [
+      new File(
+        [imageBlob],
+        `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
+        {
+          type: imageBlob.type,
+        },
+      ),
+    ]
+    try {
+      if (navigator.canShare({ files })) {
+        await navigator.share({
+          files,
+          title: "Images",
+          text: `${data.hadithTranslation.text}`,
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  if (!data) {
     return null
   }
 
-  const { data } = findUniqueHadithTranslationImage
   return (
     <Form {...form}>
       <form
@@ -290,12 +321,10 @@ export const HadithTranslationImageEditForm = forwardRef<
           <Button
             type="button"
             variant={"secondary"}
-            asChild
-            disabled={!!imageData}
+            disabled={!imageBlob}
+            onClick={shareImageWithText}
           >
-            <a href={imageData} target="_blank">
-              Download
-            </a>
+            Share
           </Button>
         </div>
       </form>
