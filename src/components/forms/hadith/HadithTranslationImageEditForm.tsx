@@ -175,18 +175,19 @@ export const HadithTranslationImageEditForm = forwardRef<
   const generateImage = () => {
     setGeneratingImage(true)
     panzoomRef.current?.reset({ animate: false, startScale: 5 })
-    setTimeout(async () => {
-      try {
-        if (imageDivRef.current && data) {
-          const canvas = await html2canvas(imageDivRef.current)
-          canvas.toBlob((blob) => {
-            setImageBlob(blob)
+    setTimeout(() => {
+      if (imageDivRef.current && data) {
+        html2canvas(imageDivRef.current)
+          .then((canvas) => {
+            canvas.toBlob((blob) => {
+              setImageBlob(blob)
+            })
           })
-        }
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setGeneratingImage(false)
+          .catch((error) => {
+            console.error(error)
+            toast.error("An error occured while generating image.")
+          })
+          .finally(() => setGeneratingImage(false))
       }
     }, 1000)
   }
