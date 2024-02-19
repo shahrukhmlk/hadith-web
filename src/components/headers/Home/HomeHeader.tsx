@@ -3,6 +3,7 @@ import MainMenu from "@/components/menus/main/MainMenu"
 import ProfileMenu from "@/components/menus/profile/ProfileMenu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
+import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { ILanguage } from "@/data/models/language/language"
 import Link from "next/link"
 
@@ -13,7 +14,7 @@ export interface IHomeHeader {
 const HomeHeader = ({ languages }: IHomeHeader) => {
   return (
     <header className="fixed z-10 h-16 w-full backdrop-blur">
-      <div className="flex h-full flex-row flex-wrap justify-center gap-y-1 p-2">
+      <div className="flex h-full flex-row flex-wrap justify-center gap-x-4 gap-y-1 p-2">
         <Link href={"/"} className="flex items-center justify-center gap-2">
           <Avatar>
             <AvatarImage src="/" />
@@ -26,7 +27,8 @@ const HomeHeader = ({ languages }: IHomeHeader) => {
         <div className="flex flex-1 md:ms-4">
           <MainMenu />
         </div>
-        <div className="flex items-center justify-center gap-1 ">
+        <div className="flex items-center justify-center gap-4 ">
+          <ThemeSwitchUtility />
           <LanguageMenu languages={languages} />
           <ProfileMenu />
         </div>
