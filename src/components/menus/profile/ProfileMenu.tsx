@@ -37,7 +37,7 @@ const ProfileMenu = async ({ className }: IProfileMenu) => {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel className="font-normal">
           {session?.user ? (
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-2">
               <p className="text-sm font-medium leading-none">
                 {session.user.name}
               </p>

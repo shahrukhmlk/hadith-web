@@ -46,7 +46,7 @@ export default async function RootLayout({
   const languages = await getLanguages()
   return (
     <>
-      <HomeHeader languages={languages} />
+      <HomeHeader />
       <div className="flex w-full flex-1 flex-col justify-center pt-16 md:flex-row">
         <div className="md:order-3 md:flex-1">{children}</div>
         <MainSidebar className="md:order-1">
@@ -57,7 +57,6 @@ export default async function RootLayout({
           className="hidden md:order-2 md:block"
         />
       </div>
-      <ThemeSwitchUtility className="fixed bottom-4 right-4" />
     </>
   )
 }
