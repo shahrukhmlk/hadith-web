@@ -155,7 +155,7 @@ export const HadithTranslationImageEditForm = forwardRef<
 
   const imageDivRef = useRef<HTMLDivElement>(null)
   const panzoomRef = useRef<PanzoomObject>()
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null)
+  const [imageDataURL, setImageDataURL] = useState<string | null>(null)
   const [generatingImage, setGeneratingImage] = useState(false)
   if (imageDivRef.current) {
     if (!panzoomRef.current) {
@@ -175,37 +175,37 @@ export const HadithTranslationImageEditForm = forwardRef<
   const generateImage = () => {
     setGeneratingImage(true)
     panzoomRef.current?.reset({ animate: false, startScale: 5 })
-    setTimeout(() => {
+    setTimeout(async () => {
       if (imageDivRef.current && data) {
-        html2canvas(imageDivRef.current)
-          .then(async (canvas) => {
-            const blob = await (await fetch(canvas.toDataURL())).blob()
-            setImageBlob(blob)
-          })
-          .catch((error) => {
-            console.error(error)
-            toast.error("An error occured while generating image.")
-          })
-          .finally(() => setGeneratingImage(false))
+        try {
+          const canvas = await html2canvas(imageDivRef.current)
+          setImageDataURL(canvas.toDataURL())
+        } catch (error) {
+          console.error(error)
+          toast.error("An error occured while generating image.")
+        } finally {
+          setGeneratingImage(false)
+        }
       }
     }, 1000)
   }
 
   const shareImageWithText = async () => {
-    if (!imageBlob || !data) {
+    if (!imageDataURL || !data) {
       toast.error("Error with image or data")
       return
     }
-    const files = [
-      new File(
-        [imageBlob],
-        `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
-        {
-          type: imageBlob.type,
-        },
-      ),
-    ]
     try {
+      const imageBlob = await (await fetch(imageDataURL)).blob()
+      const files = [
+        new File(
+          [imageBlob],
+          `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
+          {
+            type: imageBlob.type,
+          },
+        ),
+      ]
       if (navigator.canShare({ files })) {
         await navigator.share({
           files,
@@ -320,7 +320,7 @@ export const HadithTranslationImageEditForm = forwardRef<
           <Button
             type="button"
             variant={"secondary"}
-            disabled={!imageBlob}
+            disabled={!imageDataURL}
             onClick={shareImageWithText}
           >
             Share
