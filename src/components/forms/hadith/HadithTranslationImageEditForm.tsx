@@ -179,13 +179,12 @@ export const HadithTranslationImageEditForm = forwardRef<
       try {
         if (imageDivRef.current && data) {
           const canvas = await html2canvas(imageDivRef.current)
-          const blob = await new Promise<Blob | null>((resolve) =>
-            canvas.toBlob(resolve),
-          )
-          setImageBlob(blob)
+          canvas.toBlob((blob) => {
+            setImageBlob(blob)
+          })
         }
       } catch (error) {
-        toast.error(JSON.stringify(error))
+        console.error(error)
       } finally {
         setGeneratingImage(false)
       }
@@ -215,7 +214,7 @@ export const HadithTranslationImageEditForm = forwardRef<
         })
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
