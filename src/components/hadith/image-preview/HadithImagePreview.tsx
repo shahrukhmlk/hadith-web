@@ -1,8 +1,9 @@
-import Series from "@/assets/svg/calligraphy-series.svg"
-import DomeInverted from "@/assets/svg/dome-inverted.svg"
-import Dome from "@/assets/svg/dome.svg"
-import Footer from "@/assets/svg/footer-social.svg"
-import Logo from "@/assets/svg/logo.svg"
+// @ts-ignore
+import Series from "@/assets/svg/calligraphy-series.svg?url"
+// @ts-ignore
+import Footer from "@/assets/svg/footer-social.svg?url"
+// @ts-ignore
+import Logo from "@/assets/svg/logo.svg?url"
 // @ts-ignore
 import Net from "@/assets/svg/net.svg?url"
 import { Card } from "@/components/ui/card"
@@ -100,13 +101,15 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             >
               {topic}
             </p>
-            <Series className={"h-full w-auto"} fill={"#ffffff"} />
+            <img className={"h-full w-auto"} src={Series.src} alt="" />
           </div>
-          <div className="absolute right-[5%] top-[5%] mt-[-1px] aspect-[44.09/30.78] h-auto w-[10%]">
-            <DomeInverted
-              className="absolute inset-0 h-full w-full object-contain text-transparent"
-              fill={color}
-            />
+          <div
+            className={clsx(
+              "absolute right-[5%] top-[5%] mt-[-1px] aspect-[44.09/30.78] h-auto w-[10%]",
+              styles["dome-inverted"],
+            )}
+            style={{ backgroundColor: color }}
+          >
             <p
               className="relative z-10 text-center text-white"
               style={{ fontFamily: "var(--font-arabic-nas)" }}
@@ -150,22 +153,24 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
               {bookText}
             </div>
           </div>
-          <div className="absolute bottom-[5%] left-[5%] mb-[-5px] flex h-auto w-[10%] justify-center">
-            <Dome
-              className="absolute inset-0 h-full w-full object-contain text-transparent"
-              fill={color}
-            />
-            <div className="relative bottom-[-8px] h-auto w-[21px]">
-              <Logo className={""} fill={"#ffffff"} />
-            </div>
-          </div>
+          <div
+            className={clsx(
+              "absolute bottom-[5%] left-[5%] aspect-[44.09/30.78] h-auto w-[10%]",
+              styles.dome,
+            )}
+            style={{ backgroundColor: color }}
+          ></div>
+          <img
+            src={Logo.src}
+            className={"absolute bottom-[1%] left-[6.5%] h-auto w-[21px]"}
+          />
           <div
             className={clsx(
               "flex h-[5%] items-center justify-center py-[1%] text-white",
             )}
             style={{ backgroundColor: color }}
           >
-            <Footer className={"h-full w-auto"} fill={"#ffffff"} />
+            <img src={Footer.src} alt="" className={"h-full w-auto"} />
           </div>
         </div>
       </Card>
