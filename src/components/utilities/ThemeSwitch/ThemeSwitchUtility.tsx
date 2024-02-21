@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import clsx from "clsx"
@@ -13,7 +14,7 @@ export interface IThemeSwitchUtility {
 
 const ThemeSwitchUtility = ({ className: className }: IThemeSwitchUtility) => {
   const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { theme, resolvedTheme, setTheme } = useTheme()
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
@@ -24,20 +25,18 @@ const ThemeSwitchUtility = ({ className: className }: IThemeSwitchUtility) => {
     return null
   }
 
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "light" ? "dark" : "light")
+  }
+
   return (
-    <Card className={clsx(className, "bg-transparent backdrop-blur")}>
-      <ToggleGroup type="single" value={theme} onValueChange={setTheme}>
-        <ToggleGroupItem value="light">
-          <Sun />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="dark">
-          <Moon />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="system">
-          <SunMoon />
-        </ToggleGroupItem>
-      </ToggleGroup>
-    </Card>
+    <Button size={"icon"} variant={"ghost"} onClick={toggleTheme}>
+      {resolvedTheme === "light" ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
+    </Button>
   )
 }
 
