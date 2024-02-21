@@ -40,6 +40,7 @@ const HadithUI = forwardRef<HTMLDivElement, HadithUIProps>(
           </div>
           {hadith.translations.map((translation) => (
             <div
+              key={translation.languageCode}
               lang={translation.languageCode}
               className={clsx(styles["hadith-translation"])}
             >
