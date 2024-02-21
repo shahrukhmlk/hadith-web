@@ -31,9 +31,5 @@ export default async function Home({ params }: { params: { id: string } }) {
     notFound()
   }
   const languages = await getLanguages()
-  return (
-    <main className="space-y-4 p-4">
-      <BookEditPage book={book} languages={languages} />
-    </main>
-  )
+  return <BookEditPage book={book} languages={languages} />
 }

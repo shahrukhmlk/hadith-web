@@ -1,6 +1,4 @@
 import { isAdmin } from "@/data/auth/roles"
-import { inter } from "@/lib/fonts"
-import RootProvider from "@/providers/RootProvider"
 import type { Metadata } from "next"
 import "@/app/globals.css"
 import AdminHeader from "@/components/headers/admin/AdminHeader"
@@ -35,7 +33,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
@@ -45,18 +43,8 @@ export default async function RootLayout({
     redirect("/api/auth/signin")
   }
   return (
-    <>
-      <AdminHeader />
-      <div className="flex w-full flex-1 flex-wrap pt-16">
-        <AdminSidebar className="hidden sm:block" />
-        <Separator
-          className="hidden h-auto sm:block"
-          orientation={"vertical"}
-        />
-        <div className="mx-auto min-w-[50%] max-w-5xl flex-grow-[999] basis-0">
-          {children}
-        </div>
-      </div>
-    </>
+    <main className="container mx-auto flex max-w-screen-lg flex-col space-y-4 p-4">
+      {children}
+    </main>
   )
 }

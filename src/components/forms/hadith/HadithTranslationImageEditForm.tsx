@@ -243,7 +243,7 @@ export const HadithTranslationImageEditForm = forwardRef<
           bookText={data.hadithTranslation.hadith.books
             .map(
               (book) =>
-                `${book.book.name}: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+                `${book.book.name}, حديث: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
             )
             .join("\n و")}
         />

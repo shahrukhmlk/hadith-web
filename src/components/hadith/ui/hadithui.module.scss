@@ -1,18 +1,5 @@
-.hadith {
-  hadith-nas {
-    @apply text-3xl font-semibold;
-  }
-  &:lang(en) {
-    direction: ltr;
-  }
-  &:lang(ar),
+.hadith-translation {
   &:lang(ur) {
-    direction: rtl;
-  }
-  &:lang(ar) {
-    @apply font-arabic;
-  }
-  &:lang(ur) {
-    @apply font-urdu;
+    @apply font-urduKasheeda;
   }
 }

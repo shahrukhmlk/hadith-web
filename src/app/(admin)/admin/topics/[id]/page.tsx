@@ -30,9 +30,5 @@ export default async function Home({ params }: { params: { id: string } }) {
     notFound()
   }
   const languages = await getLanguages()
-  return (
-    <main className="space-y-4 p-4">
-      <TopicEditPage topic={topic} languages={languages} />
-    </main>
-  )
+  return <TopicEditPage topic={topic} languages={languages} />
 }

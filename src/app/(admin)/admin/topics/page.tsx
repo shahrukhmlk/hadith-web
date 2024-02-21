@@ -11,9 +11,9 @@ export default async function Home() {
     },
   })
   return (
-    <main className="flex flex-col items-start p-8">
+    <>
       <TopicCreateDialog />
       <TopicList topics={topics} />
-    </main>
+    </>
   )
 }
