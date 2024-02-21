@@ -1,8 +1,14 @@
 import RootProvider from "@/providers/RootProvider"
 import "@/app/globals.css"
 import MainHeader from "@/components/headers/main/MainHeader"
-import { inter } from "@/lib/fonts"
+import {
+  arabicNas,
+  arabicNormal,
+  inter,
+  urduKasheeda,
+} from "@/lib/fonts/fontsLoader"
 import { Analytics } from "@vercel/analytics/react"
+import clsx from "clsx"
 import { Metadata } from "next"
 
 const title = "سلسة الأحاديث النبوية"
@@ -38,7 +44,16 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={clsx(
+        inter.variable,
+        arabicNas.variable,
+        arabicNormal.variable,
+        urduKasheeda.variable,
+      )}
+    >
       <body className={"flex min-h-screen w-full flex-col"}>
         <RootProvider>
           <MainHeader className="sticky top-0 z-50" />

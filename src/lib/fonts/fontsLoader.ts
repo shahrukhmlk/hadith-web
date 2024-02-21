@@ -1,5 +1,7 @@
-import { Cairo } from "next/font/google"
+import { Cairo, Inter } from "next/font/google"
 import localFont from "next/font/local"
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 const arabicNas = localFont({
   src: "./fonts/arabic-quran.ttf",
@@ -38,4 +40,5 @@ export {
   urduNormal,
   aadil,
   cairo,
+  inter,
 }

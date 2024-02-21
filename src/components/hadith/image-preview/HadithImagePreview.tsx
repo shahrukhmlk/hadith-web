@@ -19,7 +19,7 @@ import {
   rumoozAr,
   urduKasheeda,
   urduNormal,
-} from "./fontsLoader"
+} from "../../../lib/fonts/fontsLoader"
 import styles from "./hadithImage.module.scss"
 import "./html2canvasfix.css"
 import { addRamzToText, arabicRumooz, rumoozConfigs } from "@/lib/rumooz"
@@ -79,10 +79,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
           ref={ref}
           className={clsx(
             rumoozAr.variable,
-            arabicNas.variable,
-            arabicNormal.variable,
             urduNormal.variable,
-            urduKasheeda.variable,
             aadil.variable,
             cairo.variable,
             "relative flex h-[300px] w-[300px] flex-col items-stretch bg-white text-[10px] text-black",

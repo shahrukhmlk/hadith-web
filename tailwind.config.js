@@ -42,8 +42,9 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", defaultTheme.fontFamily],
-        urdu: ["var(--font-urdu)", defaultTheme.fontFamily],
-        arabic: ["var(--font-arabic)", defaultTheme.fontFamily],
+        urduKasheeda: ["var(--font-urdu-kasheeda)", defaultTheme.fontFamily],
+        arabicNormal: ["var(--font-arabic-normal)", defaultTheme.fontFamily],
+        arabicNas: ["var(--font-arabic-nas)", defaultTheme.fontFamily],
       },
       borderRadius: {
         lg: "var(--radius)",
