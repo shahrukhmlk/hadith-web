@@ -51,15 +51,11 @@ export default async function Home({ params }: { params: { id: string } }) {
   const languages = await getLanguages()
   const books = await getBooks()
   return (
-    <main className="space-y-4 p-4">
-      {
-        <HadithEditPage
-          hadith={hadith}
-          topics={topics}
-          books={books}
-          languages={languages}
-        />
-      }
-    </main>
+    <HadithEditPage
+      hadith={hadith}
+      topics={topics}
+      books={books}
+      languages={languages}
+    />
   )
 }

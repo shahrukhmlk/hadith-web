@@ -21,5 +21,5 @@ export default async function Home({ params }: { params: { id: string } }) {
   if (!user) {
     notFound()
   }
-  return <main className="space-y-4 p-4">{<UserEditPage user={user} />}</main>
+  return <UserEditPage user={user} />
 }

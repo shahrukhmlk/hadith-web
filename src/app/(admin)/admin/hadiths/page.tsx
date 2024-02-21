@@ -34,9 +34,9 @@ export default async function Home({
     select: { id: true, title: true },
   })
   return (
-    <main className="flex flex-col items-start p-8">
+    <>
       <HadithCreateDialog topics={topics} />
       <HadithList hadiths={hadiths} />
-    </main>
+    </>
   )
 }

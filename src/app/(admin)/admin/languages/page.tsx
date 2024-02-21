@@ -4,9 +4,5 @@ import { columns } from "./columns"
 
 export default async function Home() {
   const languages = await getLanguages()
-  return (
-    <main className="flex flex-col items-start p-8">
-      <DataTable columns={columns} data={languages} />
-    </main>
-  )
+  return <DataTable columns={columns} data={languages} />
 }
