@@ -1,5 +1,6 @@
 import DatePickerField from "@/components/inputs/date-picker/DatePickerField"
 import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
+import { HadithEditor } from "@/components/rte/rte"
 import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
@@ -205,13 +206,14 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormLabel>Text</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <HadithEditor/>
+                    {/* <Textarea
                       dir="auto"
                       placeholder="Text..."
                       rows={5}
                       {...field}
                       className="resize-none text-base"
-                    />
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
