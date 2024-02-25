@@ -162,6 +162,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
           <img
             src={Logo.src}
             className={"absolute bottom-[1%] left-[6.5%] h-auto w-[21px]"}
+            alt=""
           />
           <div
             className={clsx(
