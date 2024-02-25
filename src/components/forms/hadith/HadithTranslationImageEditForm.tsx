@@ -203,7 +203,9 @@ export const HadithTranslationImageEditForm = forwardRef<
     try {
       const image = new ClipboardItem({ [imageBlob.type]: imageBlob })
       await navigator.clipboard.write([image])
+      toast.success("Copied image to clipboard.")
     } catch (error) {
+      toast.error("An error occured while copying image.")
       console.error(error)
     }
   }
