@@ -7,6 +7,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { MenuItem } from "@/constants/menu"
 import clsx from "clsx"
@@ -38,7 +39,7 @@ const MainMenu = ({ items }: MainMenuProps) => {
                 <li key={subItem.route}>
                   <Link href={subItem.route as Route} legacyBehavior passHref>
                     <NavigationMenuLink
-                      className="flex h-10 w-full items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                      className="flex h-9 w-full items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
                       active={subItem.route === pathName}
                     >
                       {subItem.title}
@@ -52,7 +53,7 @@ const MainMenu = ({ items }: MainMenuProps) => {
       ) : (
         <Link href={item.route as Route} legacyBehavior passHref>
           <NavigationMenuLink
-            className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+            className={navigationMenuTriggerStyle()}
             active={item.route === pathName}
           >
             {item.title}
