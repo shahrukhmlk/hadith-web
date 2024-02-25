@@ -203,22 +203,6 @@ export const HadithTranslationImageEditForm = forwardRef<
     try {
       const image = new ClipboardItem({ [imageBlob.type]: imageBlob })
       await navigator.clipboard.write([image])
-      /* const files = [
-        new File(
-          [imageBlob],
-          `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
-          {
-            type: imageBlob.type,
-          },
-        ),
-      ]
-      if (navigator.canShare({ files })) {
-        await navigator.share({
-          files,
-          title: "Images",
-          text: `${data.hadithTranslation.text}`,
-        })
-      } */
     } catch (error) {
       console.error(error)
     }
@@ -233,7 +217,7 @@ export const HadithTranslationImageEditForm = forwardRef<
       const files = [
         new File(
           [imageBlob],
-          `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
+          `${data.hadithTranslation.hadith.number}-${data.languageCode}.png`,
           {
             type: imageBlob.type,
           },
