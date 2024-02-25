@@ -156,6 +156,7 @@ export const HadithTranslationImageEditForm = forwardRef<
   const imageDivRef = useRef<HTMLDivElement>(null)
   const panzoomRef = useRef<PanzoomObject>()
   const [imageDataURL, setImageDataURL] = useState<string>()
+  const [imageBlob, setImageBlob] = useState<Blob>()
   const [generatingImage, setGeneratingImage] = useState(false)
   if (imageDivRef.current) {
     if (!panzoomRef.current) {
@@ -183,6 +184,7 @@ export const HadithTranslationImageEditForm = forwardRef<
             canvasHeight: 1024,
           })
           setImageDataURL(url)
+          setImageBlob(await (await fetch(url)).blob())
         } catch (error) {
           console.error(error)
           toast.error("An error occured while generating image.")
@@ -194,12 +196,11 @@ export const HadithTranslationImageEditForm = forwardRef<
   }
 
   const copyImageWithText = async () => {
-    if (!imageDataURL || !data) {
+    if (!imageDataURL || !imageBlob || !data) {
       toast.error("Error with image or data")
       return
     }
     try {
-      const imageBlob = await (await fetch(imageDataURL)).blob()
       const image = new ClipboardItem({ [imageBlob.type]: imageBlob })
       await navigator.clipboard.write([image])
       /* const files = [
@@ -218,6 +219,33 @@ export const HadithTranslationImageEditForm = forwardRef<
           text: `${data.hadithTranslation.text}`,
         })
       } */
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const shareImageWithText = async () => {
+    if (!imageDataURL || !imageBlob || !data) {
+      toast.error("Error with image or data")
+      return
+    }
+    try {
+      const files = [
+        new File(
+          [imageBlob],
+          `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
+          {
+            type: imageBlob.type,
+          },
+        ),
+      ]
+      if (navigator.canShare({ files })) {
+        await navigator.share({
+          files,
+          title: "Images",
+          text: `${data.hadithTranslation.text}`,
+        })
+      }
     } catch (error) {
       console.error(error)
     }
@@ -308,7 +336,7 @@ export const HadithTranslationImageEditForm = forwardRef<
           />
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap space-x-2">
           <ButtonLoading
             isLoading={upsertHadithTranslationImage.isPending}
             disabled={!formState.isDirty}
@@ -322,17 +350,28 @@ export const HadithTranslationImageEditForm = forwardRef<
           >
             Generate
           </ButtonLoading>
-          <Button
-            type="button"
-            variant={"secondary"}
-            disabled={!imageDataURL}
-            onClick={copyImageWithText}
-          >
-            Copy
-          </Button>
-          <Button type="button" variant={"link"} disabled={!imageDataURL}>
-            <a href={imageDataURL}>Download</a>
-          </Button>
+          {!!imageDataURL && (
+            <>
+              <Button
+                type="button"
+                variant={"secondary"}
+                disabled={!imageDataURL}
+                onClick={copyImageWithText}
+              >
+                Copy
+              </Button>
+              {!!navigator.share && (
+                <Button
+                  type="button"
+                  variant={"secondary"}
+                  disabled={!imageBlob}
+                  onClick={shareImageWithText}
+                >
+                  Share
+                </Button>
+              )}
+            </>
+          )}
         </div>
       </form>
     </Form>
