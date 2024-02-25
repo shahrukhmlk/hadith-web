@@ -54,7 +54,7 @@ export default async function RootLayout({
         urduKasheeda.variable,
       )}
     >
-      <body className={"flex min-h-screen w-full flex-col"}>
+      <body className={"flex min-h-screen w-full flex-col overflow-x-hidden"}>
         <RootProvider>
           <MainHeader className="sticky top-0 z-50" />
           {children}
