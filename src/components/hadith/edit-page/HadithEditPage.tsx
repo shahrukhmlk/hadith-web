@@ -4,6 +4,7 @@ import HadithBookForm from "@/components/forms/hadith/HadithBookForm"
 import HadithEditForm from "@/components/forms/hadith/HadithEditForm"
 import { HadithTranslationEditForm } from "@/components/forms/hadith/HadithTranslationEditForm"
 import { HadithTranslationImageEditForm } from "@/components/forms/hadith/HadithTranslationImageEditForm"
+import { Button } from "@/components/ui/button"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
   Card,
@@ -21,8 +22,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ROUTES } from "@/constants/routes"
 import { IBook } from "@/data/models/book/book"
@@ -39,6 +38,7 @@ import { Plus } from "lucide-react"
 import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef, useRef } from "react"
+import { toast } from "sonner"
 
 export interface HadithEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -68,6 +68,12 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           date: true,
           status: true,
           topicID: true,
+          topic: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
           text: true,
         },
       },
@@ -110,6 +116,36 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           ),
       )
     }
+
+    const copyHadithText = async () => {
+      if (!findUniqueHadith.data) {
+        toast.error("Error with data")
+        return
+      }
+      const { data } = findUniqueHadith
+      const hadithText =
+        data.topic.title +
+        "\n" +
+        data.text +
+        "\n" +
+        findManyHadithTranslation.data
+          ?.map((translation) => translation.text)
+          .join("\n") +
+        "\n" +
+        findManyHadithBook.data
+          ?.map(
+            (book) =>
+              `${books.find((_book) => _book.id === book.bookID)?.name}, حديث: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+          )
+          .join(",\nو")
+      try {
+        await navigator.clipboard.writeText(hadithText)
+        toast.success("Copied text to clipboard.")
+      } catch (error) {
+        toast.error("An error occured while copying text.")
+        console.error(error)
+      }
+    }
     if (!findUniqueHadith.data) {
       return null
     }
@@ -124,7 +160,11 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           <Card>
             <CardHeader>
               <CardTitle>Hadith Details</CardTitle>
-              <CardDescription>Arabic</CardDescription>
+              <CardDescription>
+                <Button variant={"secondary"} onClick={copyHadithText}>
+                  Copy
+                </Button>
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {findManyHadithBook.data?.map((book, index) => (
