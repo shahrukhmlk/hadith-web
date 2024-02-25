@@ -1,15 +1,15 @@
 "use client"
 
+import Series from "@/assets/svg/calligraphy-series.svg"
 import { Button } from "@/components/ui/button"
 import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { MenuItem } from "@/constants/menu"
 import clsx from "clsx"
 import { Menu } from "lucide-react"
@@ -27,13 +27,21 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
   const [open, onOpenChange] = useState(false)
   const pathname = usePathname()
   return (
-    <Drawer direction="left" open={open} onOpenChange={onOpenChange}>
-      <DrawerTrigger className="sm:hidden" asChild>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetTrigger className="sm:hidden" asChild>
         <Button variant={"ghost"} size={"icon"}>
           <Menu />
         </Button>
-      </DrawerTrigger>
-      <DrawerContent className="h-full w-56 space-y-1 overflow-y-auto p-4">
+      </SheetTrigger>
+      <SheetContent side={"left"}>
+        <SheetHeader>
+          <SheetTitle asChild>
+            <Link href={"/"}>
+              <Series className={"h-9 w-auto px-4 *:fill-foreground"} />
+            </Link>
+          </SheetTitle>
+          <SheetDescription></SheetDescription>
+        </SheetHeader>
         {items.map((item) => (
           <Fragment key={item.route}>
             <MobileLink href={item.route as Route} onOpenChange={onOpenChange}>
@@ -67,13 +75,8 @@ export const MobileMenu = ({ items }: MobileMenuProps) => {
             )}
           </Fragment>
         ))}
-        {/* <DrawerHeader>
-          <DrawerTitle>Admin Menu</DrawerTitle>
-          <DrawerDescription>This action cannot be undone.</DrawerDescription>
-        </DrawerHeader>
-        <DrawerFooter></DrawerFooter> */}
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   )
 }
 
