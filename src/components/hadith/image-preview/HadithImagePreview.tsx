@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 // @ts-ignore
 import Series from "@/assets/svg/calligraphy-series.svg?url"
 // @ts-ignore
@@ -5,6 +6,7 @@ import Footer from "@/assets/svg/footer-social.svg?url"
 // @ts-ignore
 import Logo from "@/assets/svg/logo.svg?url"
 // @ts-ignore
+
 import Net from "@/assets/svg/net.svg?url"
 import { Card } from "@/components/ui/card"
 import clsx from "clsx"
@@ -98,7 +100,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             >
               {topic}
             </p>
-            <img className={"h-full w-auto"} src={Series.src} alt="" />
+            <img className={"h-[9px] w-auto"} src={Series.src} alt="" />
           </div>
           <div
             className={clsx(
@@ -152,7 +154,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
           </div>
           <div
             className={clsx(
-              "absolute bottom-[5%] left-[5%] aspect-[44.09/30.78] h-auto w-[10%]",
+              "absolute bottom-[5%] left-[5%] -mb-[1px] aspect-[44.09/30.78] h-auto w-[10%]",
               styles.dome,
             )}
             style={{ backgroundColor: color }}

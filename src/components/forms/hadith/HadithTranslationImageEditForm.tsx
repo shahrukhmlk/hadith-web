@@ -25,7 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import Panzoom, { PanzoomObject } from "@panzoom/panzoom"
 import clsx from "clsx"
-import html2canvas from "html2canvas"
+import { toPng, toSvg } from "html-to-image"
 import { FormHTMLAttributes, forwardRef, useRef, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
@@ -155,7 +155,7 @@ export const HadithTranslationImageEditForm = forwardRef<
 
   const imageDivRef = useRef<HTMLDivElement>(null)
   const panzoomRef = useRef<PanzoomObject>()
-  const [imageDataURL, setImageDataURL] = useState<string | null>(null)
+  const [imageDataURL, setImageDataURL] = useState<string>()
   const [generatingImage, setGeneratingImage] = useState(false)
   if (imageDivRef.current) {
     if (!panzoomRef.current) {
@@ -174,12 +174,15 @@ export const HadithTranslationImageEditForm = forwardRef<
 
   const generateImage = () => {
     setGeneratingImage(true)
-    panzoomRef.current?.reset({ animate: false, startScale: 5 })
+    panzoomRef.current?.reset({ animate: false })
     setTimeout(async () => {
       if (imageDivRef.current && data) {
         try {
-          const canvas = await html2canvas(imageDivRef.current)
-          setImageDataURL(canvas.toDataURL())
+          const url = await toPng(imageDivRef.current, {
+            canvasWidth: 1024,
+            canvasHeight: 1024,
+          })
+          setImageDataURL(url)
         } catch (error) {
           console.error(error)
           toast.error("An error occured while generating image.")
@@ -190,14 +193,16 @@ export const HadithTranslationImageEditForm = forwardRef<
     }, 1000)
   }
 
-  const shareImageWithText = async () => {
+  const copyImageWithText = async () => {
     if (!imageDataURL || !data) {
       toast.error("Error with image or data")
       return
     }
     try {
       const imageBlob = await (await fetch(imageDataURL)).blob()
-      const files = [
+      const image = new ClipboardItem({ [imageBlob.type]: imageBlob })
+      await navigator.clipboard.write([image])
+      /* const files = [
         new File(
           [imageBlob],
           `${data.hadithTranslation.hadith.number}-${data.languageCode}`,
@@ -212,7 +217,7 @@ export const HadithTranslationImageEditForm = forwardRef<
           title: "Images",
           text: `${data.hadithTranslation.text}`,
         })
-      }
+      } */
     } catch (error) {
       console.error(error)
     }
@@ -321,9 +326,12 @@ export const HadithTranslationImageEditForm = forwardRef<
             type="button"
             variant={"secondary"}
             disabled={!imageDataURL}
-            onClick={shareImageWithText}
+            onClick={copyImageWithText}
           >
-            Share
+            Copy
+          </Button>
+          <Button type="button" variant={"link"} disabled={!imageDataURL}>
+            <a href={imageDataURL}>Download</a>
           </Button>
         </div>
       </form>
