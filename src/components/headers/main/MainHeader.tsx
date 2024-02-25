@@ -30,9 +30,9 @@ const MainHeader = forwardRef<HTMLDivElement, MainHeaderProps>(
         )}
         {...props}
       >
-        <div className="flex w-[100px] gap-4 sm:w-[200px]">
+        <div className="flex w-[36px] gap-4 sm:w-[200px]">
           <MobileMenu items={menuItems} />
-          <Link href={"/"}>
+          <Link href={"/"} className="hidden sm:inline-block">
             <Logo className={"h-full w-auto *:fill-foreground"} />
           </Link>
           <MainMenu items={menuItems} />
@@ -44,7 +44,7 @@ const MainHeader = forwardRef<HTMLDivElement, MainHeaderProps>(
         >
           <Series className={"h-full w-auto *:fill-foreground"} />
         </Link>
-        <div className="flex w-[100px] items-center justify-end gap-4 sm:w-[200px]">
+        <div className="flex w-[64px] items-center justify-end gap-4 sm:w-[200px]">
           <ThemeSwitchUtility />
           <ProfileMenu />
         </div>
