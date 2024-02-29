@@ -1,12 +1,9 @@
 import { Toggle } from "@/components/ui/toggle"
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
-import { FORMAT_TEXT_COMMAND, TextFormatType } from "lexical"
 
 export const ActionsPlugin = () => {
-  const [editor] = useLexicalComposerContext()
 
-  const handleOnClick = (formatType: TextFormatType) => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, formatType)
+  const handleOnClick = (formatType: any) => {
+    //editor.dispatchCommand(FORMAT_TEXT_COMMAND, formatType)
   }
 
   return (
@@ -25,7 +22,7 @@ export const ActionsPlugin = () => {
           <Toggle
             key={index}
             onPressedChange={() => {}}
-            onClick={() => handleOnClick(value.toLowerCase() as TextFormatType)}
+            onClick={() => handleOnClick(value.toLowerCase())}
           >
             {value}
           </Toggle>
