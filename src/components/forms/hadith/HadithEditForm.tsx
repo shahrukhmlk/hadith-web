@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
 import { ITopic } from "@/data/models/topic/topic"
@@ -214,14 +215,14 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormLabel>Text</FormLabel>
                   <FormControl>
-                    <HadithEditor />
-                    {/* <Textarea
+                    {/* <HadithEditor /> */}
+                    <Textarea
                       dir="auto"
                       placeholder="Text..."
                       rows={5}
                       {...field}
                       className="resize-none text-base"
-                    /> */}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
