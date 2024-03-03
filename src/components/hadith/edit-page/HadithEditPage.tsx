@@ -27,7 +27,6 @@ import { ROUTES } from "@/constants/routes"
 import { IBook } from "@/data/models/book/book"
 import { IHadithDetails } from "@/data/models/hadith/hadith-details"
 import { ILanguage } from "@/data/models/language/language"
-import { ITopic } from "@/data/models/topic/topic"
 import {
   useCreateHadithTranslation,
   useFindManyHadithBook,
@@ -43,13 +42,12 @@ import { toast } from "sonner"
 export interface HadithEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
   hadith: IHadithDetails
-  topics: ITopic[]
   books: IBook[]
   languages: ILanguage[]
 }
 
 const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
-  ({ hadith, topics, books, languages, ...props }, ref) => {
+  ({ hadith, books, languages, ...props }, ref) => {
     const hadithEditFormRef = useRef<HTMLFormElement | null>(null)
     const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
     const imagesRef = useRef<Map<string, HTMLFormElement>>(new Map())
@@ -189,7 +187,6 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
               <HadithEditForm
                 ref={hadithEditFormRef}
                 hadith={findUniqueHadith.data}
-                topics={topics}
                 onSave={(id) => {}}
                 onDelete={() => {
                   router.replace(ROUTES.ADMIN.HADITHS as Route)

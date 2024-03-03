@@ -12,8 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
-import { Textarea } from "@/components/ui/textarea"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
 import { ITopic } from "@/data/models/topic/topic"
@@ -34,13 +32,12 @@ import { useForm } from "react-hook-form"
 export interface HadithEditFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
   hadith?: IHadith
-  topics: ITopic[]
   onSave?: (id: number) => void
   onDelete?: () => void
 }
 
 const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
-  ({ hadith, topics, onSave, onDelete, className, ...props }, ref) => {
+  ({ hadith, onSave, onDelete, className, ...props }, ref) => {
     const [topicSearch, setTopicSearch] = useState<string>("")
     const findUniqueHadith = useFindUniqueHadith(
       {
@@ -62,15 +59,26 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
     const findManyTopic = useFindManyTopic(
       {
         where: {
-          title: {
-            contains: topicSearch?.length ? topicSearch : undefined,
-          },
+          OR: [
+            {
+              title: {
+                contains: topicSearch?.length ? topicSearch : undefined,
+              },
+            },
+            {
+              id: {
+                equals: topicSearch?.length
+                  ? undefined
+                  : findUniqueHadith.data?.topicID,
+              },
+            },
+          ],
         },
         select: { id: true, title: true },
+        take: 4,
       },
       {
-        initialData: topicSearch?.length ? undefined : topics,
-        placeholderData: keepPreviousData,
+        placeholderData: (previousData, previousQuery) => previousData,
         select(data) {
           return data.map((topic) => {
             return {
@@ -206,7 +214,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormLabel>Text</FormLabel>
                   <FormControl>
-                    <HadithEditor/>
+                    <HadithEditor />
                     {/* <Textarea
                       dir="auto"
                       placeholder="Text..."
