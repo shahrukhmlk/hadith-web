@@ -55,19 +55,46 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
     },
     ref,
   ) => {
-    const replaceQuotes = (text: string) => {
-      return text.replaceAll(
-        /("|«|&laquo;).+?("|»|&raquo;)/g,
-        `<span class="${styles["hadith-nas"]}">$&</span>`,
-      )
+    const replaceQuotes = (text: string, languageCode: string) => {
+      if (languageCode === "ur") {
+        return text
+          .replaceAll(
+            /(«|&laquo;).+?(»|&raquo;)/gs,
+            `<span class="${styles["hadith-nas"]}">$&</span>`,
+          )
+          .replaceAll(
+            /(').+?(')/gs,
+            `<span class="${styles["arabic"]}">$&</span>`,
+          )
+      }
+      if (languageCode === "en") {
+        return text
+          .replaceAll(
+            /(").+?(")/gs,
+            `<span class="${styles["hadith-nas"]}">$&</span>`,
+          )
+          .replaceAll(
+            /('|«|&laquo;).+?('|»|&raquo;)/gs,
+            `<span class="${styles["arabic"]}">$&</span>`,
+          )
+      }
+      return ""
     }
-    const formattedText = addRamzToText(replaceQuotes(text), arabicRumooz, {
-      start: `<span lang="ar" class="${styles["ramz"]}">`,
-      end: `</span>`,
-    })
+
+    const formattedText = addRamzToText(
+      text.replaceAll(
+        /(«|&laquo;).+?(»|&raquo;)/gs,
+        `<span class="${styles["hadith-nas"]}">$&</span>`,
+      ),
+      arabicRumooz,
+      {
+        start: `<span lang="ar" class="${styles["ramz"]}">`,
+        end: `</span>`,
+      },
+    )
 
     const formattedTranslation = addRamzToText(
-      replaceQuotes(translationText),
+      replaceQuotes(translationText, languageCode),
       rumoozConfigs[languageCode],
       {
         start: `<span lang="${languageCode}" class="${styles["ramz"]}">`,
@@ -118,11 +145,11 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
           </div>
           <div
             className={clsx(
-              "flex flex-1 flex-col items-center justify-around overflow-clip whitespace-pre-line p-[5%] text-justify align-baseline text-[1em]",
+              "flex flex-1 flex-col items-center justify-around overflow-clip whitespace-pre-line p-[5%]",
+              "text-center align-baseline text-[1em] leading-normal",
             )}
             style={{
               background: `radial-gradient(circle, rgba(255,255,255,0) 0%, ${color}30 100%), url("${Net.src}")`,
-              textAlignLast: "center",
             }}
           >
             <div

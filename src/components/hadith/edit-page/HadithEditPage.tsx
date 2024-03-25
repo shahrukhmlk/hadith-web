@@ -249,7 +249,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                         ?.name
                     }
                   </h2>
-                  <div className="flex flex-wrap justify-stretch gap-4">
+                  <div className="flex flex-col gap-4 md:flex-row md:*:flex-1">
                     <HadithTranslationEditForm
                       ref={(el) => {
                         if (el) {
@@ -263,7 +263,6 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                           )
                         }
                       }}
-                      className="flex-1 basis-96"
                       hadithTranslation={translation}
                     />
                     <HadithTranslationImageEditForm
@@ -274,7 +273,6 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
                           imagesRef.current.delete(translation.languageCode)
                         }
                       }}
-                      className="flex-1 basis-1/2"
                       hadithID={translation.hadithID}
                       languageCode={translation.languageCode}
                     />
