@@ -1,5 +1,6 @@
 import DatePickerField from "@/components/inputs/date-picker/DatePickerField"
 import SearchableSelectInput from "@/components/inputs/searchable-select/SearchableSelectInput"
+import { HadithEditor } from "@/components/rte/rte"
 import { ButtonConfirm } from "@/components/ui/buttons/ButtonConfirm"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
 import {
@@ -11,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 import { HadithSchema, IHadith } from "@/data/models/hadith/hadith"
 import { Status } from "@/data/models/status/status"
@@ -33,13 +33,12 @@ import { useForm } from "react-hook-form"
 export interface HadithEditFormProps
   extends React.FormHTMLAttributes<HTMLFormElement> {
   hadith?: IHadith
-  topics: ITopic[]
   onSave?: (id: number) => void
   onDelete?: () => void
 }
 
 const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
-  ({ hadith, topics, onSave, onDelete, className, ...props }, ref) => {
+  ({ hadith, onSave, onDelete, className, ...props }, ref) => {
     const [topicSearch, setTopicSearch] = useState<string>("")
     const findUniqueHadith = useFindUniqueHadith(
       {
@@ -61,15 +60,26 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
     const findManyTopic = useFindManyTopic(
       {
         where: {
-          title: {
-            contains: topicSearch?.length ? topicSearch : undefined,
-          },
+          OR: [
+            {
+              title: {
+                contains: topicSearch?.length ? topicSearch : undefined,
+              },
+            },
+            {
+              id: {
+                equals: topicSearch?.length
+                  ? undefined
+                  : findUniqueHadith.data?.topicID,
+              },
+            },
+          ],
         },
         select: { id: true, title: true },
+        take: 4,
       },
       {
-        initialData: topicSearch?.length ? undefined : topics,
-        placeholderData: keepPreviousData,
+        placeholderData: (previousData, previousQuery) => previousData,
         select(data) {
           return data.map((topic) => {
             return {
@@ -157,7 +167,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 control={form.control}
                 name={"number"}
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="basis-20">
                     <FormControl>
                       <Input placeholder="Number" {...field} />
                     </FormControl>
@@ -205,6 +215,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 <FormItem>
                   <FormLabel>Text</FormLabel>
                   <FormControl>
+                    {/* <HadithEditor /> */}
                     <Textarea
                       dir="auto"
                       placeholder="Text..."
@@ -217,7 +228,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-2">
+            <div className="flex flex-wrap justify-end gap-2">
               <ButtonLoading
                 type="button"
                 variant={"secondary"}
@@ -242,7 +253,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                   form.handleSubmit(onSubmit)()
                 }}
               >
-                {upsertHadith.data?.status === Status.published
+                {findUniqueHadith.data?.status === Status.published
                   ? "Update"
                   : "Publish"}
               </ButtonLoading>
@@ -258,7 +269,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                     })
                   }}
                 >
-                  Delete Hadith
+                  Delete
                 </ButtonConfirm>
               )}
             </div>

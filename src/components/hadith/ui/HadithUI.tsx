@@ -6,66 +6,57 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { getFont } from "@/lib/fonts"
 import clsx from "clsx"
 import parse from "html-react-parser"
 import { forwardRef } from "react"
-import sanitizeHtml from "sanitize-html"
 import styles from "./hadithui.module.scss"
+import { UIHadith } from "./types"
 
 export interface HadithUIProps extends React.HTMLAttributes<HTMLDivElement> {
-  number: number
-  date: Date
-  topic: string
-  text: string
-  color: string
-  bookText: string
+  hadith: UIHadith
 }
 
 const HadithUI = forwardRef<HTMLDivElement, HadithUIProps>(
-  ({ number, date, topic, text, color, bookText, ...props }, ref) => {
-    const html = text.replaceAll(
-      /("|«|&laquo;).+?("|»|&raquo;)/g,
-      "<hadith-nas>$&</hadith-nas>",
-    )
-    const parsedHTML = parse(
-      sanitizeHtml(html, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-          "hadith-nas",
-          "ramz",
-        ]),
-      }),
-    )
+  ({ hadith, className, ...props }, ref) => {
     return (
-      <Card
-        ref={ref}
-        className={clsx(
-          styles.hadith,
-          getFont("ar")?.variable,
-          props.className,
-          "flex flex-col",
-        )}
-        lang={"ar"}
-      >
+      <Card ref={ref} className={clsx(className, "flex flex-col")} lang={"ar"}>
         <CardHeader>
-          <CardTitle className="text-center">{topic}</CardTitle>
+          <CardTitle className="text-center">{hadith.topic}</CardTitle>
           <CardDescription className="flex">
             <span>
-              {number.toLocaleString("ar-eg", { useGrouping: false })}
+              {hadith.number.toLocaleString("ar-eg", { useGrouping: false })}
             </span>
             <span className="flex-1"></span>
             <span>
               {new Intl.DateTimeFormat("ar-eg", {
                 dateStyle: "full",
-              }).format(date)}
+              }).format(hadith.date)}
             </span>
           </CardDescription>
         </CardHeader>
-        <CardContent className={clsx("flex-1 text-center text-xl")}>
-          {parsedHTML}
+        <CardContent className={clsx("flex-1 space-y-4 text-center")}>
+          <div dir="rtl" className={clsx("font-arabicNas")}>
+            {parse(hadith.text)}
+          </div>
+          {hadith.translations.map((translation) => (
+            <div
+              key={translation.languageCode}
+              lang={translation.languageCode}
+              className={clsx(styles["hadith-translation"])}
+            >
+              {parse(translation.text)}
+            </div>
+          ))}
         </CardContent>
         <CardFooter className="justify-end">
-          <p>{bookText}</p>
+          <p>
+            {hadith.books
+              .map(
+                (book) =>
+                  `${book.name}, حديث: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+              )
+              .join(", و")}
+          </p>
         </CardFooter>
       </Card>
     )

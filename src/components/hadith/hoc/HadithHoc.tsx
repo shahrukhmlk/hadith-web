@@ -68,7 +68,7 @@ const HadithHoc = async ({ className, date, languages }: IHadithHoc) => {
         .join(",\n")}
     />
   ) */
-  notFound()
+
   return null
 }
 

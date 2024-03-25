@@ -4,7 +4,24 @@ import HadithBookForm from "@/components/forms/hadith/HadithBookForm"
 import HadithEditForm from "@/components/forms/hadith/HadithEditForm"
 import { HadithTranslationEditForm } from "@/components/forms/hadith/HadithTranslationEditForm"
 import { HadithTranslationImageEditForm } from "@/components/forms/hadith/HadithTranslationImageEditForm"
+import { Button } from "@/components/ui/button"
 import { ButtonLoading } from "@/components/ui/buttons/ButtonLoading"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,12 +30,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ROUTES } from "@/constants/routes"
 import { IBook } from "@/data/models/book/book"
 import { IHadithDetails } from "@/data/models/hadith/hadith-details"
 import { ILanguage } from "@/data/models/language/language"
-import { ITopic } from "@/data/models/topic/topic"
 import {
   useCreateHadithTranslation,
   useFindManyHadithBook,
@@ -29,17 +45,17 @@ import { Plus } from "lucide-react"
 import { Route } from "next"
 import { useRouter } from "next/navigation"
 import { forwardRef, useRef } from "react"
+import { toast } from "sonner"
 
 export interface HadithEditPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
   hadith: IHadithDetails
-  topics: ITopic[]
   books: IBook[]
   languages: ILanguage[]
 }
 
 const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
-  ({ hadith, topics, books, languages, ...props }, ref) => {
+  ({ hadith, books, languages, ...props }, ref) => {
     const hadithEditFormRef = useRef<HTMLFormElement | null>(null)
     const translationsRef = useRef<Map<string, HTMLFormElement>>(new Map())
     const imagesRef = useRef<Map<string, HTMLFormElement>>(new Map())
@@ -58,6 +74,12 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           date: true,
           status: true,
           topicID: true,
+          topic: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
           text: true,
         },
       },
@@ -88,6 +110,7 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           languageCode: true,
           text: true,
         },
+        orderBy: { language: { sort: "asc" } },
       },
       { initialData: hadith.translations },
     )
@@ -100,52 +123,120 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
           ),
       )
     }
+
+    const copyHadithText = async () => {
+      if (!findUniqueHadith.data) {
+        toast.error("Error with data")
+        return
+      }
+      const { data } = findUniqueHadith
+      const hadithText =
+        data.topic.title +
+        "\n" +
+        data.text +
+        "\n" +
+        findManyHadithTranslation.data
+          ?.map((translation) => translation.text)
+          .join("\n") +
+        "\n" +
+        findManyHadithBook.data
+          ?.map(
+            (book) =>
+              `${books.find((_book) => _book.id === book.bookID)?.name}, حديث: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+          )
+          .join(",\nو")
+      try {
+        await navigator.clipboard.writeText(hadithText)
+        toast.success("Copied text to clipboard.")
+      } catch (error) {
+        toast.error("An error occured while copying text.")
+        console.error(error)
+      }
+    }
     if (!findUniqueHadith.data) {
       return null
     }
 
     return (
-      <div ref={ref} className="space-y-4" {...props}>
-        <HadithEditForm
-          ref={hadithEditFormRef}
-          hadith={findUniqueHadith.data}
-          topics={topics}
-          onSave={(id) => {}}
-          onDelete={() => {
-            router.replace(ROUTES.ADMIN.HADITHS as Route)
-          }}
-        />
-        <div className="flex items-center gap-2">Books</div>
-        {findManyHadithBook.data?.map((book, index) => (
-          <HadithBookForm
-            key={index}
-            hadithID={findUniqueHadith.data.id}
-            hadithBook={book}
-            books={books}
-            ref={(el) => {
-              if (el) {
-                booksRef.current.set(book.bookID, el)
-              } else {
-                booksRef.current.delete(book.bookID)
-              }
-            }}
-          />
-        ))}
-        <HadithBookForm hadithID={findUniqueHadith.data.id} books={books} />
-        <div className="flex items-center gap-2">
-          Translations
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <ButtonLoading
-                variant={"outline"}
-                size={"icon"}
-                disabled={notTranlsatedLanguages().length === 0}
-                isLoading={createHadithTranslation.isPending}
-                type="button"
-              >
-                <Plus className="h-4 w-4" />
-              </ButtonLoading>
-            </DropdownMenuTrigger>
+      <Tabs defaultValue="hadith">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="hadith">Hadith</TabsTrigger>
+          <TabsTrigger value="translations">Translations</TabsTrigger>
+        </TabsList>
+        <TabsContent value="hadith">
+          <Card>
+            <CardHeader className="flex-row items-center justify-between space-y-0">
+              <CardTitle>Hadith Details</CardTitle>
+              <Button variant={"secondary"} onClick={copyHadithText}>
+                Copy
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {findManyHadithBook.data?.map((book, index) => (
+                <HadithBookForm
+                  key={index}
+                  hadithID={findUniqueHadith.data.id}
+                  hadithBook={book}
+                  books={books}
+                  ref={(el) => {
+                    if (el) {
+                      booksRef.current.set(book.bookID, el)
+                    } else {
+                      booksRef.current.delete(book.bookID)
+                    }
+                  }}
+                />
+              ))}
+              <Drawer>
+                <DrawerTrigger asChild>
+                  <Button variant={"secondary"} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add Book
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <div className="mx-auto w-full max-w-lg">
+                    <DrawerHeader>
+                      <DrawerTitle>Add Book</DrawerTitle>
+                      <DrawerDescription></DrawerDescription>
+                    </DrawerHeader>
+                    <HadithBookForm
+                      className="p-4 pt-0"
+                      hadithID={findUniqueHadith.data.id}
+                      books={books}
+                    />
+                  </div>
+                </DrawerContent>
+              </Drawer>
+
+              <HadithEditForm
+                ref={hadithEditFormRef}
+                hadith={findUniqueHadith.data}
+                onSave={(id) => {}}
+                onDelete={() => {
+                  router.replace(ROUTES.ADMIN.HADITHS as Route)
+                }}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="translations" className="space-y-4">
+          <DropdownMenu modal={false}>
+            <div className="flex justify-end">
+              <DropdownMenuTrigger asChild>
+                <ButtonLoading
+                  variant={"outline"}
+                  disabled={notTranlsatedLanguages().length === 0}
+                  isLoading={createHadithTranslation.isPending}
+                  type="button"
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add
+                </ButtonLoading>
+              </DropdownMenuTrigger>
+            </div>
+
             <DropdownMenuContent>
               <DropdownMenuLabel>Add translation for:</DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -168,40 +259,43 @@ const HadithEditPage = forwardRef<HTMLDivElement, HadithEditPageProps>(
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-        {findManyHadithTranslation.data?.map((translation, index) => (
-          <div className="space-y-2" key={index}>
-            <Label>
-              {languages.find((l) => l.code === translation.languageCode)?.name}
-            </Label>
-            <div className="flex flex-wrap justify-stretch gap-4">
-              <HadithTranslationEditForm
-                ref={(el) => {
-                  if (el) {
-                    translationsRef.current.set(translation.languageCode, el)
-                  } else {
-                    translationsRef.current.delete(translation.languageCode)
+          {findManyHadithTranslation.data?.map((translation, index) => (
+            <Card className="space-y-4" key={index}>
+              <CardHeader>
+                <CardTitle>
+                  {
+                    languages.find((l) => l.code === translation.languageCode)
+                      ?.name
                   }
-                }}
-                className="flex-1 basis-96"
-                hadithTranslation={translation}
-              />
-              <HadithTranslationImageEditForm
-                ref={(el) => {
-                  if (el) {
-                    imagesRef.current.set(translation.languageCode, el)
-                  } else {
-                    imagesRef.current.delete(translation.languageCode)
-                  }
-                }}
-                className="flex-1 basis-1/2"
-                hadithID={translation.hadithID}
-                languageCode={translation.languageCode}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4 md:flex-row md:*:flex-1">
+                <HadithTranslationEditForm
+                  ref={(el) => {
+                    if (el) {
+                      translationsRef.current.set(translation.languageCode, el)
+                    } else {
+                      translationsRef.current.delete(translation.languageCode)
+                    }
+                  }}
+                  hadithTranslation={translation}
+                />
+                <HadithTranslationImageEditForm
+                  ref={(el) => {
+                    if (el) {
+                      imagesRef.current.set(translation.languageCode, el)
+                    } else {
+                      imagesRef.current.delete(translation.languageCode)
+                    }
+                  }}
+                  hadithID={translation.hadithID}
+                  languageCode={translation.languageCode}
+                />
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+      </Tabs>
     )
   },
 )

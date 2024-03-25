@@ -16,12 +16,10 @@ import { useRouter } from "next/navigation"
 import { forwardRef, useState } from "react"
 
 export interface HadithCreateDialogProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  topics: ITopic[]
-}
+  extends React.HTMLAttributes<HTMLDivElement> {}
 
 const HadithCreateDialog = forwardRef<HTMLDivElement, HadithCreateDialogProps>(
-  ({ topics, ...props }, ref) => {
+  ({ ...props }, ref) => {
     const [open, setOpen] = useState(false)
 
     const router = useRouter()
@@ -42,7 +40,6 @@ const HadithCreateDialog = forwardRef<HTMLDivElement, HadithCreateDialogProps>(
               </DrawerHeader>
               <HadithEditForm
                 className="p-4 pt-0"
-                topics={topics}
                 onSave={(id) => {
                   setOpen(false)
                 }}

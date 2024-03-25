@@ -69,11 +69,11 @@ export const rumoozConfigs: { [languageCode: string]: RumoozConfig } = {
 
 export function addRamzToText(
   text: string,
-  rumoozConfig: RumoozConfig,
+  rumoozConfig?: RumoozConfig,
   wrapWith?: { start: string; end: string },
 ) {
   //TODO: add normalization while searching
-  rumoozConfig.map.forEach((replaceStrings, replaceWith) => {
+  rumoozConfig?.map.forEach((replaceStrings, replaceWith) => {
     replaceStrings.forEach((replaceString) => {
       if (wrapWith) {
         text = text.replaceAll(

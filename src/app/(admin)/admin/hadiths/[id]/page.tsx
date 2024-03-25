@@ -44,22 +44,7 @@ export default async function Home({ params }: { params: { id: string } }) {
     notFound()
   }
 
-  const topics = await prisma.topic.findMany({
-    select: { id: true, title: true },
-  })
-
   const languages = await getLanguages()
   const books = await getBooks()
-  return (
-    <main className="space-y-4 p-4">
-      {
-        <HadithEditPage
-          hadith={hadith}
-          topics={topics}
-          books={books}
-          languages={languages}
-        />
-      }
-    </main>
-  )
+  return <HadithEditPage hadith={hadith} books={books} languages={languages} />
 }

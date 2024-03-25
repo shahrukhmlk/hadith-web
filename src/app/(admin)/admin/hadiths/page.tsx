@@ -30,13 +30,10 @@ export default async function Home({
     },
     orderBy: { number: "desc" },
   })
-  const topics = await prisma.topic.findMany({
-    select: { id: true, title: true },
-  })
   return (
-    <main className="flex flex-col items-start p-8">
-      <HadithCreateDialog topics={topics} />
+    <>
+      <HadithCreateDialog />
       <HadithList hadiths={hadiths} />
-    </main>
+    </>
   )
 }

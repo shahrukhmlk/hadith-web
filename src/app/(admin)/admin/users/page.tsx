@@ -14,9 +14,5 @@ export default async function Home() {
       role: true,
     },
   })
-  return (
-    <main className="flex flex-col items-start p-8">
-      <UserList users={users} />
-    </main>
-  )
+  return <UserList users={users} />
 }

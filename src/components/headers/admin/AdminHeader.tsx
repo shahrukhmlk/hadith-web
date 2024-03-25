@@ -3,15 +3,17 @@ import ProfileMenu from "@/components/menus/profile/ProfileMenu"
 import AdminSidebar from "@/components/sidebars/admin/AdminSidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Separator } from "@/components/ui/separator"
+import ThemeSwitchUtility from "@/components/utilities/ThemeSwitch/ThemeSwitchUtility"
 import { Menu } from "lucide-react"
 import Link from "next/link"
 
@@ -22,17 +24,24 @@ export interface AdminHeaderProps {
 const AdminHeader = ({ className }: AdminHeaderProps) => {
   return (
     <header className="fixed z-10 h-16 w-full backdrop-blur">
-      <div className="flex h-full flex-wrap items-center justify-center gap-y-1 p-2">
-        <Sheet>
-          <SheetTrigger className="mr-2 sm:hidden" asChild>
+      <div className="flex h-full flex-wrap items-center justify-center gap-x-4 gap-y-1 p-2">
+        <Drawer direction="left">
+          <DrawerTrigger className="mr-2 sm:hidden" asChild>
             <Button variant={"secondary"} size={"icon"}>
               <Menu />
             </Button>
-          </SheetTrigger>
-          <SheetContent side={"left"} className="w-min sm:hidden">
+          </DrawerTrigger>
+          <DrawerContent className="h-full w-56 overflow-y-auto sm:hidden">
+            <DrawerHeader>
+              <DrawerTitle>Admin Menu</DrawerTitle>
+              <DrawerDescription>
+                This action cannot be undone.
+              </DrawerDescription>
+            </DrawerHeader>
             <AdminSidebar />
-          </SheetContent>
-        </Sheet>
+            <DrawerFooter></DrawerFooter>
+          </DrawerContent>
+        </Drawer>
 
         <Link href={"/"} className="flex items-center justify-center gap-2">
           <Avatar>
@@ -46,7 +55,8 @@ const AdminHeader = ({ className }: AdminHeaderProps) => {
         <div className="flex flex-1 md:ms-4">
           <AdminMenu />
         </div>
-        <div className="flex items-center justify-center gap-1 ">
+        <div className="flex items-center justify-center gap-4 ">
+          <ThemeSwitchUtility />
           <ProfileMenu />
         </div>
       </div>

@@ -25,9 +25,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import Panzoom, { PanzoomObject } from "@panzoom/panzoom"
 import clsx from "clsx"
-import html2canvas from "html2canvas"
+import { toPng, toSvg } from "html-to-image"
 import { FormHTMLAttributes, forwardRef, useRef, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
+import { toast } from "sonner"
 import HadithImagePreview from "../../hadith/image-preview/HadithImagePreview"
 
 export interface IHadithTranslationImageEditFormProps
@@ -83,6 +84,9 @@ export const HadithTranslationImageEditForm = forwardRef<
       },
     },
   })
+
+  const { data } = findUniqueHadithTranslationImage
+
   const upsertHadithTranslationImage = useUpsertHadithTranslationImage()
   const updateManyHadithTranslationImage = useUpdateManyHadithTranslationImage()
 
@@ -151,7 +155,8 @@ export const HadithTranslationImageEditForm = forwardRef<
 
   const imageDivRef = useRef<HTMLDivElement>(null)
   const panzoomRef = useRef<PanzoomObject>()
-  const [imageData, setImageData] = useState<string>()
+  const [imageDataURL, setImageDataURL] = useState<string>()
+  const [imageBlob, setImageBlob] = useState<Blob>()
   const [generatingImage, setGeneratingImage] = useState(false)
   if (imageDivRef.current) {
     if (!panzoomRef.current) {
@@ -170,28 +175,72 @@ export const HadithTranslationImageEditForm = forwardRef<
 
   const generateImage = () => {
     setGeneratingImage(true)
-    panzoomRef.current?.reset({ animate: false, startScale: 5 })
-
-    setTimeout(() => {
-      if (imageDivRef.current) {
-        html2canvas(imageDivRef.current, {})
-          .then((canvas) => setImageData(canvas.toDataURL("png", 1)))
-          .catch((err) => {
-            console.log(err)
+    panzoomRef.current?.reset({ animate: false })
+    setTimeout(async () => {
+      if (imageDivRef.current && data) {
+        try {
+          const url = await toPng(imageDivRef.current, {
+            canvasWidth: 1024,
+            canvasHeight: 1024,
           })
-          .finally(() => {
-            setGeneratingImage(false)
-            handleSubmit(onSubmit)()
-          })
+          setImageDataURL(url)
+          setImageBlob(await (await fetch(url)).blob())
+        } catch (error) {
+          console.error(error)
+          toast.error("An error occured while generating image.")
+        } finally {
+          setGeneratingImage(false)
+        }
       }
     }, 1000)
   }
 
-  if (!findUniqueHadithTranslationImage.data) {
-    return null
+  const copyImageWithText = async () => {
+    if (!imageDataURL || !imageBlob || !data) {
+      toast.error("Error with image or data")
+      return
+    }
+    try {
+      const image = new ClipboardItem({ [imageBlob.type]: imageBlob })
+      await navigator.clipboard.write([image])
+      toast.success("Copied image to clipboard.")
+    } catch (error) {
+      toast.error("An error occured while copying image.")
+      console.error(error)
+    }
   }
 
-  const { data } = findUniqueHadithTranslationImage
+  const shareImageWithText = async () => {
+    if (!imageDataURL || !imageBlob || !data) {
+      toast.error("Error with image or data")
+      return
+    }
+    try {
+      const files = [
+        new File(
+          [imageBlob],
+          `${data.hadithTranslation.hadith.number}-${data.languageCode}.png`,
+          {
+            type: imageBlob.type,
+          },
+        ),
+      ]
+      if (navigator.canShare({ files })) {
+        await navigator.share({
+          files,
+          title: "Images",
+          text: `${data.hadithTranslation.text}`,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  if (!data) {
+    return <form ref={ref} {...props} />
+  }
+
   return (
     <Form {...form}>
       <form
@@ -213,7 +262,7 @@ export const HadithTranslationImageEditForm = forwardRef<
           bookText={data.hadithTranslation.hadith.books
             .map(
               (book) =>
-                `${book.book.name}: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
+                `${book.book.name}, حديث: ${book.hadithRefNumber.toLocaleString("ar-eg", { useGrouping: false })}`,
             )
             .join("\n و")}
         />
@@ -273,7 +322,7 @@ export const HadithTranslationImageEditForm = forwardRef<
           />
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap space-x-2">
           <ButtonLoading
             isLoading={upsertHadithTranslationImage.isPending}
             disabled={!formState.isDirty}
@@ -287,16 +336,28 @@ export const HadithTranslationImageEditForm = forwardRef<
           >
             Generate
           </ButtonLoading>
-          <Button
-            type="button"
-            variant={"secondary"}
-            asChild
-            disabled={!!imageData}
-          >
-            <a href={imageData} target="_blank">
-              Download
-            </a>
-          </Button>
+          {!!imageDataURL && (
+            <>
+              <Button
+                type="button"
+                variant={"secondary"}
+                disabled={!imageDataURL}
+                onClick={copyImageWithText}
+              >
+                Copy
+              </Button>
+              {!!navigator.share && (
+                <Button
+                  type="button"
+                  variant={"secondary"}
+                  disabled={!imageBlob}
+                  onClick={shareImageWithText}
+                >
+                  Share
+                </Button>
+              )}
+            </>
+          )}
         </div>
       </form>
     </Form>

@@ -54,6 +54,7 @@ export default function SearchableSelectInput({
   onItemSelect,
   onFilterChange,
   onClickCreateNew,
+  className,
   ...props
 }: SearchableSelectInputProps) {
   const [open, setOpen] = useState(false)
@@ -65,7 +66,7 @@ export default function SearchableSelectInput({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-full min-w-52 justify-between gap-2",
+            "w-full justify-between gap-2",
             !selectedItem && "text-muted-foreground",
           )}
         >
