@@ -152,9 +152,9 @@ const HadithBookForm = forwardRef<HTMLFormElement, HadithBookFormProps>(
             control={control}
             name={"hadithRefNumber"}
             render={({ field }) => (
-              <FormItem className="basis-32">
+              <FormItem className="basis-20">
                 <FormControl>
-                  <Input placeholder="Hadith Number" {...field} />
+                  <Input placeholder="Number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

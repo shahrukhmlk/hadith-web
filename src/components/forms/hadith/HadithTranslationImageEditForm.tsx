@@ -238,7 +238,7 @@ export const HadithTranslationImageEditForm = forwardRef<
   }
 
   if (!data) {
-    return null
+    return <form ref={ref} {...props} />
   }
 
   return (

@@ -167,7 +167,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 control={form.control}
                 name={"number"}
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="basis-20">
                     <FormControl>
                       <Input placeholder="Number" {...field} />
                     </FormControl>
@@ -228,7 +228,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-2">
+            <div className="flex flex-wrap justify-end gap-2">
               <ButtonLoading
                 type="button"
                 variant={"secondary"}
@@ -253,7 +253,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                   form.handleSubmit(onSubmit)()
                 }}
               >
-                {upsertHadith.data?.status === Status.published
+                {findUniqueHadith.data?.status === Status.published
                   ? "Update"
                   : "Publish"}
               </ButtonLoading>
@@ -269,7 +269,7 @@ const HadithEditForm = forwardRef<HTMLFormElement, HadithEditFormProps>(
                     })
                   }}
                 >
-                  Delete Hadith
+                  Delete
                 </ButtonConfirm>
               )}
             </div>
