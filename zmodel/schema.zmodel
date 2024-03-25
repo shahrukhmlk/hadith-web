@@ -50,6 +50,7 @@ model Topic extends Base {
     @@index([userIDUpdated], map: "fki_TopicUserUpdated")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model Hadith extends Base {
@@ -70,6 +71,7 @@ model Hadith extends Base {
     @@index([userIDUpdated], map: "fki_HadithUserUpdated")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', status=="published")
 }
 
 model HadithBook {
@@ -84,6 +86,7 @@ model HadithBook {
     @@index([bookID], map: "fki_HadithBook_Book_id")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model Language {
@@ -96,6 +99,7 @@ model Language {
     hadithTopicTranslations TopicTranslation[]
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model HadithTranslation extends Base {
@@ -115,6 +119,7 @@ model HadithTranslation extends Base {
     @@index([hadithID], map: "fki_HadithTranslation_HadithID")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model HadithTranslationImage {
@@ -130,6 +135,7 @@ model HadithTranslationImage {
     @@index([hadithID], map: "fki_HadithImage_HadithID")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model TopicTranslation extends Base {
@@ -148,6 +154,7 @@ model TopicTranslation extends Base {
     @@index([topicID], map: "fki_TopicTranslation_TopicID")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model BookTranslation extends Base {
@@ -166,6 +173,7 @@ model BookTranslation extends Base {
     @@index([languageCode], map: "fki_BookTranslation_LanguageCode")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', true)
 }
 
 model Account {
@@ -219,6 +227,7 @@ model User {
     hadithTopicTranslationssUpdated TopicTranslation[] @relation("TopicTranslation_userIDUpdatedToUser")
 
     @@allow('all', auth().role == "admin")
+    @@allow('read', auth().id == id)
 }
 
 model VerificationToken {
