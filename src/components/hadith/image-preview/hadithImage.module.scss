@@ -52,7 +52,7 @@
 
 .ramz {
   color: var(--color-hadith);
-  @apply leading-normal;
+  font-weight: 100;
   &:lang(ar) {
     font-family: var(--font-arabic-ramz);
   }
@@ -60,7 +60,8 @@
     font-family: var(--font-urdu-kasheeda);
   }
   &:lang(en) {
-    font-family: var(--font-arabic-ramz);
+    font-family: var(--font-arabic-ramz); 
+    @apply leading-normal;
   }
 }
 
