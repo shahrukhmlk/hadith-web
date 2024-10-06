@@ -29,10 +29,6 @@
   }
   &:lang(hi) {
     font-family: var(--font-hindi);
-    @apply leading-none;
-    .hadith-nas {
-      @apply font-semibold;
-    }
   }
   &:lang(ar),
   &:lang(ur) {
@@ -75,7 +71,7 @@
     @apply leading-normal;
   }
   &:lang(hi) {
-    font-family: var(--font-arabic-ramz); 
+    font-family: var(--font-urdu-kasheeda); 
     @apply leading-normal;
   }
 }
