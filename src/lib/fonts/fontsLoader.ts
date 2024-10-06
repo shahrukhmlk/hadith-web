@@ -1,4 +1,4 @@
-import { Cairo, Inter } from "next/font/google"
+import { Cairo, Inter, NotoSans } from "next/font/google"
 import localFont from "next/font/local"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -31,6 +31,11 @@ const aadil = localFont({
 const cairo = Cairo({
   variable: "--font-cairo",
   subsets: ["latin", "arabic"],
+})
+
+const hindi = NotoSans({
+  variable: "--font-hindi",
+  subsets: ["latin", "devanagari"],
 })
 export {
   arabicNas,

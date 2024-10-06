@@ -21,6 +21,7 @@ import {
   rumoozAr,
   urduKasheeda,
   urduNormal,
+  hindi
 } from "../../../lib/fonts/fontsLoader"
 import styles from "./hadithImage.module.scss"
 import "./html2canvasfix.css"
@@ -78,6 +79,17 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             `<span class="${styles["arabic"]}">$&</span>`,
           )
       }
+      if (languageCode === "hi") {
+        return text
+          .replaceAll(
+            /(").+?(")/gs,
+            `<span class="${styles["hadith-nas"]}">$&</span>`,
+          )
+          .replaceAll(
+            /('|«|&laquo;).+?('|»|&raquo;)/gs,
+            `<span class="${styles["arabic"]}">$&</span>`,
+          )
+      }
       return ""
     }
 
@@ -111,6 +123,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             urduNormal.variable,
             aadil.variable,
             cairo.variable,
+            hindi.variable,
             "relative flex h-[300px] w-[300px] flex-col items-stretch bg-white text-[10px] text-black",
           )}
           style={{ "--color-hadith": color } as React.CSSProperties}

@@ -61,10 +61,29 @@ export const urduRumooz: RumoozConfig = {
   ]),
 }
 
+export const hindiRumooz: RumoozConfig = {
+  map: new Map([
+    ["﷯", ["-عز وجل-"]],
+    ["ﷻ", ["-جل جلاله-"]],
+    ["﷑", ["-صلى الله عليه وسلم-", "ﷺ"]],
+    ["", ["-صلى الله عليه وآله وسلم-"]],
+    ["﷤", ["-عليه السلام-"]],
+    ["﷥", ["-عليها السلام-"]],
+    ["﷧", ["-عليهما السلام-"]],
+    ["﷩", ["-عليهم السلام-"]],
+    ["﷪", ["-عليه الصلاة والسلام-"]],
+    ["﷜", ["-رضي الله عنه-"]],
+    ["﷞", ["-رضي الله عنها-"]],
+    ["﷠", ["-رضي الله عنهما-"]],
+    ["﷢", ["-رضي الله عنهم-"]],
+  ]),
+}
+
 export const rumoozConfigs: { [languageCode: string]: RumoozConfig } = {
   ar: arabicRumooz,
   ur: urduRumooz,
   en: englishRumooz,
+  hi: hindiRumooz,
 }
 
 export function addRamzToText(

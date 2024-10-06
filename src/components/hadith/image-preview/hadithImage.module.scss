@@ -14,10 +14,21 @@
       font-size: 1.2em;
       @apply font-normal leading-loose;
     }
+    &:lang(hi) {
+      font-size: 1.2em;
+      @apply font-normal leading-loose;
+    }
   }
 
   &:lang(en) {
     font-family: var(--font-cairo);
+    @apply leading-none;
+    .hadith-nas {
+      @apply font-semibold;
+    }
+  }
+  &:lang(hi) {
+    font-family: var(--font-hindi);
     @apply leading-none;
     .hadith-nas {
       @apply font-semibold;
@@ -60,6 +71,9 @@
     font-family: var(--font-urdu-kasheeda);
   }
   &:lang(en) {
+    font-family: var(--font-arabic-ramz); 
+    @apply leading-normal;
+  &:lang(hi) {
     font-family: var(--font-arabic-ramz); 
     @apply leading-normal;
   }
