@@ -109,7 +109,7 @@ model HadithTranslation extends Base {
     userCreated User? @relation("HadithTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithTranslationUserCreated")
     userUpdated User? @relation("HadithTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "HadithTranslationUserUpdated")
     hadith Hadith @relation(fields: [hadithID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "HadithTranslation_HadithID")
-    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "HadithTranslation_LanguageCode")
+    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: Cascade, map: "HadithTranslation_LanguageCode")
     image HadithTranslationImage?
 
     @@id([hadithID, languageCode])
@@ -128,7 +128,7 @@ model HadithTranslationImage {
     hadithFontScale Int @default(0)
     translationFontScale Int @default(0)    
     color String @default("#000000")
-    hadithTranslation HadithTranslation @relation(fields: [hadithID, languageCode], references: [hadithID, languageCode], onDelete: Cascade, onUpdate: NoAction)
+    hadithTranslation HadithTranslation @relation(fields: [hadithID, languageCode], references: [hadithID, languageCode], onDelete: Cascade, onUpdate: Cascade)
     
     @@id([hadithID, languageCode])
     @@index([languageCode], map: "fki_HadithImage_LanguageCode")
@@ -145,7 +145,7 @@ model TopicTranslation extends Base {
     userCreated User? @relation("TopicTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "TopicTranslationUserCreated")
     userUpdated User? @relation("TopicTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "TopicTranslationUserUpdated")
     topic Topic @relation(fields: [topicID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TopicTranslation_TopicID")
-    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "TopicTranslation_LanguageCode")
+    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: Cascade, map: "TopicTranslation_LanguageCode")
 
     @@id([topicID, languageCode])
     @@index([userIDCreated], map: "fki_TopicTranslationUserCreated")
@@ -164,7 +164,7 @@ model BookTranslation extends Base {
     userCreated User? @relation("BookTranslation_userIDCreatedToUser", fields: [userIDCreated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "BookTranslationUserCreated")
     userUpdated User? @relation("BookTranslation_userIDUpdatedToUser", fields: [userIDUpdated], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "BookTranslationUserUpdated")
     book Book @relation(fields: [bookID], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "BookTranslation_BookID")
-    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "BookTranslation_LanguageCode")
+    language Language @relation(fields: [languageCode], references: [code], onDelete: NoAction, onUpdate: Cascade, map: "BookTranslation_LanguageCode")
 
     @@id([bookID, languageCode])
     @@index([userIDCreated], map: "fki_BookTranslationUserCreated")

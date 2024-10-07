@@ -7,7 +7,7 @@
     font-family: var(--font-arabic-nas);
     color: var(--color-hadith);
 
-    &:lang(ur) {
+    &:lang(ur-IN) {
       font-size: 1em;
     }
     &:lang(en) {
@@ -42,7 +42,7 @@
     font-family: var(--font-hindi);
   }
   &:lang(ar),
-  &:lang(ur) {
+  &:lang(ur-IN) {
     direction: rtl;
   }
   &:lang(ar) {
@@ -51,7 +51,7 @@
       font-family: var(--font-arabic-nas);
     }
   }
-  &:lang(ur) {
+  &:lang(ur-IN) {
     font-family: var(--font-urdu-normal);
     .hadith-nas {
       font-family: var(--font-urdu-kasheeda);
@@ -74,7 +74,7 @@
   &:lang(ar) {
     font-family: var(--font-arabic-ramz);
   }
-  &:lang(ur) {
+  &:lang(ur-IN) {
     font-family: var(--font-urdu-kasheeda);
   }
   &:lang(en) {

@@ -57,7 +57,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
     ref,
   ) => {
     const replaceQuotes = (text: string, languageCode: string) => {
-      if (languageCode === "ur") {
+      if (languageCode === "ur-IN") {
         return text
           .replaceAll(
             /(«|&laquo;).+?(»|&raquo;)/gs,
@@ -68,7 +68,7 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             `<span class="${styles["arabic"]}">$&</span>`,
           )
       }
-      if (languageCode === "en") {
+      if (languageCode === "en" || languageCode === "ur-Latn") {
         return text
           .replaceAll(
             /(").+?(")/gs,
@@ -80,17 +80,6 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
           )
       }
       if (languageCode === "hi") {
-        return text
-          .replaceAll(
-            /(").+?(")/gs,
-            `<span class="${styles["hadith-nas"]}">$&</span>`,
-          )
-          .replaceAll(
-            /('|«|&laquo;).+?('|»|&raquo;)/gs,
-            `<span class="${styles["arabic"]}">$&</span>`,
-          )
-      }
-      if (languageCode === "ur-Latn") {
         return text
           .replaceAll(
             /(").+?(")/gs,

@@ -103,10 +103,10 @@ export const romanRumooz: RumoozConfig = {
 
 export const rumoozConfigs: { [languageCode: string]: RumoozConfig } = {
   ar: arabicRumooz,
-  ur: urduRumooz,
+  "ur-IN": urduRumooz,
   en: englishRumooz,
   hi: hindiRumooz,
-  urLatn: romanRumooz
+  "ur-Latn": romanRumooz
 }
 
 export function addRamzToText(
