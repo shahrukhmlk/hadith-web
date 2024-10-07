@@ -90,6 +90,17 @@ const HadithImagePreview = forwardRef<HTMLDivElement, HadithImagePreviewProps>(
             `<span class="${styles["arabic"]}">$&</span>`,
           )
       }
+      if (languageCode === "ur-Latn") {
+        return text
+          .replaceAll(
+            /(").+?(")/gs,
+            `<span class="${styles["hadith-nas"]}">$&</span>`,
+          )
+          .replaceAll(
+            /('|«|&laquo;).+?('|»|&raquo;)/gs,
+            `<span class="${styles["arabic"]}">$&</span>`,
+          )
+      }
       return ""
     }
 

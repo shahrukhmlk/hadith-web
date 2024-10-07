@@ -63,19 +63,41 @@ export const urduRumooz: RumoozConfig = {
 
 export const hindiRumooz: RumoozConfig = {
   map: new Map([
-    ["﷯", ["(ʿअज़्ज़ व जल्ल)"]],
+    ["﷯", ["(अज़्ज़ व जल्ल)"]],
     ["ﷻ", ["(जल्ल जलालुहू)"]],
-    ["﷑", ["(स़़ल्लल्लाहु ʿअलैहि वसल्लम)", "ﷺ"]],
-    ["", ["(स़़ल्लल्लाहु ʿअलैहि वआलिही  वसल्लम)"]],
-    ["﷤", ["(ʿअलैहिस्सलाम)"]],
-    ["﷥", ["(ʿअलैहस्सलाम)"]],
-    ["﷧", ["(ʿअलैहुमस्सलाम)"]],
-    ["﷩", ["(ʿअलैहिमुस्सलाम)"]],
-    ["﷪", ["(ʿअलैहिस्स़़लातु वस्सलाम)"]],
-    ["﷜", ["(रज़ियल्लाहु ʿअन्हु)"]],
-    ["﷞", ["(रज़ियल्लाहु ʿअन्हा)"]],
-    ["﷠", ["(रज़ियल्लाहु ʿअन्हुमा)"]],
-    ["﷢", ["(रज़ियल्लाहु ʿअन्हुम)"]],
+    ["﷑", ["(सल्लल्लाहु अलैहि वसल्लम)", "ﷺ"]],
+    ["", ["(सल्लल्लाहु अलैहि वआलिही  वसल्लम)"]],
+    ["﷤", ["(अलैहिस्सलाम)"]],
+    ["﷥", ["(अलैहस्सलाम)"]],
+    ["﷧", ["(अलैहुमस्सलाम)"]],
+    ["﷩", ["(अलैहिमुस्सलाम)"]],
+    ["﷪", ["(अलैहिस्स़़लातु वस्सलाम)"]],
+    ["﷜", ["(रज़ियल्लाहु अन्हु)"]],
+    ["﷞", ["(रज़ियल्लाहु अन्हा)"]],
+    ["﷠", ["(रज़ियल्लाहु अन्हुमा)"]],
+    ["﷢", ["(रज़ियल्लाहु अन्हुम)"]],
+  ]),
+}
+
+export const romanRumooz: RumoozConfig = {
+  map: new Map([
+    ["", ["(subhanahu wata`aala)"]],
+    ["", ["(tabaaraka wata`aala)"]],
+    ["", ["(azza wajalla)"]],
+    ["", ["(jalla jalaaluhu)"]],
+    ["", ["(jalla wa`alaa)"]],
+    ["", ["ﷺ"]],
+    ["", ["(sallallahu alaihi waalihi wasallam)"]],
+    ["", ["(alaihissalaam)"]],
+    ["", ["(alaihassalaam)"]],
+    ["", ["(alaihumassalaam)"]],
+    ["", ["(alaihimussalaam)"]],
+    ["", ["(alaihissalaatu wassalaam)"]],
+    ["", ["(raziyallahu anhu)"]],
+    ["", ["(raziyallahu anha)"]],
+    ["", ["(raziyallahu anhuma)"]],
+    ["", ["(raziyallahu anhum)"]],
+    ["", ["(raziyallahu anhunna)"]],
   ]),
 }
 
@@ -84,6 +106,7 @@ export const rumoozConfigs: { [languageCode: string]: RumoozConfig } = {
   ur: urduRumooz,
   en: englishRumooz,
   hi: hindiRumooz,
+  urLatn: romanRumooz
 }
 
 export function addRamzToText(
