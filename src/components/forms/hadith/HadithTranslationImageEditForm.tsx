@@ -145,6 +145,7 @@ export const HadithTranslationImageEditForm = forwardRef<
             },
             data: {
               color: values.color,
+              hadithFontScale: values.hadithFontScale
             },
           })
           onSave && data && onSave(data.hadithID, data.languageCode)

@@ -85,7 +85,7 @@ export const romanRumooz: RumoozConfig = {
     ["", ["(tabaaraka wata`aala)"]],
     ["", ["(azza wajalla)"]],
     ["", ["(jalla jalaaluhu)"]],
-    ["", ["(jalla wa`alaa)"]],
+    ["", ["(jalla wa alaa)"]],
     ["", ["ﷺ"]],
     ["", ["(sallallahu alaihi waalihi wasallam)"]],
     ["", ["(alaihissalaam)"]],
